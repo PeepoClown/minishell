@@ -5,6 +5,18 @@
 # include <unistd.h>
 # include <dirent.h>
 # include <stdbool.h>
+# include <limits.h>
+# include <stdio.h>
+# include <fcntl.h>
+# include <errno.h>
+# include <string.h>
+
+typedef struct	s_cmd
+{
+	char	*name;
+	char	**args;
+	int		args_count;
+}				t_cmd;
 
 typedef struct	s_main_args
 {
