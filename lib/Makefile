@@ -7,7 +7,8 @@ INCLUDE = -I $(HEADER_DIR)
 
 SRCS =	ft_strlen.c ft_strcmp.c ft_strdup.c \
 		ft_substr.c ft_find_first_of.c ft_putstr_fd.c \
-		ft_putendl_fd.c
+		ft_putendl_fd.c ft_islowcase.c ft_isupcase.c \
+		ft_isdigit.c ft_isalpha.c ft_isalnum.c
 SRC_DIR = ./
 SRC = $(addprefix $(SRC_DIR), $(SRCS))
 
