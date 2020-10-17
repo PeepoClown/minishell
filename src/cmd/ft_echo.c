@@ -1,27 +1,27 @@
 #include <minishell.h>
 
-int		ft_echo(t_env *env, int fd_out, int fd_in, char **args)
+int		ft_echo(t_cmd *cmd, t_env *env)
 {
 	bool	nl_flag;
 
-	fd_in = 0;
-	if (!args || !(*args))
+	env = NULL;
+	if (!(cmd->args) || !(*(cmd->args)))
 	{
-		write(fd_out, "\n", 1);
+		ft_putendl_fd(cmd->fd_out);
 		return (0);
 	}
-	nl_flag = (ft_strcmp(args[0], "-n") == 0)
+	nl_flag = (ft_strcmp(*(cmd->args), "-n") == 0)
 		? false
 		: true;
-	args = (!nl_flag) ? args : args + 1;
-	while (*args != NULL)
+	cmd->args = (!nl_flag) ? cmd->args : cmd->args + 1;
+	while (*(cmd->args) != NULL)
 	{
-		ft_putstr_fd(*args, fd_out);
-		if (*(args + 1) != NULL)
-			ft_putstr_fd(" ", fd_out);
-		args++;
+		ft_putstr_fd(*(cmd->args), cmd->fd_out);
+		if (*(cmd->args + 1) != NULL)
+			ft_putstr_fd(" ", cmd->fd_out);
+		cmd->args++;
 	}
 	if (nl_flag)
-		ft_putendl_fd(fd_out);
+		ft_putendl_fd(cmd->fd_out);
 	return (0);
 }

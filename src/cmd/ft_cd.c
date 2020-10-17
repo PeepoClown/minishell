@@ -1,20 +1,18 @@
 #include <minishell.h>
 
-int		ft_cd(t_env *env, int fd_out, int fd_in, char **args)
+int		ft_cd(t_cmd *cmd, t_env *env)
 {
 	char	path[PATH_MAX];
 	char	*dest_path;
 	char	*home_path;
 
-	fd_out = 1;
-	fd_in = 0;
 	home_path = get_env_value(env, "HOME");
-	dest_path = (ft_strcmp(args[0], "") == 0)
+	dest_path = (*(cmd->args) == NULL)
 		? home_path
-		: args[0];
+		: *(cmd->args);
 	if ((chdir(dest_path) == -1))
 	{
-		error_cmd("cd", args[0], strerror(errno));
+		error_cmd("cd", *(cmd->args), strerror(errno));
 		return (1);
 	}
 	return (0);

@@ -1,4 +1,4 @@
-#include <minishell.h>
+#include "minishell.h"
 
 bool	arg_valid(const char *arg)
 {
@@ -9,8 +9,6 @@ bool	arg_valid(const char *arg)
 	arg++;
 	while (*arg != '\0')
 	{
-		if (*arg == '=')
-			break ;
 		if (!ft_isalnum(*arg) && !(*arg == '_'))
 			return (false);
 		arg++;
@@ -18,26 +16,20 @@ bool	arg_valid(const char *arg)
 	return (true);
 }
 
-int		ft_export(t_cmd *cmd, t_env *env)
+int		ft_unset(t_cmd *cmd, t_env *env)
 {
 	int		ret;
 
-	ret = 0;
 	if (!env)
 		return (1);
-	if ((cmd->args == NULL) || (*(cmd->args) == NULL))
-	{
-		sort_env(&env);
-		print_env_export(env, cmd->fd_out);
-		return (ret);
-	}
+	ret = 0;
 	while (*(cmd->args) != NULL)
 	{
 		if (arg_valid(*(cmd->args)))
-			add_env(&env, *(cmd->args));
+			del_env(&env, *(cmd->args));
 		else
 		{
-			error_cmd("export", *(cmd->args), "not a valid identifier");
+			error_cmd("unset", *(cmd->args), "not a valid identifier");
 			ret = 1;
 		}
 		(cmd->args)++;

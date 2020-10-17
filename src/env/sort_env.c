@@ -1,6 +1,6 @@
 #include <minishell.h>
 
-void	swap_env_items(t_env *item1, t_env *item2)
+static	void	swap_env_items(t_env *item1, t_env *item2)
 {
 	char	*key;
 	char	*value;
@@ -13,7 +13,7 @@ void	swap_env_items(t_env *item1, t_env *item2)
 	item2->value = value;
 }
 
-void	sort_env(t_env **env)
+void			sort_env(t_env **env)
 {
 	t_env	*curr;
 	t_env	*tmp;

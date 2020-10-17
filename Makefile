@@ -4,4 +4,4 @@ libft :
 	$(MAKE) -C ./lib clean
 
 test : libft
-	gcc -I include/ test.c src/env/*.c src/cmd/*.c src/*.c -L. -lft
+	gcc -I include/ src/env/*.c src/cmd/*.c src/*.c -L. -lft
