@@ -10,6 +10,9 @@
 # include <signal.h>
 # include <stdbool.h>
 # include <stdint.h>
+# include <sys/types.h>
+# include <sys/wait.h>
+# include <sys/stat.h>
 //# include <limits.h>
 #include <linux/limits.h> // delete this header
 
@@ -58,5 +61,10 @@ int				ft_echo(t_cmd *cmd, t_env *env);
 int		ft_cd(t_cmd *cmd, t_env *env);
 int		ft_pwd(t_cmd *cmd, t_env *env);
 int		ft_export(t_cmd *cmd, t_env *env);
+int		ft_env(t_cmd *cmd, t_env *env);
+int				ft_unset(t_cmd *cmd, t_env *env);
+int		ft_exit(t_cmd *cmd, t_env *env);
+int		execute(t_cmd *cmd, t_env *env, char **envp);
+
 
 #endif

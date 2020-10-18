@@ -31,8 +31,8 @@ char	*user_input(void)
 			break ;
 		input = add_to_str(input, buff[0]);
 	}
-	add_to_str(input, '\0');
-	if (read < 0)
+	input = add_to_str(input, '\0');
+	if (read_res < 0)
 	{
 		free(input);
 		input = NULL;

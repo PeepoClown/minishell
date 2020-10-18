@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-bool	arg_valid(const char *arg)
+static	bool	arg_valid(const char *arg)
 {
 	int		delim_pos;
 
@@ -16,7 +16,7 @@ bool	arg_valid(const char *arg)
 	return (true);
 }
 
-int		ft_unset(t_cmd *cmd, t_env *env)
+int				ft_unset(t_cmd *cmd, t_env *env)
 {
 	int		ret;
 
