@@ -1,13 +1,23 @@
 #include "minishell.h"
 
-
 int		main(int argc, char **argv, char **envp)
 {
 	if (argc > 1)
 		return (1); // error
 	// handle signals
 	t_env *env = create_env(envp);
-	char *input = NULL;
+	if (!env)
+		ft_error(ENOMEM, "Alloc error!");
+	t_env *tmp;
+	while (env)
+	{
+		tmp = env;
+		env = env->next;
+		free(tmp->key);
+		free(tmp->value);
+		free(tmp);
+	}
+	// char *input = NULL;
 	// while (true)
 	// {
 	// 	display_prompt(env);
@@ -67,14 +77,15 @@ int		main(int argc, char **argv, char **envp)
 	printf("return : %d\n", ret);
 	print_env_export(env, 1);*/
 	
-	t_cmd cmd;
-	cmd.name = "ls";
-	cmd.fd_in= 0;
-	cmd.fd_out = 1;
-	cmd.next = NULL;
-	char *args[] = { "-l", NULL };
-	cmd.args = args;
-	execute(&cmd, env, envp);
+	// t_cmd cmd;
+	// cmd.name = "ls";
+	// cmd.fd_in= 0;
+	// cmd.fd_out = 1;
+	// cmd.next = NULL;
+	// char *args[] = { "-l", NULL };
+	// cmd.args = args;
+	// execute(&cmd, env);
+
 	
 	return (0);
 }

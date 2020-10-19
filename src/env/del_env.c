@@ -1,6 +1,6 @@
 #include <minishell.h>
 
-static	void	free_env_item(t_env *env)
+void			free_env_item(t_env *env)
 {
 	free(env->key);
 	free(env->value);

@@ -64,7 +64,15 @@ int		ft_export(t_cmd *cmd, t_env *env);
 int		ft_env(t_cmd *cmd, t_env *env);
 int				ft_unset(t_cmd *cmd, t_env *env);
 int		ft_exit(t_cmd *cmd, t_env *env);
-int		execute(t_cmd *cmd, t_env *env, char **envp);
+int		execute(t_cmd *cmd, t_env *env);
+
+typedef struct	s_func
+{
+	char	*cmd;
+	int		(*func)(t_cmd *, t_env *);
+}				t_func;
+
+int		ft_error(int status, const char *error);
 
 
 #endif

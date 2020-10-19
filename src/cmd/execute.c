@@ -110,7 +110,7 @@ char	**get_args(char *cmd, char **args)
 	return (res);
 }
 
-int		execute(t_cmd *cmd, t_env *env, char **envp)
+int		execute(t_cmd *cmd, t_env *env)
 {
 	pid_t	pid;
 	char	**env_vars;
@@ -130,7 +130,7 @@ int		execute(t_cmd *cmd, t_env *env, char **envp)
 		//print_vars(env_vars);
 		args = get_args(path, cmd->args);
 		printf("Path to %s : %s\n", cmd->name, path);
-		execve(path, args, envp);
+		execve(path, args, env_vars);
 		if (ret < 0)
 			error_cmd("execve", NULL, "no such command");
 		//exit(ret);
