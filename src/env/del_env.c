@@ -1,13 +1,13 @@
 #include <minishell.h>
 
-void			free_env_item(t_env *env)
+void    del_env_item(t_env *env)
 {
 	free(env->key);
 	free(env->value);
 	free(env);
 }
 
-void			del_env(t_env **env, const char *key)
+void	del_env(t_env **env, const char *key)
 {
 	t_env	*tmp;
 	t_env	*prev;
@@ -17,7 +17,7 @@ void			del_env(t_env **env, const char *key)
 	if (ft_strcmp((*env)->key, key) == 0)
 	{
 		tmp = (*env)->next;
-		free_env_item(*env);
+		del_env_item(*env);
 		*env = tmp;
 	}
 	else
@@ -31,6 +31,6 @@ void			del_env(t_env **env, const char *key)
 			tmp = tmp->next;
 		}
 		prev->next = tmp->next;
-		free_env_item(tmp);
+		del_env_item(tmp);
 	}
 }

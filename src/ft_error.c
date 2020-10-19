@@ -8,7 +8,7 @@ int		ft_error(int status, const char *error)
 	else
 		strerror(status);
 	ft_putendl_fd(2);
-	if (status = ENOMEM)
+	if (status == ENOMEM)
 		exit(status);
 	return (status);
 }

@@ -50,7 +50,7 @@ void	print_vars(char **env_vars)
 	}
 }
 
-char	*get_path(char *cmd, char *path)
+static char	*get_path(char *cmd, char *path)
 {
 	char		**paths;
 	char		*res;

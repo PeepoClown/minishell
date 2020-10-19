@@ -1,91 +1,41 @@
-#include "minishell.h"
+#include "../include/minishell.h"
 
-int		main(int argc, char **argv, char **envp)
+char    *g_user;
+char    *g_home;
+
+
+int     main(int argc, char **argv, char **env)
 {
+	t_env   *env_list;
+	char    *input;
+
 	if (argc > 1)
-		return (1); // error
-	// handle signals
-	t_env *env = create_env(envp);
-	if (!env)
-		ft_error(ENOMEM, "Alloc error!");
-	t_env *tmp;
-	while (env)
+		return (ft_error(1, "too much arguments passed to shell"));
+	if (!(env_list = create_env(env)))
+		ft_error(ENOMEM, "allocation error");
+	// argc & argv usage
+	// signals handling
+	init_prompt_vars(&g_user, &g_home, env_list);
+	input = ft_strdup("");
+	while (true)
 	{
-		tmp = env;
-		env = env->next;
-		free(tmp->key);
-		free(tmp->value);
-		free(tmp);
+//		display_prompt();
+//		input = user_input();
+//		printf("input : %s\n", input);
+//		free(input);
+		// parsing
+		// execute_input(input, env);
+        t_cmd cmd;
+        cmd.name = "asd";
+        cmd.fd_in= 0;
+        cmd.fd_out = 1;
+        cmd.next = NULL;
+        char *args[] = { "-l", "-a" , NULL };
+        cmd.args = args;
+		execute_cmd(&cmd, env_list);
+		break ;
 	}
-	// char *input = NULL;
-	// while (true)
-	// {
-	// 	display_prompt(env);
-	// 	input = user_input();
-	// 	printf("user input : %s\n", input);
-	// 	free(input);
-	// }
-
-	/*t_cmd cmd;
-	cmd.name = "cd";
-	cmd.fd_in= 0;
-	cmd.fd_out = 1;
-	cmd.next = NULL;
-	char *args[] = { NULL };
-	cmd.args = args;
-	int ret = ft_cd(&cmd, env);
-	char buff[4096];
-	printf("curr dir : %s\n", getcwd(buff, PATH_MAX));
-	printf("return : %d\n", ret);*/
-	
-	/*t_cmd cmd;
-	cmd.name = "echo";
-	cmd.fd_in= 0;
-	cmd.fd_out = 1;
-	cmd.next = NULL;
-	char *args[] = { "-na", "zxc", "asd", "  qwe", NULL };
-	cmd.args = args;
-	int ret = ft_echo(&cmd, env);
-	printf("return : %d\n", ret);*/
-
-	/*t_cmd cmd;
-	cmd.name = "export";
-	cmd.fd_in= 0;
-	cmd.fd_out = 1;
-	cmd.next = NULL;
-	char *args[] = { "asd=123", NULL };
-	cmd.args = args;
-	int ret = ft_export(&cmd, env);
-	printf("return : %d\n", ret);
-
-	cmd.name = "export";
-	cmd.fd_in= 0;
-	cmd.fd_out = 1;
-	cmd.next = NULL;
-	char *args2[] = { "asd=", NULL };
-	cmd.args = args2;
-	ret = ft_export(&cmd, env);
-	printf("return : %d\n", ret);
-	
-	cmd.name = "unset";
-	cmd.fd_in= 0;
-	cmd.fd_out = 1;
-	cmd.next = NULL;
-	char *args3[] = { "as", NULL };
-	cmd.args = args3;
-	ret = ft_unset(&cmd, env);
-	printf("return : %d\n", ret);
-	print_env_export(env, 1);*/
-	
-	// t_cmd cmd;
-	// cmd.name = "ls";
-	// cmd.fd_in= 0;
-	// cmd.fd_out = 1;
-	// cmd.next = NULL;
-	// char *args[] = { "-l", NULL };
-	// cmd.args = args;
-	// execute(&cmd, env);
-
-	
+	remove_env(&env_list);
+	remove_prompt_vars(g_user, g_home);
 	return (0);
 }
