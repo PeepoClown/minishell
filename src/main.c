@@ -12,7 +12,7 @@ void	main_loop(t_env *env)
 	{
 		display_prompt();
 		if (!(input = user_input()))
-			return (ft_error(1, "can't read this line"));
+			ft_error(1, "can't read this line");
 		printf("input : %s\n", input);
 		free(input);
 		// parsing
@@ -38,7 +38,7 @@ int		main(int argc, char **argv, char **env)
 		return (ft_error(1, "too much arguments passed to shell"));
 	if (!(env_list = create_env(env)))
 		ft_error(ENOMEM, "allocation error");
-	//signal(SIGINT, signals_handler); // ctrl + c | ctrl + backslash
+	signal(SIGINT, signals_handler); // ctrl + c | ctrl + backslash
 	init_prompt_vars(&g_user, &g_home, env_list);
 	if (argv != NULL)
 		main_loop(env_list);

@@ -18,7 +18,7 @@ static	bool	arg_valid(const char *arg)
 	return (true);
 }
 
-void			add_to_env(t_env *env, const char *line)
+static	void	add_to_env(t_env *env, const char *line)
 {
 	char	*key;
 
@@ -37,7 +37,7 @@ void			add_to_env(t_env *env, const char *line)
 	add_env(&env, line);
 }
 
-int		ft_export(t_cmd *cmd, t_env *env)
+int				ft_export(t_cmd *cmd, t_env *env)
 {
 	int		ret;
 
