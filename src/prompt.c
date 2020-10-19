@@ -1,27 +1,25 @@
-#include "minishell.h"
+#include <minishell.h>
 
-void    init_prompt_vars(char **user, char **home, t_env *env)
+void			init_prompt_vars(char **user, char **home, t_env *env)
 {
-    *user = ft_strdup(get_env_value(env, "USER"));
-    *home = ft_strdup(get_env_value(env, "HOME"));
+	*user = ft_strdup(get_env_value(env, "USER"));
+	*home = ft_strdup(get_env_value(env, "HOME"));
 }
 
-void    remove_prompt_vars(char *user, char *home)
+void			remove_prompt_vars(char *user, char *home)
 {
-    free(user);
-    free(home);
+	free(user);
+	free(home);
 }
 
-static	char	*cut_home_path(t_env *env)
+static	char	*cut_home_path(void)
 {
 	char	*path;
 	char	*path_with_home;
 	int		i;
 	int		j;
 
-	if (!(path = (char*)malloc(sizeof(char) * 4096)))
-		return (NULL);
-	getcwd(path, PATH_MAX);
+	path = getcwd(NULL, PATH_MAX);
 	path_with_home = ft_substr(path, 0, ft_strlen(g_home));
 	if (ft_strcmp(path_with_home, g_home) == 0)
 	{
@@ -32,17 +30,21 @@ static	char	*cut_home_path(t_env *env)
 		j = 1;
 		while (i < ft_strlen(path))
 			path_with_home[j++] = path[i++];
+		free(path);
 		return (path_with_home);
 	}
 	else
+	{
+		free(path_with_home);
 		return (path);
+	}
 }
 
-void			display_prompt(t_env *env)
+void			display_prompt(void)
 {
 	char	*path;
 
-	path = cut_home_path(env);
+	path = cut_home_path();
 	ft_putstr_fd("\e[1;35m", 1);
 	ft_putstr_fd(g_user, 1);
 	ft_putstr_fd("\e[0m:", 1);

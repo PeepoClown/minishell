@@ -12,12 +12,14 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <sys/stat.h>
-# include <limits.h>
+//# include <limits.h>
 
-//#include <linux/limits.h>
+#include <linux/limits.h>
 
 extern char *g_user;
 extern char *g_home;
+
+void	signals_handler(int sig);
 
 /*
 ** interface for env vars
@@ -46,7 +48,7 @@ void			sort_env(t_env **env);
 */
 
 void            init_prompt_vars(char **user, char **home, t_env *env);
-void			display_prompt();
+void			display_prompt(void);
 void            remove_prompt_vars(char *user, char *home);
 char	        *user_input(void);
 
