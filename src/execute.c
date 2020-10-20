@@ -17,6 +17,8 @@ int		execute_cmd(t_cmd *cmd, t_env *env)
 	}
 	else if (validate_non_builtin_cmd(cmd, env) == true)
 		status = execute_programm(cmd, env);
+	else if (validate_executable_file(cmd->name) == true)
+		status = execute_file(cmd, env);
 	else
 	{
 		ft_error(cmd->name, NULL, "command not found");

@@ -10,23 +10,23 @@ void	main_loop(t_env *env)
 	input = NULL;
 	while (true)
 	{
-		display_prompt();
-		if (!(input = user_input()))
-			ft_error(NULL, NULL, "can't read this line");
-		printf("input : %s\n", input);
-		free(input);
+		// display_prompt();
+		// if (!(input = user_input()))
+		// 	ft_error(NULL, NULL, "can't read this line");
+		// printf("input : %s\n", input);
+		// free(input);
 		// parsing
 		// execute_input(input, env) for all list of commands
-		// t_cmd cmd;
-		// cmd.name = "ls";
-		// cmd.fd_in= 0;
-		// cmd.fd_out = 1;
-		// cmd.next = NULL;
-		// char *args[] = { "-l", "-a", NULL };
-		// cmd.args = args;
-		// int ret = execute_cmd(&cmd, env);
-		// printf("ret : %d\n", ret);
-		// break ;
+		t_cmd cmd;
+		cmd.name = "./exec.out";
+		cmd.fd_in= 0;
+		cmd.fd_out = 1;
+		cmd.next = NULL;
+		char *args[] = { NULL };
+		cmd.args = args;
+		int ret = execute_cmd(&cmd, env);
+		printf("ret : %d\n", ret);
+		break ;
 	}
 }
 

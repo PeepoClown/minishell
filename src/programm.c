@@ -1,6 +1,6 @@
 #include <minishell.h>
 
-static	char	*get_programm_path(const char *cmd, char **paths)
+char			*get_programm_path(const char *cmd, char **paths)
 {
 	struct stat stat_buff;
 	char		*res;
@@ -57,7 +57,7 @@ bool			validate_non_builtin_cmd(t_cmd *cmd, t_env *env)
 	return (true);
 }
 
-static	char	**get_args_matrix(const char *cmd, char **args)
+char			**get_args_matrix(const char *cmd, char **args)
 {
 	char	**args_matrix;
 	int		args_count;
@@ -79,6 +79,8 @@ static	char	**get_args_matrix(const char *cmd, char **args)
 	args_matrix[i] = NULL;
 	return (args_matrix);
 }
+
+// free !!!
 
 int				execute_programm(t_cmd *cmd, t_env *env)
 {

@@ -5,6 +5,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdio.h>
+# include <fcntl.h>
 # include <string.h>
 # include <errno.h>
 # include <signal.h>
@@ -89,6 +90,10 @@ void	        remove_builtins(t_builtin *builtins, int size);
 bool            validate_non_builtin_cmd(t_cmd *cmd, t_env *env);
 int		        execute_programm(t_cmd *cmd, t_env *env);
 int             execute_cmd(t_cmd *cmd, t_env *env);
+char			*get_programm_path(const char *cmd, char **paths);
+char			**get_args_matrix(const char *cmd, char **args);
+int				execute_file(t_cmd *cmd, t_env *env);
+bool			validate_executable_file(const char *filename);
 
 void	        ft_error(const char *cmd, const char *error, const char *desc);
 void	        alloc_check(void *ptr);
