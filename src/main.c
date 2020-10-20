@@ -12,21 +12,21 @@ void	main_loop(t_env *env)
 	{
 		display_prompt();
 		if (!(input = user_input()))
-			ft_error(1, "can't read this line");
+			ft_error(NULL, NULL, "can't read this line");
 		printf("input : %s\n", input);
 		free(input);
 		// parsing
-		/*
-		execute_input(input, env);
-        t_cmd cmd;
-        cmd.name = "asd";
-        cmd.fd_in= 0;
-        cmd.fd_out = 1;
-        cmd.next = NULL;
-        char *args[] = { "-l", "-a" , NULL };
-        cmd.args = args;
-		execute_cmd(&cmd, env_list);
-		break ; */
+		// execute_input(input, env) for all list of commands
+		// t_cmd cmd;
+		// cmd.name = "ls";
+		// cmd.fd_in= 0;
+		// cmd.fd_out = 1;
+		// cmd.next = NULL;
+		// char *args[] = { "-l", "-a", NULL };
+		// cmd.args = args;
+		// int ret = execute_cmd(&cmd, env);
+		// printf("ret : %d\n", ret);
+		// break ;
 	}
 }
 
@@ -35,10 +35,10 @@ int		main(int argc, char **argv, char **env)
 	t_env	*env_list;
 
 	if (argc > 1)
-		return (ft_error(1, "too much arguments passed to shell"));
-	if (!(env_list = create_env(env)))
-		ft_error(ENOMEM, "allocation error");
-	signal(SIGINT, signals_handler); // ctrl + c | ctrl + backslash
+		ft_error(NULL, NULL, "too much arguments passed to shell");
+	alloc_check(env_list = create_env(env));
+	signal(SIGINT, signals_handler);
+	signal(SIGQUIT, signals_handler);
 	init_prompt_vars(&g_user, &g_home, env_list);
 	if (argv != NULL)
 		main_loop(env_list);

@@ -1,6 +1,6 @@
 #include <minishell.h>
 
-bool	is_digital_arg(char *arg)
+static	bool	is_digital_arg(char *arg)
 {
 	bool	is_sign;
 
@@ -22,9 +22,9 @@ bool	is_digital_arg(char *arg)
 	return (!is_sign);
 }
 
-int		ft_exit(t_cmd *cmd, t_env *env)
+int				ft_exit(t_cmd *cmd, t_env *env)
 {
-	int		status;
+	int		ret;
 	int		args_count;
 
 	ft_putstr_fd(cmd->name, 2);
@@ -33,20 +33,20 @@ int		ft_exit(t_cmd *cmd, t_env *env)
 	while (*(cmd->args + args_count) != NULL)
 		args_count++;
 	if (args_count == 0)
-		status = 127;
+		ret = errno;
 	else if (!is_digital_arg(*(cmd->args)))
 	{
-		error_cmd(cmd->name, *(cmd->args), "numeric argument required");
-		status = 255;
+		ft_error(cmd->name, *(cmd->args), "numeric argument required");
+		ret = 255;
 	}
 	else
 	{
 		if (args_count > 1)
 		{
-			error_cmd(cmd->name, NULL, "too many arguments");
+			ft_error(cmd->name, NULL, "too many arguments");
 			return (errno = 255);
 		}
-		status = ft_atoi(*(cmd->args));
+		ret = (unsigned char)ft_atoi(*(cmd->args));
 	}
-	exit(status);
+	return ((ret != 0) ? (errno = ret) : ret);
 }

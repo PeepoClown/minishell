@@ -1,21 +1,15 @@
 #include "minishell.h"
 
-// add error on allocation (if !memory -> error -> exit(1))
-
-int		ft_error(int status, const char *error)
+void	alloc_check(void *ptr)
 {
-	ft_putstr_fd("shell: ", 2);
-	if (error != NULL)
-		ft_putstr_fd(error, 2);
-	else
-		strerror(status);
+	if (ptr != NULL)
+		return ;
+	ft_putstr_fd("shell : allocation error", 2);
 	ft_putendl_fd(2);
-	if (status == ENOMEM)
-		exit(status);
-	return (status);
+	exit(1);
 }
 
-void	error_cmd(const char *cmd, const char *error, const char *desc)
+void	ft_error(const char *cmd, const char *error, const char *desc)
 {
 	ft_putstr_fd("shell: ", 2);
 	ft_putstr_fd(cmd, 2);

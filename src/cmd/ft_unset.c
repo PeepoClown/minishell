@@ -21,7 +21,7 @@ int				ft_unset(t_cmd *cmd, t_env *env)
 	int		ret;
 
 	if (!env)
-		return (1);
+		return (errno = 1);
 	ret = 0;
 	while (*(cmd->args) != NULL)
 	{
@@ -29,10 +29,10 @@ int				ft_unset(t_cmd *cmd, t_env *env)
 			del_env(&env, *(cmd->args));
 		else
 		{
-			error_cmd("unset", *(cmd->args), "not a valid identifier");
+			ft_error("unset", *(cmd->args), "not a valid identifier");
 			ret = 1;
 		}
 		(cmd->args)++;
 	}
-	return (ret);
+	return ((ret != 0) ? (errno = ret) : ret);
 }

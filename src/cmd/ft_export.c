@@ -41,9 +41,9 @@ int				ft_export(t_cmd *cmd, t_env *env)
 {
 	int		ret;
 
-	ret = 0;
 	if (!env)
-		return (1);
+		return (errno = 1);
+	ret = 0;
 	if (*(cmd->args) == NULL)
 	{
 		sort_env(&env);
@@ -56,10 +56,10 @@ int				ft_export(t_cmd *cmd, t_env *env)
 			add_to_env(env, *(cmd->args));
 		else
 		{
-			error_cmd("export", *(cmd->args), "not a valid identifier");
+			ft_error("export", *(cmd->args), "not a valid identifier");
 			ret = 1;
 		}
 		(cmd->args)++;
 	}
-	return (ret);
+	return ((ret != 0) ? (errno = ret) : ret);
 }

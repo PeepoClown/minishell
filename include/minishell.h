@@ -12,9 +12,9 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <sys/stat.h>
-//# include <limits.h>
+# include <limits.h>
 
-#include <linux/limits.h>
+//#include <linux/limits.h>
 
 extern char *g_user;
 extern char *g_home;
@@ -25,12 +25,12 @@ void	signals_handler(int sig);
 ** interface for env vars
 */
 
-typedef struct	s_env
+typedef struct  s_env
 {
-    char			*key;
-    char			*value;
-    struct s_env	*next;
-}				t_env;
+    char            *key;
+    char            *value;
+    struct s_env    *next;
+}               t_env;
 
 t_env			*create_env_item(const char *line);
 t_env			*create_env(char **env_vars);
@@ -42,6 +42,7 @@ char			*get_env_value(t_env *env, const char *key);
 void			print_env(t_env *env, int fd_out);
 void			print_env_export(t_env *env, int fd_out);
 void			sort_env(t_env **env);
+char			**get_env_matrix(t_env *env);
 
 /*
 ** prompt and input to shell
@@ -66,7 +67,7 @@ typedef struct	s_cmd
 }				t_cmd;
 
 /*
-** builtin commands
+** builtin commands & other programms
 */
 
 typedef struct	s_builtin
@@ -75,34 +76,21 @@ typedef struct	s_builtin
     int     (*func)(t_cmd *, t_env *);
 }				t_builtin;
 
-int			ft_echo(t_cmd *cmd, t_env *env);
-int		       ft_cd(t_cmd *cmd, t_env *env);
-int		      ft_pwd(t_cmd *cmd, t_env *env);
-int		    ft_export(t_cmd *cmd, t_env *env);
-int		ft_env(t_cmd *cmd, t_env *env);
-int			ft_unset(t_cmd *cmd, t_env *env);
-int		ft_exit(t_cmd *cmd, t_env *env);
-int		execute(t_cmd *cmd, t_env *env);
+int			    ft_echo(t_cmd *cmd, t_env *env);
+int		        ft_cd(t_cmd *cmd, t_env *env);
+int		        ft_pwd(t_cmd *cmd, t_env *env);
+int		        ft_export(t_cmd *cmd, t_env *env);
+int		        ft_env(t_cmd *cmd, t_env *env);
+int			    ft_unset(t_cmd *cmd, t_env *env);
+int		        ft_exit(t_cmd *cmd, t_env *env);
 
+t_builtin	    *get_builtin(const char *cmd_name);
+void	        remove_builtins(t_builtin *builtins, int size);
+bool            validate_non_builtin_cmd(t_cmd *cmd, t_env *env);
+int		        execute_programm(t_cmd *cmd, t_env *env);
+int             execute_cmd(t_cmd *cmd, t_env *env);
 
-
-
-int     execute_cmd(t_cmd *cmd, t_env *env);
-
-
-
-
-
-
-
-
-
-
-
-void			error_cmd(const char *cmd, const char *error,
-                          const char *desc);
-
-int		ft_error(int status, const char *error);
-
+void	        ft_error(const char *cmd, const char *error, const char *desc);
+void	        alloc_check(void *ptr);
 
 #endif
