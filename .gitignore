@@ -1,0 +1,20 @@
+# Object files
+*.o
+*.obj
+
+# Precompiled Headers
+*.pch
+
+# Libraries
+*.lib
+*.a
+
+# Shared objects
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Executables
+*.out
+*.app
