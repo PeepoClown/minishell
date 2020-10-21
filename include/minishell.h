@@ -13,9 +13,9 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <sys/stat.h>
-# include <limits.h>
+//# include <limits.h>
 
-//#include <linux/limits.h>
+#include <linux/limits.h>
 
 extern char *g_user;
 extern char *g_home;
@@ -64,7 +64,6 @@ typedef struct	s_cmd
     char			**args;
     int				fd_out;
     int				fd_in;
-    struct s_cmd	*next;
 }				t_cmd;
 
 /*
@@ -86,13 +85,12 @@ int			    ft_unset(t_cmd *cmd, t_env *env);
 int		        ft_exit(t_cmd *cmd, t_env *env);
 
 t_builtin	    *get_builtin(const char *cmd_name);
-void	        remove_builtins(t_builtin *builtins, int size);
+void				remove_builtin(t_builtin *builtin);
 bool            validate_non_builtin_cmd(t_cmd *cmd, t_env *env);
 int		        execute_programm(t_cmd *cmd, t_env *env);
 int             execute_cmd(t_cmd *cmd, t_env *env);
 char			*get_programm_path(const char *cmd, char **paths);
 char			**get_args_matrix(const char *cmd, char **args);
-int				execute_file(t_cmd *cmd, t_env *env);
 bool			validate_executable_file(const char *filename);
 
 void	        ft_error(const char *cmd, const char *error, const char *desc);

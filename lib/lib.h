@@ -20,5 +20,6 @@ int		ft_atoi(const char *str);
 char	*ft_strcpy(char *dest, char *src);
 char	*ft_strjoin(char const *s1, char const *s2);
 char	**ft_split(char const *s, char c);
+void	ft_remove_char_matrix(char **matrix);
 
 #endif

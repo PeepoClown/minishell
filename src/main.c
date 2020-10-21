@@ -18,14 +18,14 @@ void	main_loop(t_env *env)
 		// parsing
 		// execute_input(input, env) for all list of commands
 		t_cmd cmd;
-		cmd.name = "./exec.out";
+		cmd.name = ft_strdup("env");
 		cmd.fd_in= 0;
 		cmd.fd_out = 1;
-		cmd.next = NULL;
 		char *args[] = { NULL };
 		cmd.args = args;
 		int ret = execute_cmd(&cmd, env);
 		printf("ret : %d\n", ret);
+		free(cmd.name);
 		break ;
 	}
 }

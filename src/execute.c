@@ -12,17 +12,14 @@ int		execute_cmd(t_cmd *cmd, t_env *env)
 	if (builtin != NULL)
 	{
 		status = builtin->func(cmd, env);
-		free(builtin->cmd);
-		free(builtin);
+		remove_builtin(builtin);
 	}
 	else if (validate_non_builtin_cmd(cmd, env) == true)
 		status = execute_programm(cmd, env);
-	else if (validate_executable_file(cmd->name) == true)
-		status = execute_file(cmd, env);
 	else
-	{
+	// {
 		ft_error(cmd->name, NULL, "command not found");
-		status = 127;
-	}
+	// 	status = 127;
+	// }
 	return ((status != 0) ? (errno = status) : status);
 }
