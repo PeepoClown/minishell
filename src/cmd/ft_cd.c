@@ -19,10 +19,10 @@ int				ft_cd(t_cmd *cmd, t_env *env)
 	char	*dest_path;
 	char	*path_with_home;
 
-	if (!(*(cmd->args)))
+	if (*(cmd->args) == NULL)
 	{
-		ft_error("cd", NULL, "too few arguments");
-		return (errno = 1);
+		ft_error(cmd->name, NULL, "too few arguments");
+		return (1);
 	}
 	path_with_home = replace_to_home(*(cmd->args));
 	dest_path = (path_with_home != NULL)
@@ -33,7 +33,7 @@ int				ft_cd(t_cmd *cmd, t_env *env)
 		if (path_with_home != NULL)
 			free(path_with_home);
 		ft_error(cmd->name, *(cmd->args), strerror(errno));
-		return (errno = 1);
+		return (1);
 	}
 	if (path_with_home != NULL)
 		free(path_with_home);

@@ -2,6 +2,7 @@
 
 char	*g_user;
 char	*g_home;
+int		g_status;
 
 void	main_loop(t_env *env)
 {
@@ -24,7 +25,7 @@ void	main_loop(t_env *env)
 		char *args[] = { NULL };
 		cmd.args = args;
 		int ret = execute_cmd(&cmd, env);
-		printf("ret : %d\n", ret);
+		printf("ret : %d | %d\n", ret, g_status);
 		free(cmd.name);
 		break ;
 	}
