@@ -15,7 +15,6 @@ static	char	*replace_to_home(char *path)
 
 int				ft_cd(t_cmd *cmd, t_env *env)
 {
-	char	path[PATH_MAX];
 	char	*dest_path;
 	char	*path_with_home;
 
