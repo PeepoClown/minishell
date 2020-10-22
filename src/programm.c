@@ -85,9 +85,7 @@ int				execute_programm(t_cmd *cmd, t_env *env)
 	pid_t	pid;
 	char	**env_matrix;
 	char	**args_matrix;
-	int		ret;
 
-	ret = 0;
 	if ((pid = fork()) < 0)
 	{
 		ft_error("fork", NULL, "failed");
@@ -100,7 +98,7 @@ int				execute_programm(t_cmd *cmd, t_env *env)
 		alloc_check(env_matrix = get_env_matrix(env));
 		alloc_check(args_matrix = get_args_matrix(cmd->name, cmd->args));
 		alloc_check(cmd->name = replace_to_home(cmd->name));
-		ret = execve(cmd->name, args_matrix, env_matrix);
+		execve(cmd->name, args_matrix, env_matrix);
 		ft_remove_char_matrix(args_matrix);
 		ft_remove_char_matrix(env_matrix);
 		exit(programm_error(cmd->name));

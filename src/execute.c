@@ -5,7 +5,6 @@
 int		execute_cmd(t_cmd *cmd, t_env *env)
 {
 	t_builtin	*builtin;
-	//int			status;
 
 	errno = 0;
 	builtin = get_builtin(cmd->name);
