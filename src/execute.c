@@ -17,9 +17,9 @@ int		execute_cmd(t_cmd *cmd, t_env *env)
 	else if (validate_non_builtin_cmd(cmd, env) == true)
 		status = execute_programm(cmd, env);
 	else
-	// {
+	{
 		ft_error(cmd->name, NULL, "command not found");
-	// 	status = 127;
-	// }
+		status = 127;
+	}
 	return ((status != 0) ? (errno = status) : status);
 }

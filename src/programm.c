@@ -28,44 +28,6 @@ char			*get_programm_path(const char *cmd, char **paths)
 	return (res);
 }
 
-bool			validate_executable_file(const char *filename)
-{
-	if (ft_strlen(filename) < 3)
-		return (false);
-	if (filename[0] == '.' && filename[1] == '/')
-		return (true);
-	if (filename[0] == '.' && filename[1] == '.'
-		&& filename[2] == '/')
-		return (true);
-	if (filename[0] == '/')
-		return (true);
-	return (false);
-}
-
-bool			validate_non_builtin_cmd(t_cmd *cmd, t_env *env)
-{
-	char		**paths;
-	struct stat stat_buff;
-	char		*valid_path;
-	int			i;
-
-	stat(cmd->name, &stat_buff);
-	if (S_ISREG(stat_buff.st_mode) == true)
-		if (validate_executable_file(cmd->name) == true)
-			return (true);
-	alloc_check(paths = ft_split(get_env_value(env, "PATH"), ':'));
-	alloc_check(valid_path = ft_strdup(get_programm_path(cmd->name, paths)));
-	i = 0;
-	while (paths[i] != NULL)
-		free(paths[i++]);
-	free(paths);
-	if (valid_path == NULL)
-		return (false);
-	free(cmd->name);
-	cmd->name = valid_path;
-	return (true);
-}
-
 char			**get_args_matrix(const char *cmd, char **args)
 {
 	char	**args_matrix;
@@ -89,6 +51,35 @@ char			**get_args_matrix(const char *cmd, char **args)
 	return (args_matrix);
 }
 
+static	int		programm_error(const char *cmd)
+{
+	if (errno == 0)
+		return (0);
+	ft_error(cmd, NULL, strerror(errno));
+	if (errno == ENOENT)
+		return (127);
+	else
+		return (126);
+}
+
+static	char	*replace_to_home(char *cmd)
+{
+	char	*res;
+	char	*cuted_path;
+
+	if (cmd[0] != '~' || cmd[1] != '/')
+	{
+		res = ft_strdup(cmd);
+		free(cmd);
+		return (res);
+	}
+	cuted_path = ft_substr(cmd, 1, ft_strlen(cmd));
+	res = ft_strjoin(g_home, cuted_path);
+	free(cuted_path);
+	free(cmd);
+	return (res);
+}
+
 int				execute_programm(t_cmd *cmd, t_env *env)
 {
 	pid_t	pid;
@@ -96,8 +87,8 @@ int				execute_programm(t_cmd *cmd, t_env *env)
 	char	**args_matrix;
 	int		ret;
 
-	pid = fork();
-	if (pid < 0)
+	ret = 0;
+	if ((pid = fork()) < 0)
 	{
 		ft_error("fork", NULL, "failed");
 		return (1);
@@ -108,12 +99,11 @@ int				execute_programm(t_cmd *cmd, t_env *env)
 	{
 		alloc_check(env_matrix = get_env_matrix(env));
 		alloc_check(args_matrix = get_args_matrix(cmd->name, cmd->args));
+		alloc_check(cmd->name = replace_to_home(cmd->name));
 		ret = execve(cmd->name, args_matrix, env_matrix);
 		ft_remove_char_matrix(args_matrix);
 		ft_remove_char_matrix(env_matrix);
-		if (ret < 0)
-			ft_error(cmd->name, NULL, "no such command");
-		exit(ret);
+		exit(programm_error(cmd->name));
 	}
-	return (0);
+	return (WEXITSTATUS(pid));
 }

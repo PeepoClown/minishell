@@ -44,9 +44,10 @@ int				ft_exit(t_cmd *cmd, t_env *env)
 		if (args_count > 1)
 		{
 			ft_error(cmd->name, NULL, "too many arguments");
-			return (errno = 255);
+			return (errno = 1);
 		}
 		ret = (unsigned char)ft_atoi(*(cmd->args));
 	}
-	return ((ret != 0) ? (errno = ret) : ret);
+	errno = ret;
+	exit(ret);
 }
