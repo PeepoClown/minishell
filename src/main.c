@@ -18,24 +18,15 @@ void	main_loop(t_env *env)
 		// free(input);
 		// parsing
 		// execute_input(input, env) for all list of commands
-		// t_cmd cmd;
-		// cmd.name = ft_strdup("cd");
-		// cmd.fd_out = 1;
-		// cmd.fd_in = 0;
-		// char *args[] = { "src", NULL };
-		// cmd.args = args;
-		// int ret = execute_cmd(&cmd, env);
-		// printf("ret : %d | %d\n", ret, g_status);
-		// free(cmd.name);
-
-		// cmd.name = ft_strdup("exit");
-		// cmd.fd_out = 1;
-		// cmd.fd_in = 0;
-		// char *args2[] = { NULL };
-		// cmd.args = args2;
-		// int ret2 = execute_cmd(&cmd, env);
-		// printf("ret : %d | %d\n", ret2, g_status);
-		// free(cmd.name);
+		t_cmd cmd;
+		cmd.name = ft_strdup("./1.sh");
+		cmd.fd_out = 1;
+		cmd.fd_in = 0;
+		char *args[] = { NULL };
+		cmd.args = args;
+		int ret = execute_cmd(&cmd, env);
+		printf("ret : %d | %d\n", ret, g_status);
+		free(cmd.name);
 		break ;
 	}
 }
