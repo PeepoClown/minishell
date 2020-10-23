@@ -7,7 +7,7 @@
 # include <stdio.h>
 # include <fcntl.h>
 # include <string.h>
-//# include <limits.h>
+# include <limits.h>
 # include <errno.h>
 # include <signal.h>
 # include <stdbool.h>
@@ -15,7 +15,7 @@
 # include <sys/wait.h>
 # include <sys/stat.h>
 
-#include <linux/limits.h>
+//#include <linux/limits.h>
 
 extern char	*g_user;
 extern char	*g_home;
@@ -39,6 +39,7 @@ void			del_env_item(t_env *env);
 void			del_env(t_env **env, const char *key);
 void			remove_env(t_env **env);
 char			*get_env_value(t_env *env, const char *key);
+bool			check_env_key(t_env *env, const char *key);
 void			print_env(t_env *env, int fd_out);
 void			print_env_export(t_env *env, int fd_out);
 void			sort_env(t_env **env);

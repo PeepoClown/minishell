@@ -1,18 +1,19 @@
 #include <minishell.h>
 
-void    del_env_item(t_env *env)
+void			del_env_item(t_env *env)
 {
 	free(env->key);
-	free(env->value);
+	if (env->value != NULL)
+		free(env->value);
 	free(env);
 }
 
-void	del_env(t_env **env, const char *key)
+void			del_env(t_env **env, const char *key)
 {
 	t_env	*tmp;
 	t_env	*prev;
 
-	if (!env || (get_env_value(*env, key) == NULL))
+	if (!env || !check_env_key(*env, key))
 		return ;
 	if (ft_strcmp((*env)->key, key) == 0)
 	{

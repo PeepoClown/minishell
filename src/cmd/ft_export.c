@@ -25,14 +25,15 @@ static	void	add_to_env(t_env *env, const char *line)
 	key = (ft_find_first_of(line, '=') == -1)
 		? ft_strdup(line)
 		: ft_substr(line, 0, ft_find_first_of(line, '='));
-	if ((get_env_value(env, key) != NULL) &&
-			ft_find_first_of(line, '=') == -1)
+	if (check_env_key(env, key) == true)
 	{
-		free(key);
-		return ;
-	}
-	if (get_env_value(env, key) != NULL)
+		if (ft_find_first_of(line, '=') == -1)
+		{
+			free(key);
+			return ;
+		}
 		del_env(&env, key);
+	}
 	free(key);
 	add_env(&env, line);
 }

@@ -22,8 +22,6 @@ static	bool	is_digital_arg(char *arg)
 	return (!is_sign);
 }
 
-// need to check exit status if arguments are invalid
-
 int				ft_exit(t_cmd *cmd, t_env *env)
 {
 	int		ret;
@@ -36,17 +34,14 @@ int				ft_exit(t_cmd *cmd, t_env *env)
 		args_count++;
 	if (args_count == 0)
 		ret = g_status;
-	else if (!is_digital_arg(*(cmd->args)))
-	{
+	else if (!is_digital_arg(*(cmd->args)) & (ret = 255))
 		ft_error(cmd->name, *(cmd->args), "numeric argument required");
-		ret = 255;
-	}
 	else
 	{
 		if (args_count > 1)
 		{
 			ft_error(cmd->name, NULL, "too many arguments");
-			return (1); // ret = 1;
+			return (1);
 		}
 		else
 			ret = (unsigned char)ft_atoi(*(cmd->args));
