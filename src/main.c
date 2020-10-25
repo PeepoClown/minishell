@@ -19,7 +19,7 @@ void	main_loop(t_env *env)
 		// parsing
 		// execute_input(input, env) for all list of commands
 		t_cmd cmd;
-		cmd.name = ft_strdup("./1.sh");
+		cmd.name = ft_strdup("./exec.out");
 		cmd.fd_out = 1;
 		cmd.fd_in = 0;
 		char *args[] = { NULL };
