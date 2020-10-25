@@ -1,10 +1,5 @@
 #include <minishell.h>
 
-static	void	wait_child_pid()
-{
-	
-}
-
 static	int		programm_error(const char *cmd)
 {
 	if (errno == 0)
@@ -34,6 +29,27 @@ static	char	*replace_to_home(char *cmd)
 	return (res);
 }
 
+// static	void	wait_child_pid(pid_t pid)
+// {
+// 	pid_t	res;
+// 	int		status;
+
+// 	while (true)
+// 	{
+// 		errno = 0;
+// 		res = waitpid(pid, &status, WUNTRACED);
+// 		if (errno != 0)
+// 			ft_error(NULL, NULL, strerror(errno));
+// 		if (g_sigint)
+// 		{
+// 			printf("%d - tobi pi... by %d\n", pid, SIGKILL);
+// 			kill(pid, SIGKILL);
+// 		}
+// 		if (res >= 0)
+// 			return ;
+// 	}
+// }
+
 int				execute_programm(t_cmd *cmd, t_env *env)
 {
 	pid_t	pid;
@@ -47,6 +63,7 @@ int				execute_programm(t_cmd *cmd, t_env *env)
 	}
 	else if (pid > 0)
 		wait(&pid);
+		//wait_child_pid(&pid);
 	else
 	{
 		alloc_check(env_matrix = get_env_matrix(env));
@@ -57,5 +74,7 @@ int				execute_programm(t_cmd *cmd, t_env *env)
 		ft_remove_char_matrix(env_matrix);
 		exit(programm_error(cmd->name));
 	}
+	if (WIFSIGNALED(pid))
+		return (WTERMSIG(pid) + 128);
 	return (WEXITSTATUS(pid));
 }

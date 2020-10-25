@@ -17,9 +17,11 @@
 
 //#include <linux/limits.h>
 
-extern char	*g_user;
-extern char	*g_home;
-extern int	g_status;
+// extern char	*g_user;
+// extern char	*g_home;
+// extern int	g_status;
+
+
 
 /*
 ** interface for env vars
@@ -51,10 +53,11 @@ char			**get_env_matrix(t_env *env);
 
 typedef struct	s_cmd
 {
-	char	*name;
-	char	**args;
-	int		fd_out;
-	int		fd_in;
+	char			*name;
+	char			**args;
+	int				fd_out;
+	int				fd_in;
+	struct s_cmd	*next;
 }				t_cmd;
 
 /*
@@ -95,5 +98,16 @@ void			init_prompt_vars(t_env *env);
 void			display_prompt(void);
 void			remove_prompt_vars(char *user, char *home);
 char			*user_input(void);
+
+typedef struct	s_shell
+{
+	t_env	*env;
+	t_cmd	*cmd;
+	int		g_status;
+	int		g_sigint;
+	int		g_sigquit;
+	char	*user;
+	char	*home;
+}				t_shell;
 
 #endif
