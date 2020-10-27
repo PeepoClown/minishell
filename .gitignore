@@ -18,3 +18,8 @@
 # Executables
 *.out
 *.app
+
+# CLion configuration
+CMakeLists.txt
+cmake-build-debug
+.idea

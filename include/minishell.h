@@ -2,6 +2,7 @@
 # define __MINISHELL_H__
 
 # include "../lib/lib.h"
+# include "../parser/parser.h"
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdio.h>
@@ -53,12 +54,20 @@ char			**get_env_matrix(t_env *env);
 
 typedef struct	s_cmd
 {
-	char			*name;
-	char			**args;
-	int				fd_out;
-	int				fd_in;
-	struct s_cmd	*next;
+    char			*name;
+    char			**args;
+    int				fd_out; //> char **fd_out
+    int				fd_append_out; //>> char **
+    int				fd_in; //<
+    int				pipe; //int pipe[2]
+    struct s_cmd	*next;
 }				t_cmd;
+
+/*
+** input parsing
+*/
+
+//void	parse_input(t_cmd *cmd, char *input);
 
 /*
 ** builtin commands & other programms

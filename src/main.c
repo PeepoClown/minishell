@@ -7,15 +7,17 @@ int		g_status;
 void	main_loop(t_env *env)
 {
 	char	*input;
+	t_cmd	cmd;
 
 	input = NULL;
 	while (true)
 	{
-		// display_prompt();
-		// if (!(input = user_input()))
-		// 	ft_error(NULL, NULL, "can't read this line"); -> continue
-		// printf("input : %s\n", input);
-		// free(input);
+		display_prompt();
+		if (!(input = user_input()))
+			ft_error(NULL, NULL, "can't read this line");
+		printf("input : %s\n", input);
+		parse_input(&cmd, input);
+		free(input);
 		// parsing
 		// execute_input(input, env) for all list of commands
 		t_cmd cmd;
