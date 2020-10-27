@@ -11,7 +11,7 @@ LIB_LINK = -lft
 LINK = -L. $(LIB_LINK)
 
 SRCS =	builtin.c execute.c error.c \
-		input.c main.c programm.c \
+		input.c pipe.c programm.c \
 		programm_params.c prompt.c signals.c \
 		validate_cmd.c \
 		\
@@ -21,7 +21,9 @@ SRCS =	builtin.c execute.c error.c \
 		\
 		env/add_env.c env/create_env.c env/del_env.c \
 		env/get_env_matrix.c env/get_env_value.c env/print_env.c \
-		env/remove_env.c env/sort_env.c
+		env/remove_env.c env/sort_env.c \
+		\
+		parser/parser.c parser/quoting.c parser/utils_01.c parser/utils_02.c
 SRC_DIR = src/
 SRC = $(addprefix $(SRC_DIR), $(SRCS))
 OBJS = $(SRC:.c=.o)
