@@ -6,6 +6,7 @@ char	*g_home;
 void	main_loop(t_env *env)
 {
 	char	*input;
+	t_cmd	cmd;
 
 	input = NULL;
 	while (true)
@@ -14,6 +15,7 @@ void	main_loop(t_env *env)
 		if (!(input = user_input()))
 			ft_error(NULL, NULL, "can't read this line");
 		printf("input : %s\n", input);
+		parse_input(&cmd, input);
 		free(input);
 		// parsing
 		// execute_input(input, env) for all list of commands
