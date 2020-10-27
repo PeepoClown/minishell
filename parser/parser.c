@@ -1,4 +1,4 @@
-#include "parser.h"
+#include "../include/minishell.h"
 
 void	print_struct(t_cmd *cmd)
 {
