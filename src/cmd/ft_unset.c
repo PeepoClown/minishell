@@ -34,5 +34,5 @@ int				ft_unset(t_cmd *cmd, t_env *env)
 		}
 		(cmd->args)++;
 	}
-	return ((ret != 0) ? (errno = ret) : ret);
+	return (ret);
 }

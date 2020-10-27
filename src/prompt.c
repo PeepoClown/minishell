@@ -1,9 +1,10 @@
 #include <minishell.h>
 
-void			init_prompt_vars(char **user, char **home, t_env *env)
+void			init_prompt_vars(t_env *env)
 {
-	*user = ft_strdup(get_env_value(env, "USER"));
-	*home = ft_strdup(get_env_value(env, "HOME"));
+	g_user = ft_strdup(get_env_value(env, "USER"));
+	g_home = ft_strdup(get_env_value(env, "HOME"));
+	g_status = 0;
 }
 
 void			remove_prompt_vars(char *user, char *home)

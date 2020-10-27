@@ -33,20 +33,18 @@ int				ft_exit(t_cmd *cmd, t_env *env)
 	while (*(cmd->args + args_count) != NULL)
 		args_count++;
 	if (args_count == 0)
-		ret = errno;
-	else if (!is_digital_arg(*(cmd->args)))
-	{
+		ret = g_status;
+	else if (!is_digital_arg(*(cmd->args)) & (ret = 255))
 		ft_error(cmd->name, *(cmd->args), "numeric argument required");
-		ret = 255;
-	}
 	else
 	{
 		if (args_count > 1)
 		{
 			ft_error(cmd->name, NULL, "too many arguments");
-			return (errno = 255);
+			return (1);
 		}
-		ret = (unsigned char)ft_atoi(*(cmd->args));
+		else
+			ret = (unsigned char)ft_atoi(*(cmd->args));
 	}
-	return ((ret != 0) ? (errno = ret) : ret);
+	exit(ret);
 }

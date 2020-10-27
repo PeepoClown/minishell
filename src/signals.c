@@ -10,6 +10,8 @@ void	on_sig_int(void)
 void	on_sig_quit(void)
 {
 	ft_putstr_fd("\b\b  \b\b", 1);
+	// can handle here if have a global struct
+	printf("pizdos\n");
 }
 
 void	signals_handler(int sig)

@@ -1,6 +1,6 @@
 #include "../include/minishell.h"
 
-char	*add_to_str(char *str, char c)
+static	char	*add_to_str(char *str, char c)
 {
 	int		i = 0;
 	char	*res;
@@ -18,7 +18,7 @@ char	*add_to_str(char *str, char c)
 	return (res);
 }
 
-char	*user_input(void)
+char			*user_input(void)
 {
 	char	*input;
 	char	buff[1];

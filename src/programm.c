@@ -1,108 +1,80 @@
 #include <minishell.h>
 
-static	char	*get_programm_path(const char *cmd, char **paths)
+static	int		programm_error(const char *cmd)
 {
-	struct stat stat_buff;
-	char		*res;
-	int			i;
-	char		*tmp;
+	if (errno == 0)
+		return (0);
+	ft_error(cmd, NULL, strerror(errno));
+	if (errno == ENOENT)
+		return (127);
+	else
+		return (126);
+}
 
-	i = 0;
-	res = NULL;
-	while (paths[i] != NULL)
+static	char	*replace_to_home(char *cmd)
+{
+	char	*res;
+	char	*cuted_path;
+
+	if (cmd[0] != '~' || cmd[1] != '/')
 	{
-		paths[i] = ft_strjoin(paths[i], "/");
-		tmp = paths[i];
-		paths[i] = ft_strjoin(paths[i], cmd);
-		free(tmp);
-		stat(paths[i], &stat_buff);
-		if (S_ISREG(stat_buff.st_mode) == true)
-		{
-			res = paths[i];
-			break ;
-		}
-		i++;
+		res = ft_strdup(cmd);
+		free(cmd);
+		return (res);
 	}
+	cuted_path = ft_substr(cmd, 1, ft_strlen(cmd));
+	res = ft_strjoin(g_home, cuted_path);
+	free(cuted_path);
+	free(cmd);
 	return (res);
 }
 
-static	void	set_programm_path(char **path, t_cmd *cmd, t_env *env)
-{
-	char	**paths;
-	int		i;
+// static	void	wait_child_pid(pid_t pid)
+// {
+// 	pid_t	res;
+// 	int		status;
 
-	paths = ft_split(get_env_value(env, "PATH"), ':');
-	*path = ft_strdup(get_programm_path(cmd->name, paths));
-	i = 0;
-	while (paths[i] != NULL)
-		free(paths[i++]);
-	free(paths);
-}
-
-bool			validate_non_builtin_cmd(t_cmd *cmd, t_env *env)
-{
-	char	**paths;
-	char	*valid_path;
-	int		i;
-
-	paths = ft_split(get_env_value(env, "PATH"), ':');
-	valid_path = ft_strdup(get_programm_path(cmd->name, paths));
-	i = 0;
-	while (paths[i] != NULL)
-		free(paths[i++]);
-	free(paths);
-	if (valid_path == NULL)
-		return (false);
-	free(valid_path);
-	return (true);
-}
-
-static	char	**get_args_matrix(const char *cmd, char **args)
-{
-	char	**args_matrix;
-	int		args_count;
-	int		i;
-
-	args_count = 0;
-	while (args[args_count] != NULL)
-		args_count++;
-	if (!(args_matrix = (char**)malloc(sizeof(char*) * (args_count + 2))))
-		return (NULL);
-	i = 0;
-	args_matrix[i] = ft_strdup(cmd);
-	i++;
-	while (i < (args_count + 1))
-	{
-		args_matrix[i] = ft_strdup(args[i - 1]);
-		i++;
-	}
-	args_matrix[i] = NULL;
-	return (args_matrix);
-}
+// 	while (true)
+// 	{
+// 		errno = 0;
+// 		res = waitpid(pid, &status, WUNTRACED);
+// 		if (errno != 0)
+// 			ft_error(NULL, NULL, strerror(errno));
+// 		if (g_sigint)
+// 		{
+// 			printf("%d - tobi pi... by %d\n", pid, SIGKILL);
+// 			kill(pid, SIGKILL);
+// 		}
+// 		if (res >= 0)
+// 			return ;
+// 	}
+// }
 
 int				execute_programm(t_cmd *cmd, t_env *env)
 {
 	pid_t	pid;
 	char	**env_matrix;
-	char	*path;
 	char	**args_matrix;
-	int		ret;
 
-	pid = fork();
-	if (pid < 0)
+	if ((pid = fork()) < 0)
+	{
 		ft_error("fork", NULL, "failed");
+		return (1);
+	}
 	else if (pid > 0)
 		wait(&pid);
+		//wait_child_pid(&pid);
 	else
 	{
 		alloc_check(env_matrix = get_env_matrix(env));
-		set_programm_path(&path, cmd, env);
-		alloc_check(path);
 		alloc_check(args_matrix = get_args_matrix(cmd->name, cmd->args));
-		ret = execve(path, args_matrix, env_matrix);
-		if (ret < 0)
-			ft_error(NULL, NULL, "no such command");
-		exit(ret);
+		alloc_check(cmd->name = replace_to_home(cmd->name));
+		execve(cmd->name, args_matrix, env_matrix);
+		ft_remove_char_matrix(args_matrix);
+		ft_remove_char_matrix(env_matrix);
+		exit(programm_error(cmd->name));
 	}
-	return (0);
+	if (WIFSIGNALED(pid))
+		return (WTERMSIG(pid) + 128);
+	return (WEXITSTATUS(pid));
 }
