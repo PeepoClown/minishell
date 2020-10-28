@@ -17,6 +17,11 @@ char	*add_char(char *s, char c)
 	int i;
 	char *new;
 
+//	if (!s)
+//	{
+//		s = (char *) malloc(sizeof(char));
+//		*s = '\0';
+//	}
 	i = ft_strlen(s);
 	if (!(new = (char *)malloc(sizeof(char) * (i + 2))))
 		return (NULL);

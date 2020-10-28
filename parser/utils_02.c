@@ -43,6 +43,31 @@ int		free_array(char **array)
 	return (i);
 }
 
+char *combine_tokens(char *token, char c)
+{
+	char	*s;
+
+	if (!token)
+		token = ft_strdup("");
+	s = add_char(token, c);
+	return (s);
+}
+
+char	**add_token_to_array(t_lexer *lexer, char *arg, int i)
+{
+	char	**new;
+
+	printf("arr size %d\n", i);
+	if (!(new = (char **)malloc(sizeof(char *) * (i + 2))))
+		return (NULL);
+	i = -1;
+	while (lexer->tokens[++i])
+		new[i] = lexer->tokens[i];
+	new[i++] = ft_strdup(arg);
+	new[i] = NULL;
+//	free_array(cmd->args);
+	return (new);
+}
 char	**add_string_to_array(t_cmd *cmd, char *arg)
 {
 	char	**new;
