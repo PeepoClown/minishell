@@ -81,6 +81,8 @@ int				execute_programm(t_cmd *cmd, t_env *env)
 
 int				execute_cmd(t_cmd *cmd, t_env *env)
 {
+	int		ret;
+
 	if (cmd->pipe_status == 1)
 	{
 		if (pipe(cmd->fd_pipe) < 0)
@@ -89,6 +91,16 @@ int				execute_cmd(t_cmd *cmd, t_env *env)
 			return (errno);
 		}
 		cmd->fd_out = cmd->fd_pipe[WRITE_END];
+		cmd->fd_in = cmd->fd_pipe[READ_END];
 	}
-	cmd->fd_out = (cmd->redir_out);
+	if (cmd->lst_out_red != NULL)
+		cmd->fd_out = open_output_redirect(cmd);
+	if (cmd->redir_in != NULL)
+		cmd->fd_in = open_input_redirect(cmd);
+	ret = execute_programm(cmd, env);
+	if (cmd->pipe_status == 1 && cmd->lst_out_red == NULL)
+		close(cmd->fd_pipe[WRITE_END]);
+	if (cmd->fd_in != 0)
+		close(cmd->fd_in);
+	return (ret);
 }
