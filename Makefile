@@ -11,7 +11,7 @@ LIB_LINK = -lft
 LINK = -L. $(LIB_LINK)
 
 SRCS =	builtin.c execute.c error.c \
-		input.c pipe.c programm.c \
+		input.c main.c programm.c \
 		programm_params.c prompt.c signals.c \
 		validate_cmd.c \
 		\

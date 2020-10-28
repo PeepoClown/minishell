@@ -78,3 +78,17 @@ int				execute_programm(t_cmd *cmd, t_env *env)
 		return (WTERMSIG(pid) + 128);
 	return (WEXITSTATUS(pid));
 }
+
+int				execute_cmd(t_cmd *cmd, t_env *env)
+{
+	if (cmd->pipe_status == 1)
+	{
+		if (pipe(cmd->fd_pipe) < 0)
+		{
+			ft_error("pipe", NULL, strerror(errno));
+			return (errno);
+		}
+		cmd->fd_out = cmd->fd_pipe[WRITE_END];
+	}
+	cmd->fd_out = (cmd->redir_out);
+}

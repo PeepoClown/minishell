@@ -17,6 +17,9 @@
 
 //#include <linux/limits.h>
 
+# define READ_END 0
+# define WRITE_END 1
+
 extern char	*g_user;
 extern char	*g_home;
 extern int	g_status;
@@ -56,9 +59,18 @@ typedef struct	s_cmd
     char			*name;
     char			**args;
     int				fd_out; //> char **fd_out
-    int				fd_append_out; //>> char **
+//    int				fd_append_out; //>> char **
     int				fd_in; //<
-    int				pipe; //int pipe[2]
+    int				pipe_status; //int pipe[2]
+	char			**redir_out;
+	char			**redir_append_out;
+	char			**redir_in;
+	int				fd_pipe[2];
+	pid_t			pid;
+
+	char			*lst_out_red;
+	bool			is_lst_out_red_append;
+
     struct s_cmd	*next;
 }				t_cmd;
 
@@ -94,6 +106,12 @@ int				execute_cmd(t_cmd *cmd, t_env *env);
 char			*get_programm_path(const char *cmd, char **paths);
 char			**get_args_matrix(const char *cmd, char **args);
 int				execute_programm(t_cmd *cmd, t_env *env);
+
+
+int				validate_output_redirects(t_cmd *cmd);
+int				validate_input_redirects(t_cmd *cmd);
+
+
 
 /*
 ** shell utils

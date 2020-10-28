@@ -4,37 +4,32 @@ char	*g_user;
 char	*g_home;
 int		g_status;
 
-void	main_loop(t_env *env)
+static	void	minishell(t_env *env)
 {
 	char	*input;
-	t_cmd	*cmd = NULL;//; = malloc(sizeof(t_cmd));
+	t_cmd	*cmd;
 
-	input = NULL;
 	while (true)
 	{
+		input = NULL;
 		display_prompt();
 		if (!(input = user_input()))
 			ft_error(NULL, NULL, "can't read this line");
-		printf("input : %s\n", input);
-		parse_input(&cmd, input);
+		// validate all line
+		while (*input != '\0')
+		{
+			parse_input(&cmd, input);
+			if (cmd != NULL)
+				execute_cmd(cmd, env);
+			// remove_cmd(cmd);
+			// sig handle
+		}
 		free(input);
-		printf("=================================\n");
-		// parsing
-		// execute_input(input, env) for all list of commands
-		//cmd->name = ft_strdup("./1.sh");
-		//cmd->fd_out = 1;
-		//cmd->fd_in = 0;
-		//char *args[] = { NULL };
-		//cmd->args = args;
-		execute_cmd(cmd, env);
 		printf("ret : %d\n", g_status);
-		printf("curr dir : %s\n", getcwd(NULL, 0));
-		free(cmd->name);
-		break ;
 	}
 }
 
-int		main(int argc, char **argv, char **env)
+int				main(int argc, char **argv, char **env)
 {
 	t_env	*env_list;
 
@@ -45,7 +40,7 @@ int		main(int argc, char **argv, char **env)
 	signal(SIGQUIT, signals_handler);
 	init_prompt_vars(env_list);
 	if (argv != NULL)
-		main_loop(env_list);
+		minishell(env_list);
 	remove_env(&env_list);
 	remove_prompt_vars(g_user, g_home);
 	return (0);
