@@ -87,19 +87,20 @@ int		lexer(char *s)
 		return (unexpected_token(s[lexer.i]));
 	while(s[lexer.i])
 	{
+		lexer.token_len = 0;
 		if (s[lexer.i] == '\'' || s[lexer.i] == '\"') //"token" -> check_quote: returns 7 ->
 		{
-			if (current_token)
+			if (s[lexer.i - 1] == ' ')
 				current_token = combine_tokens(current_token, '\n');
 			lexer.match_quote = s[lexer.i]; //current quote
 			lexer.token_len = check_quote_pair(&s[lexer.i], s[lexer.i], &lexer.error); //len of string + 2 quotes
 			if (lexer.error) //free current token
 				return (unexpected_eof(lexer.match_quote));
-			quote_token = ft_substr(s, lexer.i + 1, lexer.token_len - 2); //string from position after first (quote) minus 2 quotes
+			quote_token = ft_substr(s, lexer.i, lexer.token_len); //string from position after first (quote) minus 2 quotes
 			if (lexer.token_len > 1)
 			{
 				current_token = ft_strjoin(current_token, quote_token);
-				current_token = combine_tokens(current_token, '\n');
+//				current_token = combine_tokens(current_token, '\n');
 			}
 			free(quote_token);
 			quote_token = NULL;
@@ -107,15 +108,31 @@ int		lexer(char *s)
 		}
 		else if (s[lexer.i] == ';' || s[lexer.i] == '|')
 		{
+			if (s[lexer.i - 1] != ' ')
+				current_token = combine_tokens(current_token, '\n');
 			lexer.unexp_token = s[lexer.i];
 			lexer.i = skip_spaces(&s[lexer.i]) ? lexer.i + skip_spaces(&s[lexer.i]) : lexer.i + 1;
-			if (s[lexer.i] == ';' || s[lexer.i] == '|' || s[lexer.i] == '\0') //'cmd ;    ' could be not valid!
+			if (s[lexer.i] == ';' || s[lexer.i] == '|') //'cmd ;    ' could be not valid!
 				return (unexpected_token(lexer.unexp_token));
+			if (s[lexer.i] == '\0')
+				current_token = combine_tokens(current_token, '\n');
 			if (s[lexer.i])
 			{
 				current_token = combine_tokens(current_token, lexer.unexp_token);
 				current_token = combine_tokens(current_token, '\n');
 			}
+		}
+		else if (s[lexer.i] == '>' || s[lexer.i] == '<')
+		{
+			lexer.unexp_token = s[lexer.i];
+			if (s[lexer.i - 1] != ' ')
+				current_token = combine_tokens(current_token, '\n');
+			while (s[lexer.i] == lexer.unexp_token)
+			{
+				current_token = combine_tokens(current_token, lexer.unexp_token);
+				lexer.i++;
+			}
+			current_token = combine_tokens(current_token, '\n');
 		}
 		else if (s[lexer.i] == ' ')
 		{
@@ -134,8 +151,15 @@ int		lexer(char *s)
 	int b = -1;
 	char **new = ft_split(current_token, '\n');
 	printf("each token:\n");
+//	while(new[++b])
+//	{
+//		printf("token number %d: %s\n", b, new[b]);
+//	}
+	b = -1;
 	while(new[++b])
+	{
 		printf("token number %d: %s\n", b, new[b]);
+	}
 	printf("\n");
 	return (0);
 }
