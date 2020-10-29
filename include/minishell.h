@@ -153,15 +153,4 @@ int		array_size(char **array);
 int		free_array(char **array);
 char	**add_string_to_array(t_cmd *cmd, char *arg);
 
-typedef struct	s_shell
-{
-	t_env	*env;
-	t_cmd	*cmd;
-	int		g_status;
-	int		g_sigint;
-	int		g_sigquit;
-	char	*user;
-	char	*home;
-}				t_shell;
-
 #endif

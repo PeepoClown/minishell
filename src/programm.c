@@ -50,7 +50,69 @@ static	char	*replace_to_home(char *cmd)
 // 	}
 // }
 
-int				execute_programm(t_cmd *cmd, t_env *env)
+// int				execute_programm(t_cmd *cmd, t_env *env)
+// {
+// 	pid_t	pid;
+// 	char	**env_matrix;
+// 	char	**args_matrix;
+
+// 	if ((pid = fork()) < 0)
+// 	{
+// 		ft_error("fork", NULL, "failed"); // strerror(errno)
+// 		return (1);
+// 	}
+// 	else if (pid > 0)
+// 		wait(&pid);
+// 		//wait_child_pid(&pid);
+// 	else
+// 	{
+// 		dup2(cmd->fd_out, 1);
+// 		dup2(cmd->fd_in, 0);
+// 		alloc_check(env_matrix = get_env_matrix(env));
+// 		alloc_check(args_matrix = get_args_matrix(cmd->name, cmd->args));
+// 		alloc_check(cmd->name = replace_to_home(cmd->name));
+// 		execve(cmd->name, args_matrix, env_matrix);
+// 		ft_remove_char_matrix(args_matrix);
+// 		ft_remove_char_matrix(env_matrix);
+// 		exit(programm_error(cmd->name));
+// 	}
+// 	if (WIFSIGNALED(pid))
+// 		return (WTERMSIG(pid) + 128);
+// 	return (WEXITSTATUS(pid));
+// }
+
+// int				execute_command(t_cmd *cmd, t_env *env)
+// {
+// 	int		ret;
+
+// 	cmd->fd_out = STDOUT_FILENO;
+// 	cmd->fd_in = STDIN_FILENO;
+// 	if (cmd->pipe_status == true)
+// 	{
+// 		if (pipe(cmd->pipe) < 0)
+// 		{
+// 			ft_error("pipe", NULL, "failed"); // strerror(errno)
+// 			return (1);
+// 		}
+// 		cmd->fd_out = cmd->pipe[WRITE_END];
+// 		cmd->fd_in = cmd->pipe[READ_END];
+// 	}
+// 	if (cmd->lst_out_red != NULL)
+// 		cmd->fd_out = open_output_redirect(cmd);
+// 	if (cmd->redir_in != NULL)
+// 		cmd->fd_in = open_input_redirect(cmd);
+// 	if (cmd->builtin != NULL)
+// 		ret = cmd->builtin->func(cmd, env);
+// 	else
+// 		ret = execute_programm(cmd, env);
+// 	if (cmd->pipe_status == true && !cmd->lst_out_red)
+// 		close(cmd->pipe[WRITE_END]);
+// 	if (cmd->fd_in != STDIN_FILENO)
+// 		close(cmd->fd_in);
+// 	return (ret);
+// }
+
+int				execute_programm__(t_cmd *cmd, t_env *env)
 {
 	pid_t	pid;
 	char	**env_matrix;
@@ -81,12 +143,54 @@ int				execute_programm(t_cmd *cmd, t_env *env)
 	return (WEXITSTATUS(pid));
 }
 
+int				open_output_redirect__(t_cmd *cmd, int fd_out, int fd_in)
+{
+	int		fd;
+
+	if (fd_out != STDOUT_FILENO)
+		close(fd_out);
+	if ((fd = open(cmd->lst_out_red, O_WRONLY | O_TRUNC)) < 0)
+	{
+		ft_error(NULL, NULL, "can't redirect to standart output");
+		return (STDOUT_FILENO);
+	}
+	return (fd);
+}
+
+int				open_input_redirect__(t_cmd *cmd, int fd_out, int fd_in)
+{
+	int		fd;
+	int		i;
+	char	*tmp;
+
+	i = 0;
+	tmp = NULL;
+	while (cmd->redir_in[i] != NULL)
+		i++;
+	if (i > 0)
+		tmp = cmd->redir_in[i - 1];
+	if (tmp != NULL)
+	{
+		if (fd_in != STDIN_FILENO)
+			close(fd_in);
+		if ((fd = open(tmp, O_RDONLY)) < 0)
+		{
+			ft_error(NULL, NULL, "can't redirect to standart input");
+			return (STDIN_FILENO);
+		}
+		return (fd);
+	}
+	return (fd_in);
+}
+
 int				execute_command(t_cmd *cmd, t_env *env)
 {
-	int		ret;
+	int			ret;
+	static int	fd_out;
+	static int	fd_in;
 
-	cmd->fd_out = STDOUT_FILENO;
-	cmd->fd_in = STDIN_FILENO;
+	fd_out = (fd_out != STDOUT_FILENO) ? fd_out : STDOUT_FILENO;
+	fd_in = (fd_in != STDIN_FILENO) ? fd_in : STDIN_FILENO;
 	if (cmd->pipe_status == true)
 	{
 		if (pipe(cmd->pipe) < 0)
@@ -94,22 +198,23 @@ int				execute_command(t_cmd *cmd, t_env *env)
 			ft_error("pipe", NULL, "failed"); // strerror(errno)
 			return (1);
 		}
-		cmd->fd_out = cmd->pipe[WRITE_END];
-		cmd->fd_in = cmd->pipe[READ_END];
+		fd_out = cmd->pipe[WRITE_END];
 	}
-	if (cmd->lst_out_red != NULL)
-		cmd->fd_out = open_output_redirect(cmd);
-	if (cmd->redir_in != NULL)
-		cmd->fd_in = open_input_redirect(cmd);
-	if (cmd->builtin != NULL)
+	if (cmd->lst_out_red)
+		fd_out = open_output_redirect__(cmd, fd_out, fd_in);
+	if (cmd->redir_in)
+		fd_in = open_input_redirect__(cmd, fd_out, fd_in);
+	cmd->fd_out = fd_out;
+	cmd->fd_in = fd_in;
+	if (cmd->builtin)
 		ret = cmd->builtin->func(cmd, env);
 	else
-		ret = execute_programm(cmd, env);
-	if (cmd->pipe_status == true && !cmd->lst_out_red)
-		close(cmd->pipe[WRITE_END]);
-	if (cmd->fd_in != STDIN_FILENO)
-		close(cmd->fd_in);
-	// if (cmd->pipe_status == true)
-	// 	cmd->fd_in = cmd->pipe[READ_END];
+		ret = execute_programm__(cmd, env);
+	if (fd_in != 0)
+		close(fd_in);
+	if (cmd->pipe_status && !cmd->lst_out_red)
+		close(cmd->pipe[1]);
+	if (cmd->pipe_status == true)
+		fd_in = cmd->pipe[READ_END];
 	return (ret);
 }
