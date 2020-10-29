@@ -10,10 +10,12 @@ LIB_DIR = lib/
 LIB_LINK = -lft
 LINK = -L. $(LIB_LINK)
 
-SRCS =	builtin.c execute.c error.c \
-		input.c main.c programm.c \
-		programm_params.c prompt.c signals.c \
-		validate_cmd.c validate_redirections.c open_redirections.c\
+SRCS =	main.c \
+		\
+		builtin.c cmd.c error.c \
+		input.c open_redirections.c programm_params.c \
+		programm.c prompt.c signals.c \
+		validate_cmd.c validate_redirections.c\
 		\
 		cmd/ft_cd.c cmd/ft_echo.c cmd/ft_env.c \
 		cmd/ft_exit.c cmd/ft_export.c cmd/ft_pwd.c \

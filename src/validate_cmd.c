@@ -1,6 +1,6 @@
 #include <minishell.h>
 
-bool			validate_executable_file(const char *filename)
+static	bool	validate_executable_file(const char *filename)
 {
 	if (ft_strlen(filename) < 3)
 		return (false);
