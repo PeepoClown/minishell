@@ -53,7 +53,7 @@ char			**get_env_matrix(t_env *env);
 /*
 ** structure of command
 */
-
+typedef struct	s_builtin	t_builtin;
 typedef struct	s_cmd
 {
     char			*name;
@@ -61,16 +61,16 @@ typedef struct	s_cmd
     int				fd_out; //> char **fd_out
 //    int				fd_append_out; //>> char **
     int				fd_in; //<
-    int				pipe_status; //int pipe[2]
+    bool			pipe_status; //int pipe[2]
 	char			**redir_out;
 	char			**redir_append_out;
 	char			**redir_in;
-	int				fd_pipe[2];
+	int				pipe[2];
 	pid_t			pid;
 
 	char			*lst_out_red;
 	bool			is_lst_out_red_append;
-
+	t_builtin		*builtin;
     struct s_cmd	*next;
 }				t_cmd;
 
@@ -102,16 +102,20 @@ t_builtin		*get_builtin(const char *cmd_name);
 void			remove_builtin(t_builtin *builtin);
 bool			validate_non_builtin_cmd(t_cmd *cmd, t_env *env);
 bool			validate_executable_file(const char *filename);
-int				execute_cmd(t_cmd *cmd, t_env *env);
+int				handle_cmd(t_cmd *cmd, t_env *env);
 char			*get_programm_path(const char *cmd, char **paths);
 char			**get_args_matrix(const char *cmd, char **args);
 int				execute_programm(t_cmd *cmd, t_env *env);
+int				execute_command(t_cmd *cmd, t_env *env);
 
+// int			execute_builtin(t_cmd *cmd, t_env *env,
+// 							int (*func)(t_cmd *, t_env *));
 
-int				validate_output_redirects(t_cmd *cmd);
-int				validate_input_redirects(t_cmd *cmd);
+bool			validate_output_redirects(t_cmd *cmd);
+bool			validate_input_redirects(t_cmd *cmd);
 
-
+int		open_output_redirect(t_cmd *cmd);
+int		open_input_redirect(t_cmd *cmd);
 
 /*
 ** shell utils
@@ -139,6 +143,7 @@ int		single_quotes(char *s, char **token);
 
 /*
 ** utilities and auxularies
+** нихуя тут уровень инглиша, я бы ютилс написал)
 */
 
 char	*add_char(char *s, char c);

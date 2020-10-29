@@ -6,7 +6,7 @@ void	alloc_check(void *ptr)
 		return ;
 	ft_putstr_fd("shell : allocation error", 2);
 	ft_putendl_fd(2);
-	exit(1);
+	exit(ENOMEM);
 }
 
 void	ft_error(const char *cmd, const char *error, const char *desc)

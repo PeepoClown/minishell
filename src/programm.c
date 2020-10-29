@@ -58,7 +58,7 @@ int				execute_programm(t_cmd *cmd, t_env *env)
 
 	if ((pid = fork()) < 0)
 	{
-		ft_error("fork", NULL, "failed");
+		ft_error("fork", NULL, "failed"); // strerror(errno)
 		return (1);
 	}
 	else if (pid > 0)
@@ -66,6 +66,8 @@ int				execute_programm(t_cmd *cmd, t_env *env)
 		//wait_child_pid(&pid);
 	else
 	{
+		dup2(cmd->fd_out, 1);
+		dup2(cmd->fd_in, 0);
 		alloc_check(env_matrix = get_env_matrix(env));
 		alloc_check(args_matrix = get_args_matrix(cmd->name, cmd->args));
 		alloc_check(cmd->name = replace_to_home(cmd->name));
@@ -79,28 +81,35 @@ int				execute_programm(t_cmd *cmd, t_env *env)
 	return (WEXITSTATUS(pid));
 }
 
-int				execute_cmd(t_cmd *cmd, t_env *env)
+int				execute_command(t_cmd *cmd, t_env *env)
 {
 	int		ret;
 
-	if (cmd->pipe_status == 1)
+	cmd->fd_out = STDOUT_FILENO;
+	cmd->fd_in = STDIN_FILENO;
+	if (cmd->pipe_status == true)
 	{
-		if (pipe(cmd->fd_pipe) < 0)
+		if (pipe(cmd->pipe) < 0)
 		{
-			ft_error("pipe", NULL, strerror(errno));
-			return (errno);
+			ft_error("pipe", NULL, "failed"); // strerror(errno)
+			return (1);
 		}
-		cmd->fd_out = cmd->fd_pipe[WRITE_END];
-		cmd->fd_in = cmd->fd_pipe[READ_END];
+		cmd->fd_out = cmd->pipe[WRITE_END];
+		cmd->fd_in = cmd->pipe[READ_END];
 	}
 	if (cmd->lst_out_red != NULL)
 		cmd->fd_out = open_output_redirect(cmd);
 	if (cmd->redir_in != NULL)
 		cmd->fd_in = open_input_redirect(cmd);
-	ret = execute_programm(cmd, env);
-	if (cmd->pipe_status == 1 && cmd->lst_out_red == NULL)
-		close(cmd->fd_pipe[WRITE_END]);
-	if (cmd->fd_in != 0)
+	if (cmd->builtin != NULL)
+		ret = cmd->builtin->func(cmd, env);
+	else
+		ret = execute_programm(cmd, env);
+	if (cmd->pipe_status == true && !cmd->lst_out_red)
+		close(cmd->pipe[WRITE_END]);
+	if (cmd->fd_in != STDIN_FILENO)
 		close(cmd->fd_in);
+	// if (cmd->pipe_status == true)
+	// 	cmd->fd_in = cmd->pipe[READ_END];
 	return (ret);
 }

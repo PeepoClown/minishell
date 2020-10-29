@@ -24,6 +24,7 @@ bool			validate_non_builtin_cmd(t_cmd *cmd, t_env *env)
 
 	alloc_check(paths = ft_split(get_env_value(env, "PATH"), ':'));
 	valid_path = ft_strdup(get_programm_path(cmd->name, paths));
+	printf("%s\n", valid_path);
 	i = 0;
 	while (paths[i] != NULL)
 		free(paths[i++]);
