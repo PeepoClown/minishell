@@ -3,31 +3,44 @@
 char	*g_user;
 char	*g_home;
 int		g_status;
+pid_t	g_pid;
 
 void	test(t_env *env)
 {
 	t_cmd cmd1, cmd2, cmd3;
 
-	cmd1.name = ft_strdup("ls");
+	// cmd1.name = ft_strdup("./loop");
+	// cmd1.args = (char**)malloc(sizeof(char*) * 1);
+	// //cmd1.args[0] = ft_strdup("-l");
+	// cmd1.args[0] = NULL;
+	// cmd1.pipe_status = false;
+	// cmd1.redir_in = NULL;
+	// cmd1.redir_append_out = NULL;
+	// cmd1.redir_out = NULL;
+	// cmd1.last_out_redir = NULL;
+	// cmd1.is_last_out_redir_default = true;
+
+	cmd1.name = ft_strdup("echo");
 	cmd1.args = (char**)malloc(sizeof(char*) * 2);
-	cmd1.args[0] = ft_strdup("-l");
+	cmd1.args[0] = ft_strdup("asd");
 	cmd1.args[1] = NULL;
-	cmd1.pipe_status = true;
+	cmd1.pipe_status = false;
 	cmd1.redir_in = NULL;
 	cmd1.redir_append_out = NULL;
-	cmd1.redir_out = NULL;
-	cmd1.last_out_redir = NULL;
+	char *redir_out[] = { "/usr/1", NULL };
+	cmd1.redir_out = redir_out;
+	cmd1.last_out_redir = *redir_out;
 	cmd1.is_last_out_redir_default = true;
 
 	cmd2.name = ft_strdup("grep");
 	cmd2.args = (char**)malloc(sizeof(char*) * 2);
-	cmd2.args[0] = ft_strdup("M");
+	cmd2.args[0] = ft_strdup("h");
 	cmd2.args[1] = NULL;
 	cmd2.pipe_status = true;
 	cmd2.redir_in = NULL;
 	cmd2.redir_append_out = NULL;
-	char *redir_out[] = { "1.text", NULL };
-	cmd2.redir_out = redir_out;
+	char *redir_out2[] = { "1.text", NULL };
+	cmd2.redir_out = redir_out2;
 	cmd2.last_out_redir = *redir_out;
 	cmd2.is_last_out_redir_default = true;
 
@@ -43,21 +56,32 @@ void	test(t_env *env)
 	cmd3.is_last_out_redir_default = true;
 
 	g_status = handle_cmd(&cmd1, env);
-	printf("ret : %d\n", g_status);
+	printf("1 : ret : %d\n", g_status);
 
-	printf("====> 1\n");
+	// g_status = handle_cmd(&cmd2, env);
+	// printf("2 : ret : %d\n", g_status);
 
-	g_status = handle_cmd(&cmd2, env);
-	printf("ret : %d\n", g_status);
+	// g_status = handle_cmd(&cmd3, env);
+	// printf("3 : ret : %d\n", g_status);
 
-	printf("====> 2\n");
+	int i;
+	// free(cmd1.name);
+	// i = 0;
+	// while (cmd1.args[i] != NULL)
+	// 	free(cmd1.args[i++]);
+	// free(cmd1.args);
 
-	g_status = handle_cmd(&cmd3, env);
-	printf("ret : %d\n", g_status);
+	free(cmd2.name);
+	i = 0;
+	while (cmd2.args[i] != NULL)
+		free(cmd2.args[i++]);
+	free(cmd2.args);
 
-	printf("====> 3\n");
-
-	exit(1);
+	free(cmd3.name);
+	i = 0;
+	while (cmd3.args[i] != NULL)
+		free(cmd3.args[i++]);
+	free(cmd3.args);
 }
 
 static	void	minishell(t_env *env)
@@ -68,6 +92,10 @@ static	void	minishell(t_env *env)
 	while (true)
 	{
 		test(env);
+		break ;
+
+
+
 		input = NULL;
 		display_prompt();
 		if (!(input = user_input()))
@@ -75,11 +103,11 @@ static	void	minishell(t_env *env)
 		// validate all line
 		while (*input != '\0')
 		{
+			// create command
 			// parse_input(&cmd, input);
 			if (cmd != NULL)
 				g_status = handle_cmd(cmd, env);
 			// remove_cmd(cmd);
-			// sig handle
 			*input = 0;
 			printf("ret : %d\n", g_status);
 		}

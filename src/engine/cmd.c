@@ -54,10 +54,9 @@ int				handle_cmd(t_cmd *cmd, t_env *env)
 	t_builtin	*builtin;
 	int			status;
 
-	errno = 0; // ?
-	status = 0;
+	// errno = 0; ???
 	if (!validate_output_redirects(cmd) || !validate_input_redirects(cmd))
-		return (status = errno); // status = 1
+		return (status = 1);
 	if ((cmd->builtin = get_builtin(cmd->name)) != NULL ||
 			validate_non_builtin_cmd(cmd, env) == true)
 		status = execute_command(cmd, env);

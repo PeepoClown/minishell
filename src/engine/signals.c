@@ -2,16 +2,23 @@
 
 static	void	on_sig_int(void)
 {
-	ft_putstr_fd("\b\b  \b\b", 1);
-	ft_putendl_fd(1);
-	display_prompt();
+	if (g_pid > 0)
+		kill(g_pid, 9);
+	if (g_pid != 0)
+	{
+		ft_putstr_fd("\b\b  \b\b", 1);
+		ft_putendl_fd(1);
+		display_prompt();
+	}
 }
 
 static	void	on_sig_quit(void)
 {
-	ft_putstr_fd("\b\b  \b\b", 1);
-	// can handle here if have a global struct
-	printf("pizdos\n");
+	if (g_pid != 0)
+	{
+		ft_putstr_fd("Quit (core dumped)", 2);
+		ft_putendl_fd(2);
+	}
 }
 
 void			signals_handler(int sig)

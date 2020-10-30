@@ -29,48 +29,44 @@ static	char	*replace_to_home(char *cmd)
 	return (res);
 }
 
-// static	void	wait_child_pid(pid_t pid)
-// {
-// 	pid_t	res;
-// 	int		status;
-
-// 	while (true)
-// 	{
-// 		errno = 0;
-// 		res = waitpid(pid, &status, WUNTRACED);
-// 		if (errno != 0)
-// 			ft_error(NULL, NULL, strerror(errno));
-// 		if (g_sigint)
-// 		{
-// 			printf("%d - tobi pi... by %d\n", pid, SIGKILL);
-// 			kill(pid, SIGKILL);
-// 		}
-// 		if (res >= 0)
-// 			return ;
-// 	}
-// }
+static	int		prepare_child_proc(t_cmd *cmd, t_env *env,
+	char ***args_matrix, char ***env_matrix)
+{
+	if (dup2(cmd->fd_out, STDOUT_FILENO) < 0)
+	{
+		ft_error("pipe", NULL, strerror(errno));
+		return (errno);
+	}
+	if (dup2(cmd->fd_in, STDIN_FILENO) < 0)
+	{
+		ft_error("pipe", NULL, strerror(errno));
+		return (errno);
+	}
+	alloc_check(*env_matrix = get_env_matrix(env));
+	alloc_check(*args_matrix = get_args_matrix(cmd->name, cmd->args));
+	alloc_check(cmd->name = replace_to_home(cmd->name));
+	return (0);
+}
 
 int				execute_programm(t_cmd *cmd, t_env *env)
 {
 	pid_t	pid;
+	int		ret;
 	char	**env_matrix;
 	char	**args_matrix;
 
-	if ((pid = fork()) < 0)
+	g_pid = fork();
+	if ((pid = g_pid) < 0)
 	{
 		ft_error("fork", NULL, strerror(errno));
 		return (errno);
 	}
 	else if (pid > 0)
 		wait(&pid);
-		//wait_child_pid(&pid);
 	else
 	{
-		dup2(cmd->fd_out, STDOUT_FILENO);
-		dup2(cmd->fd_in, STDIN_FILENO);
-		alloc_check(env_matrix = get_env_matrix(env));
-		alloc_check(args_matrix = get_args_matrix(cmd->name, cmd->args));
-		alloc_check(cmd->name = replace_to_home(cmd->name));
+		if ((ret = prepare_child_proc(cmd, env, &args_matrix, &env_matrix)) > 0)
+			return (ret);
 		execve(cmd->name, args_matrix, env_matrix);
 		ft_remove_char_matrix(args_matrix);
 		ft_remove_char_matrix(env_matrix);

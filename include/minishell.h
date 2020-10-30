@@ -19,9 +19,10 @@
 # define WRITE_END 1
 # define PATH_MAX 4096
 
-extern char	*g_user;
-extern char	*g_home;
-extern int	g_status;
+extern char		*g_user;
+extern char		*g_home;
+extern int		g_status;
+extern pid_t	g_pid;
 
 /*
 ** interface for env vars
@@ -51,7 +52,13 @@ char			**get_env_matrix(t_env *env);
 ** structure of command
 */
 
-typedef struct	s_builtin	t_builtin;
+typedef struct	s_cmd
+				t_cmd;
+typedef struct	s_builtin
+{
+	char	*cmd;
+	int		(*func)(t_cmd *, t_env *);
+}				t_builtin;
 
 typedef struct	s_cmd
 {
@@ -78,12 +85,6 @@ typedef struct	s_cmd
 /*
 ** builtin commands & other programms
 */
-
-typedef struct	s_builtin
-{
-	char	*cmd;
-	int		(*func)(t_cmd *, t_env *);
-}				t_builtin;
 
 int				ft_echo(t_cmd *cmd, t_env *env);
 int				ft_cd(t_cmd *cmd, t_env *env);

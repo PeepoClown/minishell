@@ -13,7 +13,7 @@ void			remove_prompt_vars(char *user, char *home)
 	free(home);
 }
 
-static	char	*cut_home_path(void)
+static	char	*cut_home_path(void) // path = getcwd -> need free memory
 {
 	char	*path;
 	char	*path_with_home;
