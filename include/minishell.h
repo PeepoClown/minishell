@@ -60,6 +60,13 @@ typedef struct	s_builtin
 	int		(*func)(t_cmd *, t_env *);
 }				t_builtin;
 
+typedef enum	e_out_redir
+{
+	NONE = 0,
+	TRUNC,
+	APPEND
+}				t_out_redir;
+
 typedef struct	s_cmd
 {
 	char		*name;
@@ -69,7 +76,7 @@ typedef struct	s_cmd
 	char		**redir_out;
 	char		**redir_append_out;
 	char		*last_out_redir;
-	bool		is_last_out_redir_default;
+	t_out_redir	last_out_redir_type;
 	char		**redir_in;
 	bool		pipe_status;
 	int			pipe[2];
@@ -101,8 +108,8 @@ t_builtin		*get_builtin(const char *cmd_name);
 bool			validate_non_builtin_cmd(t_cmd *cmd, t_env *env);
 char			*get_programm_path(const char *cmd, char **paths);
 char			**get_args_matrix(const char *cmd, char **args);
-int				open_output_redirect(t_cmd *cmd, int fd_out, int fd_in);
-int				open_input_redirect(t_cmd *cmd, int fd_out, int fd_in);
+int				open_output_redirect(t_cmd *cmd, int fd_out);
+int				open_input_redirect(t_cmd *cmd, int fd_in);
 int				execute_programm(t_cmd *cmd, t_env *env);
 
 /*
@@ -116,6 +123,8 @@ void			init_prompt_vars(t_env *env);
 void			display_prompt(void);
 void			remove_prompt_vars(char *user, char *home);
 char			*user_input(void);
+t_cmd			*create_cmd(void);
+void			remove_cmd(t_cmd *cmd);
 
 
 void	parse_input(t_cmd **cmd, char *input); //check this function

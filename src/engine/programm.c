@@ -48,6 +48,12 @@ static	int		prepare_child_proc(t_cmd *cmd, t_env *env,
 	return (0);
 }
 
+static	int		fork_error(void)
+{
+	ft_error("fork", NULL, strerror(errno));
+	return (errno);
+}
+
 int				execute_programm(t_cmd *cmd, t_env *env)
 {
 	pid_t	pid;
@@ -56,11 +62,10 @@ int				execute_programm(t_cmd *cmd, t_env *env)
 	char	**args_matrix;
 
 	g_pid = fork();
+	env_matrix = NULL;
+	args_matrix = NULL;
 	if ((pid = g_pid) < 0)
-	{
-		ft_error("fork", NULL, strerror(errno));
-		return (errno);
-	}
+		return (fork_error());
 	else if (pid > 0)
 		wait(&pid);
 	else

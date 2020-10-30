@@ -3,9 +3,9 @@
 static	void	set_command_fds(t_cmd *cmd, int *fd_out, int *fd_in)
 {
 	if (cmd->last_out_redir != NULL)
-		*fd_out = open_output_redirect(cmd, *fd_out, *fd_in);
+		*fd_out = open_output_redirect(cmd, *fd_out);
 	if (cmd->redir_in != NULL)
-		*fd_in = open_input_redirect(cmd, *fd_out, *fd_in);
+		*fd_in = open_input_redirect(cmd, *fd_in);
 	cmd->fd_out = *fd_out;
 	cmd->fd_in = *fd_in;
 }
@@ -51,10 +51,9 @@ static	int		execute_command(t_cmd *cmd, t_env *env)
 
 int				handle_cmd(t_cmd *cmd, t_env *env)
 {
-	t_builtin	*builtin;
 	int			status;
 
-	// errno = 0; ???
+	errno = 0;
 	if (!validate_output_redirects(cmd) || !validate_input_redirects(cmd))
 		return (status = 1);
 	if ((cmd->builtin = get_builtin(cmd->name)) != NULL ||

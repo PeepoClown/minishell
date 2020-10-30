@@ -11,6 +11,7 @@ LIB_LINK = -lft
 LINK = -L. $(LIB_LINK)
 
 SRCS =	main.c \
+		cmd_create_remove.c \
 		\
 		engine/builtin.c engine/cmd.c engine/error.c \
 		engine/open_redirections.c engine/programm_params.c engine/programm.c \
