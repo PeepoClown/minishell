@@ -75,7 +75,6 @@ static	void	minishell(t_env *env)
 		if (!(input = user_input()))
 			ft_error(NULL, NULL, "can't read this line");
 		free(input);
-<<<<<<< HEAD
 		// parsing
 		// execute_input(input, env) for all list of commands
 //		cmd->name = ft_strdup("./1.sh");
@@ -86,25 +85,6 @@ static	void	minishell(t_env *env)
 		execute_cmd(cmd, env);
 		printf("ret : %d\n", g_status);
 		free(cmd->name);
-=======
-		// break ;
-
-
-
-
-		// validate all line
-		while (*input != '\0')
-		{
-			// create command
-			// parse_input(&cmd, input);
-			if (cmd != NULL)
-				g_status = handle_cmd(cmd, env);
-			// remove_cmd(cmd);
-			*input = 0;
-			printf("ret : %d\n", g_status);
-		}
-		free(input);
->>>>>>> 59a8e041ac3605fcd53cc200e63828c0bcc9b03a
 		break ;
 	}
 }
