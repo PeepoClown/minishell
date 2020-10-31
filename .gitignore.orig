@@ -24,11 +24,13 @@ CMakeLists.txt
 cmake-build-debug
 .idea
 
+<<<<<<< HEAD
+# Cases
+src/parser/test_commands
+=======
 # Shell scripts
 *.sh
 
 # Cache
 .DS_Store
-
-# Cases
-src/parser/test_commands
+>>>>>>> 59a8e041ac3605fcd53cc200e63828c0bcc9b03a

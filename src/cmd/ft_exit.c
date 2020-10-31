@@ -34,7 +34,7 @@ int				ft_exit(t_cmd *cmd, t_env *env)
 		args_count++;
 	if (args_count == 0)
 		ret = g_status;
-	else if (!is_digital_arg(*(cmd->args)) & (ret = 255))
+	else if ((!is_digital_arg(*(cmd->args))) & (ret = 255))
 		ft_error(cmd->name, *(cmd->args), "numeric argument required");
 	else
 	{

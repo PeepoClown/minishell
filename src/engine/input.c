@@ -1,4 +1,4 @@
-#include "../include/minishell.h"
+#include <minishell.h>
 
 static	char	*add_to_str(char *str, char c)
 {
@@ -6,7 +6,7 @@ static	char	*add_to_str(char *str, char c)
 	char	*res;
 
 	res = (char*)malloc((ft_strlen(str) + 2) * sizeof(char));
-	while (i < ft_strlen(str))
+	while (i < (int)ft_strlen(str))
 	{
 		res[i] = str[i];
 		i++;
