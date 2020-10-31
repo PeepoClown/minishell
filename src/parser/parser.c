@@ -136,25 +136,25 @@ void parse_input(t_cmd **cmd, char *input)
 }
 
 
-int main()
-{
-	char *s;
-	t_lexer lex;
-	int fd = open("test_commands", O_RDONLY);
-	int i = 0;
-	int gnl = 0;
-	while((gnl = get_next_line(fd, &s)) >= 0)
-	{
-		i++;
-		printf("%sTEST %2d:\t%s%s\n", RED, i, s, NRM);
-		lexer(s, &lex);
-		free(s);
-		s = NULL;
-		if (gnl == 0)
-			break ;
-	}
-	return (0);
-}
+//int main()
+//{
+//	char *s;
+//	t_lexer lex;
+//	int fd = open("test_commands", O_RDONLY);
+//	int i = 0;
+//	int gnl = 0;
+//	while((gnl = get_next_line(fd, &s)) >= 0)
+//	{
+//		i++;
+//		printf("%sTEST %2d:\t%s%s\n", RED, i, s, NRM);
+//		lexer(s, &lex);
+//		free(s);
+//		s = NULL;
+//		if (gnl == 0)
+//			break ;
+//	}
+//	return (0);
+//}
 
 
 //void parse_input(t_cmd **cmd, char *input)
