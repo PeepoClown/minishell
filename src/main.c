@@ -9,7 +9,8 @@ void	test(t_env *env)
 {
 	t_cmd	*cmd1 = create_cmd(),
 			*cmd2 = create_cmd(),
-			*cmd3 = create_cmd();
+			*cmd3 = create_cmd(),
+			*cmd4 = create_cmd();;
 
 	cmd1->name = ft_strdup("ls");
 	cmd1->args = (char**)malloc(sizeof(char*) * 2);
@@ -34,6 +35,12 @@ void	test(t_env *env)
 	cmd3->args[1] = NULL;
 	cmd3->pipe_status = false;
 
+	cmd4->name = ft_strdup("bash");
+	cmd4->args = (char**)malloc(sizeof(char*) * 2);
+	cmd4->args[0] = ft_strdup("1.sh");
+	cmd4->args[1] = NULL;
+	cmd4->pipe_status = false;
+
 	g_status = handle_cmd(cmd1, env);
 	printf("1 : ret : %d\n", g_status);
 
@@ -43,9 +50,13 @@ void	test(t_env *env)
 	g_status = handle_cmd(cmd3, env);
 	printf("3 : ret : %d\n", g_status);
 
-	remove_cmd(cmd1);
-	remove_cmd(cmd2);
-	remove_cmd(cmd3);
+	g_status = handle_cmd(cmd4, env);
+	printf("4 : ret : %d\n", g_status);
+
+	// remove_cmd(cmd1);
+	// remove_cmd(cmd2);
+	// remove_cmd(cmd3);
+	// remove_cmd(cmd4);
 }
 
 static	void	minishell(t_env *env)

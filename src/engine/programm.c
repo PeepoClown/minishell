@@ -48,10 +48,21 @@ static	int		prepare_child_proc(t_cmd *cmd, t_env *env,
 	return (0);
 }
 
-static	int		fork_error(void)
+static	int		check_sig_quit(pid_t pid)
 {
-	ft_error("fork", NULL, strerror(errno));
-	return (errno);
+	int		sig;
+
+	if (WIFSIGNALED(pid))
+	{
+		sig = WTERMSIG(pid);
+		if (sig == SIGQUIT)
+		{
+			ft_putstr_fd("Quit: 3", 2);
+			ft_putendl_fd(2);
+		}
+		return (sig + 128);
+	}
+	return (WEXITSTATUS(pid));
 }
 
 int				execute_programm(t_cmd *cmd, t_env *env)
@@ -65,7 +76,10 @@ int				execute_programm(t_cmd *cmd, t_env *env)
 	env_matrix = NULL;
 	args_matrix = NULL;
 	if ((pid = g_pid) < 0)
-		return (fork_error());
+	{
+		ft_error("fork", NULL, strerror(errno));
+		return (errno);
+	}
 	else if (pid > 0)
 		wait(&pid);
 	else
@@ -77,7 +91,5 @@ int				execute_programm(t_cmd *cmd, t_env *env)
 		ft_remove_char_matrix(env_matrix);
 		exit(programm_error(cmd->name));
 	}
-	if (WIFSIGNALED(pid))
-		return (WTERMSIG(pid) + 128);
-	return (WEXITSTATUS(pid));
+	return (check_sig_quit(pid));
 }

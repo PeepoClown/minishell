@@ -17,7 +17,7 @@
 
 # define READ_END 0
 # define WRITE_END 1
-# define PATH_MAX 4096
+//# define PATH_MAX 4096
 
 extern char		*g_user;
 extern char		*g_home;

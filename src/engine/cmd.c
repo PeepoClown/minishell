@@ -27,25 +27,20 @@ static	int		execute_command(t_cmd *cmd, t_env *env)
 	static	int	fd_out;
 	static	int	fd_in;
 
-	fd_out = (fd_out != STDOUT_FILENO) ? fd_out : STDOUT_FILENO;
-	fd_in = (fd_in != STDIN_FILENO) ? fd_in : STDIN_FILENO;
 	if (cmd->pipe_status == true)
-	{
 		if (pipe(cmd->pipe) < 0)
 		{
 			ft_error("pipe", NULL, strerror(errno));
 			return (errno);
 		}
-		fd_out = cmd->pipe[WRITE_END];
-	}
+	fd_out = (cmd->pipe_status == true) ? cmd->pipe[WRITE_END] : STDOUT_FILENO;
 	set_command_fds(cmd, &fd_out, &fd_in);
 	ret = execute(cmd, env);
-	if (fd_in != STDIN_FILENO)
-		close(fd_in);
 	if (cmd->pipe_status == true && cmd->last_out_redir == NULL)
 		close(cmd->pipe[WRITE_END]);
-	if (cmd->pipe_status == true)
-		fd_in = cmd->pipe[READ_END];
+	if (fd_in != STDIN_FILENO)
+		close(fd_in);
+	fd_in = (cmd->pipe_status == true) ? cmd->pipe[READ_END] : STDIN_FILENO;
 	return (ret);
 }
 
