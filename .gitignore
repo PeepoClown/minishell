@@ -26,3 +26,6 @@ cmake-build-debug
 
 # Shell scripts
 *.sh
+
+# Cache
+.DS_Store
