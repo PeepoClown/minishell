@@ -7,7 +7,7 @@ int		g_status;
 void	main_loop(t_env *env)
 {
 	char	*input;
-	t_cmd	cmd;
+	t_cmd	*cmd;
 
 	input = NULL;
 	while (true)
@@ -20,15 +20,14 @@ void	main_loop(t_env *env)
 		free(input);
 		// parsing
 		// execute_input(input, env) for all list of commands
-		t_cmd cmd;
-		cmd.name = ft_strdup("./1.sh");
-		cmd.fd_out = 1;
-		cmd.fd_in = 0;
+//		cmd->name = ft_strdup("./1.sh");
+		cmd->fd_out = 1;
+		cmd->fd_in = 0;
 		char *args[] = { NULL };
-		cmd.args = args;
-		execute_cmd(&cmd, env);
+		cmd->args = args;
+		execute_cmd(cmd, env);
 		printf("ret : %d\n", g_status);
-		free(cmd.name);
+		free(cmd->name);
 		break ;
 	}
 }

@@ -23,3 +23,6 @@
 CMakeLists.txt
 cmake-build-debug
 .idea
+
+# Cases
+src/parser/test_commands

@@ -23,5 +23,6 @@ char	**ft_split(char const *s, char c);
 char	*ft_strtrim(char *s1, char const *set);
 char	*ft_strchr(const char *s, int c);
 void	ft_remove_char_matrix(char **matrix);
+int		get_next_line(int fd, char **line);
 
 #endif

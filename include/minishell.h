@@ -2,7 +2,6 @@
 # define __MINISHELL_H__
 
 # include "../lib/lib.h"
-# include "../parser/parser.h"
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdio.h>
@@ -15,6 +14,11 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <sys/stat.h>
+#include <fcntl.h>
+
+#define NRM  "\x1B[0m"
+#define RED  "\x1B[31m"
+#define GRN  "\x1B[32m"
 
 //#include <linux/limits.h>
 
@@ -49,6 +53,20 @@ void			sort_env(t_env **env);
 char			**get_env_matrix(t_env *env);
 
 /*
+** structure of lexer
+*/
+
+typedef struct s_lexer
+{
+	int	i;
+	int	error;
+	int	token_len;
+	char match_quote;
+	char unexp_token;
+	char **tokens;
+}				t_lexer;
+
+/*
 ** structure of command
 */
 
@@ -64,10 +82,39 @@ typedef struct	s_cmd
 }				t_cmd;
 
 /*
+** input syntax check
+*/
+
+int		lexer(char *s, t_lexer *lexer);
+
+/*
 ** input parsing
 */
 
-//void	parse_input(t_cmd *cmd, char *input);
+void	parse_input(t_cmd **cmd, char *input); //check this function
+int		get_arguments(t_cmd *cmd, char *s);
+int		get_command(t_cmd *cmd, char *s);
+
+/*
+** processing quotes
+*/
+
+int		double_quotes(char *s, char **token);
+int		single_quotes(char *s, char **token);
+
+/*
+** utilities and auxularies
+*/
+
+char	*add_char(char *s, char c);
+t_cmd	*ft_lst_new();
+void	ft_lst_add_back(t_cmd **cmd, t_cmd *new);
+int		array_size(char **array);
+int		free_array(char **array);
+char	**add_string_to_array(t_cmd *cmd, char *arg);
+char	**add_token_to_array(t_lexer *lexer, char *arg, int i);
+char *combine_tokens(char *token, char c);
+
 
 /*
 ** builtin commands & other programms
