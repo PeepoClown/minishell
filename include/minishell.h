@@ -124,7 +124,7 @@ int		double_quotes(char *s, char **token);
 int		single_quotes(char *s, char **token);
 
 /*
-** utilities and auxularies
+** utilities and auxiliaries
 */
 
 char	*add_char(char *s, char c);

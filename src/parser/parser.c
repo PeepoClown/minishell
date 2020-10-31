@@ -136,108 +136,25 @@ void parse_input(t_cmd **cmd, char *input)
 }
 
 
-int main()
-{
-	char *s;
-	t_lexer lex;
-	int fd = open("test_commands", O_RDONLY);
-	int i = 0;
-	int gnl = 0;
-	while((gnl = get_next_line(fd, &s)) >= 0)
-	{
-<<<<<<< HEAD:src/parser/parser.c
-		i++;
-		printf("%sTEST %2d:\t%s%s\n", RED, i, s, NRM);
-		lexer(s, &lex);
-		free(s);
-		s = NULL;
-		if (gnl == 0)
-			break ;
-=======
-		printf("s before cmd: %s\n", s);
-		s += get_command(tmp, s);
-		printf("s after cmd: %s\n", s);
-		if (*s == '<')
-		{
-			tmp->fd_in = 1;
-			s++;
-		}
-		if (*s == '>')
-		{
-			if (*(s + 1) == '>')
-			{
-				tmp->fd_append_out = 1;
-				s += 2;
-			}
-			else
-			{
-				tmp->fd_out = 1;
-				s++;
-			}
-		}
-		if (*s == '|')
-		{
-			tmp->pipe = 1;
-			s++;
-			continue ;
-		}
-		if (*s == ';' || *s == 0)
-		{
-			ft_lst_add_back(cmd, tmp);
-			printf("%s\n", (*cmd)->name);
-			tmp = ft_lst_new();
-			s++;
-			continue ;
-		}
-		while (*s)
-		{
-			printf("s before arg: %s\n", s);
-			int p = get_arguments(tmp, s);
-			printf("offset string p: %d\n", p);
-			s += p;
-			if (*s == '\0')
-				ft_lst_add_back(cmd, tmp);
-			printf("s after arg: %s\n", s);
-			while(*s == ' ')
-				s++;
-			if (*s == '<')
-			{
-				tmp->fd_in = 1;
-				s++;
-			}
-			if (*s == '>')
-			{
-				if (*(s + 1) == '>')
-				{
-					tmp->fd_append_out = 1;
-					s += 2;
-				}
-				else
-				{
-					tmp->fd_out = 1;
-					s++;
-				}
-			}
-			if (*s == '|')
-			{
-				tmp->pipe = 1;
-				s++;
-				continue ;
-			}
-			if (*s == ';' || *s == 0)
-			{
-				ft_lst_add_back(cmd, tmp);
-				tmp = ft_lst_new();
-				printf("===================%s\n", (*cmd)->args[0]);
-				s++;
-				break ;
-			}
-		}
->>>>>>> 59a8e041ac3605fcd53cc200e63828c0bcc9b03a:src/parser/parser.c
-	}
-	return (0);
-}
-
+//int main()
+//{
+//	char *s;
+//	t_lexer lex;
+//	int fd = open("test_commands", O_RDONLY);
+//	int i = 0;
+//	int gnl = 0;
+//	while((gnl = get_next_line(fd, &s)) >= 0)
+//	{
+//		i++;
+//		printf("%sTEST %2d:\t%s%s\n", RED, i, s, NRM);
+//		lexer(s, &lex);
+//		free(s);
+//		s = NULL;
+//		if (gnl == 0)
+//			break ;
+//	}
+//	return (0);
+//}
 
 //void parse_input(t_cmd **cmd, char *input)
 //{
