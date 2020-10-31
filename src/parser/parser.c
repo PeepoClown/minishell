@@ -52,12 +52,12 @@ int		get_command(t_cmd *cmd, char *s)
 		else
 		{
 			command = add_char(command, s[i]);
-			printf("command cycle: %s\n", command);
+			//printf("command cycle: %s\n", command);
 			i++;
 		}
 	}
 	cmd->name = command;
-	printf("command out of cycle: %s\n", cmd->name);
+	//printf("command out of cycle: %s\n", cmd->name);
 	return (i);
 }
 
@@ -70,7 +70,7 @@ int		get_arguments(t_cmd *cmd, char *s)
 		i++;
 	while(s[i])
 	{
-		printf("each letter of arg: |%c|\n", s[i]);
+		//printf("each letter of arg: |%c|\n", s[i]);
 		if (s[i] == '\'') //обработка в кавычках, запись в комманд, сдвиг строки
 		{
 			i += single_quotes(&s[i], &arg);
@@ -115,7 +115,7 @@ int		get_arguments(t_cmd *cmd, char *s)
 		else
 		{
 			arg = add_char(arg, s[i]);
-			printf("arg cycle: %s\n", arg);
+			//printf("arg cycle: %s\n", arg);
 			i++;
 			if (!s[i])
 			{
@@ -165,9 +165,10 @@ void parse_input(t_cmd **cmd, char *input)
 			s++;
 			continue ;
 		}
-		if (*s == ';')
+		if (*s == ';' || *s == 0)
 		{
 			ft_lst_add_back(cmd, tmp);
+			printf("%s\n", (*cmd)->name);
 			tmp = ft_lst_new();
 			s++;
 			continue ;
@@ -207,10 +208,11 @@ void parse_input(t_cmd **cmd, char *input)
 				s++;
 				continue ;
 			}
-			if (*s == ';')
+			if (*s == ';' || *s == 0)
 			{
 				ft_lst_add_back(cmd, tmp);
 				tmp = ft_lst_new();
+				printf("===================%s\n", (*cmd)->args[0]);
 				s++;
 				break ;
 			}

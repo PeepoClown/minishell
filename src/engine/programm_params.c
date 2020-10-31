@@ -13,16 +13,15 @@ char	*get_programm_path(const char *cmd, char **paths)
 	while (paths[i] != NULL)
 	{
 		tmp1 = ft_strjoin(paths[i], "/");
-		tmp2 = tmp1;
-		tmp1 = ft_strjoin(tmp1, cmd);
-		free(tmp2);
-		stat(tmp1, &stat_buff);
+		tmp2 = ft_strjoin(tmp1, cmd);
+		free(tmp1);
+		stat(tmp2, &stat_buff);
 		if (S_ISREG(stat_buff.st_mode) == true)
 		{
-			res = tmp1;
+			res = tmp2;
 			break ;
 		}
-		free(tmp1);
+		free(tmp2);
 		i++;
 	}
 	return (res);

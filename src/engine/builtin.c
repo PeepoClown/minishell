@@ -1,11 +1,5 @@
 #include <minishell.h>
 
-void		remove_builtin(t_builtin *builtin)
-{
-	free(builtin->cmd);
-	free(builtin);
-}
-
 t_builtin	*get_builtin(const char *cmd_name)
 {
 	const t_builtin	builtins[7] = { { "echo", ft_echo }, { "cd", ft_cd },

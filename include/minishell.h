@@ -2,7 +2,6 @@
 # define __MINISHELL_H__
 
 # include "../lib/lib.h"
-# include "../parser/parser.h"
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdio.h>
@@ -16,13 +15,14 @@
 # include <sys/wait.h>
 # include <sys/stat.h>
 
-//#include <linux/limits.h>
+# define READ_END 0
+# define WRITE_END 1
+//# define PATH_MAX 4096
 
-// extern char	*g_user;
-// extern char	*g_home;
-// extern int	g_status;
-
-
+extern char		*g_user;
+extern char		*g_home;
+extern int		g_status;
+extern pid_t	g_pid;
 
 /*
 ** interface for env vars
@@ -53,14 +53,34 @@ char			**get_env_matrix(t_env *env);
 */
 
 typedef struct	s_cmd
+				t_cmd;
+typedef struct	s_builtin
 {
-    char			*name;
-    char			**args;
-    int				fd_out; //> char **fd_out
-    int				fd_append_out; //>> char **
-    int				fd_in; //<
-    int				pipe; //int pipe[2]
-    struct s_cmd	*next;
+	char	*cmd;
+	int		(*func)(t_cmd *, t_env *);
+}				t_builtin;
+
+typedef enum	e_out_redir
+{
+	NONE = 0,
+	TRUNC,
+	APPEND
+}				t_out_redir;
+
+typedef struct	s_cmd
+{
+	char		*name;
+	char		**args;
+	int			fd_out;
+	int			fd_in;
+	char		**redir_out;
+	char		**redir_append_out;
+	char		*last_out_redir;
+	t_out_redir	last_out_redir_type;
+	char		**redir_in;
+	bool		pipe_status;
+	int			pipe[2];
+	t_builtin	*builtin;
 }				t_cmd;
 
 /*
@@ -73,12 +93,6 @@ typedef struct	s_cmd
 ** builtin commands & other programms
 */
 
-typedef struct	s_builtin
-{
-	char	*cmd;
-	int		(*func)(t_cmd *, t_env *);
-}				t_builtin;
-
 int				ft_echo(t_cmd *cmd, t_env *env);
 int				ft_cd(t_cmd *cmd, t_env *env);
 int				ft_pwd(t_cmd *cmd, t_env *env);
@@ -87,13 +101,15 @@ int				ft_env(t_cmd *cmd, t_env *env);
 int				ft_unset(t_cmd *cmd, t_env *env);
 int				ft_exit(t_cmd *cmd, t_env *env);
 
+int				handle_cmd(t_cmd *cmd, t_env *env);
+bool			validate_output_redirects(t_cmd *cmd);
+bool			validate_input_redirects(t_cmd *cmd);
 t_builtin		*get_builtin(const char *cmd_name);
-void			remove_builtin(t_builtin *builtin);
 bool			validate_non_builtin_cmd(t_cmd *cmd, t_env *env);
-bool			validate_executable_file(const char *filename);
-int				execute_cmd(t_cmd *cmd, t_env *env);
 char			*get_programm_path(const char *cmd, char **paths);
 char			**get_args_matrix(const char *cmd, char **args);
+int				open_output_redirect(t_cmd *cmd, int fd_out);
+int				open_input_redirect(t_cmd *cmd, int fd_in);
 int				execute_programm(t_cmd *cmd, t_env *env);
 
 /*
@@ -107,16 +123,31 @@ void			init_prompt_vars(t_env *env);
 void			display_prompt(void);
 void			remove_prompt_vars(char *user, char *home);
 char			*user_input(void);
+t_cmd			*create_cmd(void);
+void			remove_cmd(t_cmd *cmd);
 
-typedef struct	s_shell
-{
-	t_env	*env;
-	t_cmd	*cmd;
-	int		g_status;
-	int		g_sigint;
-	int		g_sigquit;
-	char	*user;
-	char	*home;
-}				t_shell;
+
+void	parse_input(t_cmd **cmd, char *input); //check this function
+int		get_arguments(t_cmd *cmd, char *s);
+int		get_command(t_cmd *cmd, char *s);
+
+/*
+** processing quotes
+*/
+
+int		double_quotes(char *s, char **token);
+int		single_quotes(char *s, char **token);
+
+/*
+** utilities and auxularies
+** нихуя тут уровень инглиша, я бы ютилс написал)
+*/
+
+char	*add_char(char *s, char c);
+t_cmd	*ft_lst_new();
+void	ft_lst_add_back(t_cmd **cmd, t_cmd *new);
+int		array_size(char **array);
+int		free_array(char **array);
+char	**add_string_to_array(t_cmd *cmd, char *arg);
 
 #endif

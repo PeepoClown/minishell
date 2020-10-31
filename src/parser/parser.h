@@ -13,7 +13,7 @@
 #ifndef PARSER_H
 # define PARSER_H
 
-# include "../include/minishell.h"
+# include <minishell.h>
 # include "../lib/lib.h"
 
 void	parse_input(t_cmd **cmd, char *input); //check this function
