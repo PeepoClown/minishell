@@ -10,7 +10,12 @@ void	test(t_env *env)
 	t_cmd	*cmd1 = create_cmd(),
 			*cmd2 = create_cmd(),
 			*cmd3 = create_cmd(),
-			*cmd4 = create_cmd();;
+			*cmd4 = create_cmd(),
+			*cmd5 = create_cmd(),
+			*cmd6 = create_cmd(),
+			*cmd7 = create_cmd(),
+			*cmd8 = create_cmd(),
+			*cmd9 = create_cmd();
 
 	cmd1->name = ft_strdup("ls");
 	cmd1->args = (char**)malloc(sizeof(char*) * 2);
@@ -35,11 +40,41 @@ void	test(t_env *env)
 	cmd3->args[1] = NULL;
 	cmd3->pipe_status = false;
 
-	cmd4->name = ft_strdup("bash");
+	cmd4->name = ft_strdup("sh");
 	cmd4->args = (char**)malloc(sizeof(char*) * 2);
 	cmd4->args[0] = ft_strdup("1.sh");
 	cmd4->args[1] = NULL;
 	cmd4->pipe_status = false;
+
+	cmd5->name = ft_strdup("env");
+	cmd5->args = (char**)malloc(sizeof(char*));
+	cmd5->args[0] = NULL;
+	cmd5->pipe_status = false;
+
+	cmd6->name = ft_strdup("cd");
+	cmd6->args = (char**)malloc(sizeof(char*) * 2);
+	cmd6->args[0] = ft_strdup("./src");
+	cmd6->args[1] = NULL;
+	cmd6->pipe_status = false;
+
+	cmd7->name = ft_strdup("env");
+	cmd7->args = (char**)malloc(sizeof(char*));
+	cmd7->args[0] = NULL;
+	cmd7->pipe_status = false;
+
+	cmd8->name = ft_strdup("cat");
+	cmd8->args = (char**)malloc(sizeof(char*));
+	cmd8->args[0] = NULL;
+	cmd8->pipe_status = false;
+	cmd8->redir_in = (char**)malloc(sizeof(char*) * 2);
+	cmd8->redir_in[0] = ft_strdup("cmd/ft_pwd.c");
+	cmd8->redir_in[1] = NULL;
+
+	cmd9->name = ft_strdup("../1.sh");
+	cmd9->args = (char**)malloc(sizeof(char*));
+	cmd9->args[0] = NULL;
+	cmd9->pipe_status = false;
+
 
 	g_status = handle_cmd(cmd1, env);
 	printf("1 : ret : %d\n", g_status);
@@ -53,10 +88,22 @@ void	test(t_env *env)
 	g_status = handle_cmd(cmd4, env);
 	printf("4 : ret : %d\n", g_status);
 
-	// remove_cmd(cmd1);
-	// remove_cmd(cmd2);
-	// remove_cmd(cmd3);
-	// remove_cmd(cmd4);
+	g_status = handle_cmd(cmd5, env);
+	printf("5 : ret : %d\n", g_status);
+
+	g_status = handle_cmd(cmd6, env);
+	printf("6 : ret : %d\n", g_status);
+
+	g_status = handle_cmd(cmd7, env);
+	printf("7 : ret : %d\n", g_status);
+
+	g_status = handle_cmd(cmd8, env);
+	printf("8 : ret : %d\n", g_status);
+
+	g_status = handle_cmd(cmd9, env);
+	printf("9 : ret : %d\n", g_status);
+
+	// remove_cmd
 }
 
 static	void	minishell(t_env *env)
@@ -78,10 +125,8 @@ static	void	minishell(t_env *env)
 		// break ;
 
 
-
-
 		// validate all line
-		while (*input != '\0')
+		while (*input != '\0') // list != NULL
 		{
 			// create command
 			// parse_input(&cmd, input);

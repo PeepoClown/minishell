@@ -18,7 +18,7 @@ static	bool	arg_valid(const char *arg)
 	return (true);
 }
 
-static	void	add_to_env(t_env *env, const char *line)
+void			add_to_env(t_env *env, const char *line)
 {
 	char	*key;
 
@@ -32,7 +32,8 @@ static	void	add_to_env(t_env *env, const char *line)
 			free(key);
 			return ;
 		}
-		del_env(&env, key);
+		change_env_value(env, line);
+		return ;
 	}
 	free(key);
 	add_env(&env, line);

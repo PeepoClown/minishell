@@ -32,16 +32,19 @@ typedef struct	s_env
 {
 	char			*key;
 	char			*value;
+	// bool			is_hidden;
 	struct s_env	*next;
 }				t_env;
 
 t_env			*create_env_item(const char *line);
 t_env			*create_env(char **env_vars);
 void			add_env(t_env **env, const char *line);
+void			add_to_env(t_env *env, const char *line);
 void			del_env_item(t_env *env);
 void			del_env(t_env **env, const char *key);
 void			remove_env(t_env **env);
 char			*get_env_value(t_env *env, const char *key);
+char			*change_env_value(t_env *env, const char *line);
 bool			check_env_key(t_env *env, const char *key);
 void			print_env(t_env *env, int fd_out);
 void			print_env_export(t_env *env, int fd_out);
@@ -54,6 +57,7 @@ char			**get_env_matrix(t_env *env);
 
 typedef struct	s_cmd
 				t_cmd;
+
 typedef struct	s_builtin
 {
 	char	*cmd;
@@ -69,18 +73,19 @@ typedef enum	e_out_redir
 
 typedef struct	s_cmd
 {
-	char		*name;
-	char		**args;
-	int			fd_out;
-	int			fd_in;
-	char		**redir_out;
-	char		**redir_append_out;
-	char		*last_out_redir;
-	t_out_redir	last_out_redir_type;
-	char		**redir_in;
-	bool		pipe_status;
-	int			pipe[2];
-	t_builtin	*builtin;
+	char			*name;
+	char			**args;
+	int				fd_out;
+	int				fd_in;
+	char			**redir_out;
+	char			**redir_append_out;
+	char			*last_out_redir;
+	t_out_redir		last_out_redir_type;
+	char			**redir_in;
+	bool			pipe_status;
+	int				pipe[2];
+	t_builtin		*builtin;
+	struct	s_cmd	*next;
 }				t_cmd;
 
 /*
