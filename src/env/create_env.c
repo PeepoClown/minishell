@@ -9,6 +9,7 @@ t_env	*create_env_item(const char *line)
 		return (NULL);
 	item->value = NULL;
 	item->next = NULL;
+	item->is_hidden = false;
 	delim_pos = ft_find_first_of(line, '=');
 	if (delim_pos >= 0)
 	{

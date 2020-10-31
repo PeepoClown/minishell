@@ -15,7 +15,8 @@ void	test(t_env *env)
 			*cmd6 = create_cmd(),
 			*cmd7 = create_cmd(),
 			*cmd8 = create_cmd(),
-			*cmd9 = create_cmd();
+			*cmd9 = create_cmd(),
+			*cmd10 = create_cmd();
 
 	cmd1->name = ft_strdup("ls");
 	cmd1->args = (char**)malloc(sizeof(char*) * 2);
@@ -75,6 +76,10 @@ void	test(t_env *env)
 	cmd9->args[0] = NULL;
 	cmd9->pipe_status = false;
 
+	cmd10->name = ft_strdup("../sleep.out");
+	cmd10->args = (char**)malloc(sizeof(char*));
+	cmd10->args[0] = NULL;
+	cmd10->pipe_status = false;
 
 	g_status = handle_cmd(cmd1, env);
 	printf("1 : ret : %d\n", g_status);
@@ -102,6 +107,9 @@ void	test(t_env *env)
 
 	g_status = handle_cmd(cmd9, env);
 	printf("9 : ret : %d\n", g_status);
+
+	g_status = handle_cmd(cmd10, env);
+	printf("10 : ret : %d\n", g_status);
 
 	// remove_cmd
 }
