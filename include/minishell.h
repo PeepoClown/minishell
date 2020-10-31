@@ -92,12 +92,12 @@ typedef struct	s_cmd
 	char		**args;
 	int			fd_out;
 	int			fd_in;
-	char		**redir_out;
-	char		**redir_append_out;
-	char		*last_out_redir;
-	t_out_redir	last_out_redir_type;
-	char		**redir_in;
-	bool		pipe_status;
+	char		**redir_out; //> text > test1
+	char		**redir_append_out; //>> text >> test2
+	char		*last_out_redir; // test2
+	t_out_redir	last_out_redir_type; //APPEND
+	char		**redir_in; //<test
+	bool		pipe_status; //+-
 	int			pipe[2];
 	t_builtin	*builtin;
 }				t_cmd;
@@ -106,13 +106,13 @@ typedef struct	s_cmd
 ** input syntax check
 */
 
-int		lexer(char *s, t_lexer *lexer);
+char	**lexer(char *s, t_lexer *lexer);
 
 /*
 ** input parsing
 */
 
-void	parse_input(t_cmd **cmd, char *input); //check this function
+void	parse_input(t_cmd **cmd, char **input, int *i); //check this function
 int		get_arguments(t_cmd *cmd, char *s);
 int		get_command(t_cmd *cmd, char *s);
 
@@ -173,29 +173,5 @@ void			remove_prompt_vars(char *user, char *home);
 char			*user_input(void);
 t_cmd			*create_cmd(void);
 void			remove_cmd(t_cmd *cmd);
-
-
-void	parse_input(t_cmd **cmd, char *input); //check this function
-int		get_arguments(t_cmd *cmd, char *s);
-int		get_command(t_cmd *cmd, char *s);
-
-/*
-** processing quotes
-*/
-
-int		double_quotes(char *s, char **token);
-int		single_quotes(char *s, char **token);
-
-/*
-** utilities and auxularies
-** нихуя тут уровень инглиша, я бы ютилс написал)
-*/
-
-char	*add_char(char *s, char c);
-t_cmd	*ft_lst_new();
-void	ft_lst_add_back(t_cmd **cmd, t_cmd *new);
-int		array_size(char **array);
-int		free_array(char **array);
-char	**add_string_to_array(t_cmd *cmd, char *arg);
 
 #endif

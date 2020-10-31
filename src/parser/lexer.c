@@ -18,7 +18,7 @@ int		check_quote_pair(char *s, char quote, int *error) //return
 
 	*error = 1;
 	if (!s[i])
-		*error = 1; //1?
+		*error = 1;
 	if (s[i] == quote)
 	{
 		*error = 0;
@@ -59,7 +59,7 @@ int unexpected_token(char unexpected)
 int unexpected_eof(char match_quote)
 {
 	write(1, GRN, 6);
-	write(1, "bash: unexpected EOF while looking for matching ", 48); //not matching quotes
+	write(1, "bash: unexpected EOF while looking for matching ", 48);
 	write(1, &match_quote, 1);
 	write(1, NRM, 6);
 	write(1, "\n", 1);
@@ -72,9 +72,6 @@ void	lexer_init(t_lexer *lexer)
 	lexer->i = 0;
 	lexer->error = 0;
 	lexer->token_len = 0;
-	if (!(lexer->tokens = (char **)malloc(sizeof(char *))))
-		exit (1);
-	lexer->tokens[0] = NULL;
 }
 
 int		token_quotes(t_lexer *lexer, char *s, char **current_token)
@@ -93,7 +90,6 @@ int		token_quotes(t_lexer *lexer, char *s, char **current_token)
 		if (lexer->token_len > 1)
 		{
 			*current_token = ft_strjoin(*current_token, quote_token);
-//				current_token = combine_tokens(current_token, '\n');
 		}
 		free(quote_token);
 		quote_token = NULL;
@@ -106,10 +102,12 @@ int		token_quotes(t_lexer *lexer, char *s, char **current_token)
 int		token_separators(t_lexer *lexer, char *s, char **current_token)
 {
 	lexer->unexp_token = s[lexer->i];
-	if (s[lexer->i - 2] == s[lexer->i])
-		return (unexpected_token(lexer->unexp_token));
 	if (s[lexer->i - 1] != ' ')
 		*current_token = combine_tokens(*current_token, '\n');
+	if (s[lexer->i - 2] == lexer->unexp_token && !ft_strchr("\'\"", s[lexer->i - 1]))
+		return (unexpected_token(lexer->unexp_token));
+	if (s[lexer->i - 1] == lexer->unexp_token)
+		return (unexpected_token(lexer->unexp_token));
 	lexer->i = skip_spaces(&s[lexer->i]) ? lexer->i + skip_spaces(&s[lexer->i]) : lexer->i + 1;
 	if (s[lexer->i] == ';' || s[lexer->i] == '|') //'cmd ;    ' could be not valid!
 		return (unexpected_token(lexer->unexp_token));
@@ -146,7 +144,7 @@ int		token_redirects(t_lexer *lexer, char *s, char **current_token)
 	return (unexpected_token(lexer->unexp_token));
 }
 
-int		lexer(char *s, t_lexer *lexer)
+char	**lexer(char *s, t_lexer *lexer)
 {
 	char	*current_token;
 
@@ -154,24 +152,27 @@ int		lexer(char *s, t_lexer *lexer)
 	current_token = NULL;
 	lexer->i = skip_spaces(s);
 	if (s[lexer->i] == ';' || s[lexer->i] == '|')
-		return (unexpected_token(s[lexer->i]));
+	{
+		unexpected_token(s[lexer->i]);
+		return (NULL);
+	}
 	while(s[lexer->i])
 	{
 		lexer->token_len = 0;
 		if (s[lexer->i] == '\'' || s[lexer->i] == '\"') //"token" -> check_quote: returns 7 ->
 		{
 			if (token_quotes(lexer, s, &current_token))
-				return (lexer->error);
+				return (NULL);
 		}
 		else if (s[lexer->i] == ';' || s[lexer->i] == '|')
 		{
 			if (token_separators(lexer, s, &current_token))
-				return (1);
+				return (NULL);
 		}
 		else if (s[lexer->i] == '>' || s[lexer->i] == '<')
 		{
 			if (token_redirects(lexer, s, &current_token))
-				return (1);
+				return (NULL);
 		}
 		else if(s[lexer->i] == '\\')
 		{
@@ -196,17 +197,15 @@ int		lexer(char *s, t_lexer *lexer)
 		}
 	}
 	write(1, "end of lexer\n", 13);
-//	printf("tokens: %s\n", current_token);
 	int b;
 	char **new = ft_split(current_token, '\n');
 	printf("each token:\n");
 	b = -1;
-	while(new[++b])
+	while(new[++b] != NULL)
 	{
-		printf("token number %2d --> %s\n", b, new[b]);
+		printf("token number %02d --> |%s%s%s|\n", b + 1, GRN, new[b], NRM);
 	}
-	printf("\n");
-	return (0);
+	return (new);
 }
 
 
