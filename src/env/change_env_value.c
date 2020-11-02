@@ -1,6 +1,6 @@
 #include <minishell.h>
 
-char	*change_env_value(t_env *env, const char *line)
+void	change_env_value(t_env *env, const char *line)
 {
 	char	*key;
 	char	*value;
@@ -19,5 +19,18 @@ char	*change_env_value(t_env *env, const char *line)
 		env->value = ft_substr(line, ft_find_first_of(line, '=') + 1,
 			ft_strlen(line));
 	}
-	return (NULL);
+}
+
+void	set_env_hidden(t_env *env, const char *key, int status)
+{
+	if (!env)
+		return ;
+	while (env != NULL)
+	{
+		if (ft_strcmp(env->key, key) == 0)
+			break ;
+		env = env->next;
+	}
+	if (env != NULL)
+		env->is_hidden = status;
 }

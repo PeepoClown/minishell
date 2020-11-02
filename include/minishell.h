@@ -32,7 +32,7 @@ typedef struct	s_env
 {
 	char			*key;
 	char			*value;
-	bool			is_hidden;
+	int				is_hidden; // 0 - visible, 1 - hidden, 2 - visible in export
 	struct s_env	*next;
 }				t_env;
 
@@ -44,7 +44,8 @@ void			del_env_item(t_env *env);
 void			del_env(t_env **env, const char *key);
 void			remove_env(t_env **env);
 char			*get_env_value(t_env *env, const char *key);
-char			*change_env_value(t_env *env, const char *line);
+void			change_env_value(t_env *env, const char *line);
+void			set_env_hidden(t_env *env, const char *key, int status);
 bool			check_env_key(t_env *env, const char *key);
 void			print_env(t_env *env, int fd_out);
 void			print_env_export(t_env *env, int fd_out);

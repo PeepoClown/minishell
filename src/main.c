@@ -114,6 +114,18 @@ void	test(t_env *env)
 	// remove_cmd
 }
 
+void	test_env(t_env *env)
+{
+	print_env_export(env, 1);
+
+	printf("\n\n\n");
+	add_to_env(env, "a");
+	add_to_env(env, "b=");
+	add_to_env(env, "c=4");
+
+	print_env_export(env, 1);
+}
+
 static	void	minishell(t_env *env)
 {
 	char	*input;
@@ -159,6 +171,15 @@ int				main(int argc, char **argv, char **env)
 	signal(SIGINT, signals_handler);
 	signal(SIGQUIT, signals_handler);
 	init_prompt_vars(env_list);
+
+
+
+	test_env(env_list);
+	return (0);
+
+
+
+
 	if (argv != NULL)
 		minishell(env_list);
 	remove_env(&env_list);
