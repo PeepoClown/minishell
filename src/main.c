@@ -122,50 +122,50 @@ void	test1(t_env *env)
 			*cmd4 = create_cmd(),
 			*cmd5 = create_cmd();
 	
-	cmd1->name = ft_strdup("a=b");
-	cmd1->args = (char**)malloc(sizeof(char*) * 3);
-	cmd1->args[0] = ft_strdup("ls");
-	cmd1->args[1] = ft_strdup("-l");
-	cmd1->args[2] = NULL;
-	cmd1->pipe_status = false;
+	// cmd1->name = ft_strdup("a=b");
+	// cmd1->args = (char**)malloc(sizeof(char*) * 3);
+	// cmd1->args[0] = ft_strdup("ls");
+	// cmd1->args[1] = ft_strdup("-l");
+	// cmd1->args[2] = NULL;
+	// cmd1->pipe_status = false;
 
-	cmd5->name = ft_strdup("_a=    ");
-	cmd5->args = (char**)malloc(sizeof(char*));
-	cmd5->args[0] = NULL;
-	cmd5->pipe_status = false;
+	// cmd5->name = ft_strdup("_a=    ");
+	// cmd5->args = (char**)malloc(sizeof(char*));
+	// cmd5->args[0] = NULL;
+	// cmd5->pipe_status = false;
 
-	cmd2->name = ft_strdup("export");
-	cmd2->args = (char**)malloc(sizeof(char*) * 2);
-	cmd2->args[0] = ft_strdup("_a");
-	cmd2->args[1] = NULL;
-	cmd2->pipe_status = false;
+	// cmd2->name = ft_strdup("export");
+	// cmd2->args = (char**)malloc(sizeof(char*) * 2);
+	// cmd2->args[0] = ft_strdup("_a");
+	// cmd2->args[1] = NULL;
+	// cmd2->pipe_status = false;
 
 	cmd3->name = ft_strdup("env");
 	cmd3->args = (char**)malloc(sizeof(char*));
 	cmd3->args[0] = NULL;
 	cmd3->pipe_status = false;
 
-	cmd4->name = ft_strdup("export");
-	cmd4->args = (char**)malloc(sizeof(char*));
-	cmd4->args[0] = NULL;
-	cmd4->pipe_status = false;
+	// cmd4->name = ft_strdup("export");
+	// cmd4->args = (char**)malloc(sizeof(char*));
+	// cmd4->args[0] = NULL;
+	// cmd4->pipe_status = false;
 		
-	g_status = handle_cmd(cmd1, env);
-	printf("1 : ret : %d\n", g_status);
+	// g_status = handle_cmd(cmd1, env);
+	// printf("1 : ret : %d\n", g_status);
 
-	g_status = handle_cmd(cmd5, env);
-	printf("1.5 : ret : %d\n", g_status);
+	// g_status = handle_cmd(cmd5, env);
+	// printf("1.5 : ret : %d\n", g_status);
 
-	g_status = handle_cmd(cmd2, env);
-	printf("2 : ret : %d\n", g_status);
+	// g_status = handle_cmd(cmd2, env);
+	// printf("2 : ret : %d\n", g_status);
 
 	g_status = handle_cmd(cmd3, env);
 	printf("3 : ret : %d\n", g_status);
 
-	g_status = handle_cmd(cmd4, env);
-	printf("4 : ret : %d\n", g_status);
+	// g_status = handle_cmd(cmd4, env);
+	// printf("4 : ret : %d\n", g_status);
 
-	remove_cmd(cmd1);
+	//remove_cmd(cmd1);
 
 }
 
@@ -203,6 +203,7 @@ static	void	minishell(t_env *env)
 		free(input);
 		break ;
 	}
+	sleep(100);
 }
 
 int				main(int argc, char **argv, char **env)
