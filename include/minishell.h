@@ -110,6 +110,7 @@ int				ft_unset(t_cmd *cmd, t_env *env);
 int				ft_exit(t_cmd *cmd, t_env *env);
 
 int				handle_cmd(t_cmd *cmd, t_env *env);
+void			validate_hidden_env(t_env *env, t_cmd *cmd);
 bool			validate_output_redirects(t_cmd *cmd);
 bool			validate_input_redirects(t_cmd *cmd);
 t_builtin		*get_builtin(const char *cmd_name);

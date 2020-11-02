@@ -44,24 +44,14 @@ static	int		execute_command(t_cmd *cmd, t_env *env)
 	return (ret);
 }
 
-void	validate_hidden_env(char *name, char **args)
-{
-	int		i;
-
-	i = 0;
-	while (name[i] != '\0')
-	{
-		
-		i++;
-	}
-}
-
 int				handle_cmd(t_cmd *cmd, t_env *env)
 {
 	int			status;
 
 	errno = 0;
-	validate_hidden_env(cmd->name, cmd->args);
+	validate_hidden_env(env, cmd); // ??? need tests
+	if (cmd->name == NULL)
+		return (status = 0);
 	if (!validate_output_redirects(cmd) || !validate_input_redirects(cmd))
 		return (status = 1);
 	if ((cmd->builtin = get_builtin(cmd->name)) != NULL ||

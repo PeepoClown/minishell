@@ -114,25 +114,48 @@ void	test(t_env *env)
 	// remove_cmd
 }
 
-void	test_env(t_env *env)
+void	test1(t_env *env)
 {
-	print_env_export(env, 1);
-	printf("\n\n\n");
-	add_to_env(env, "a");
-	add_to_env(env, "b=");
-	add_to_env(env, "c=4");
+	t_cmd	*cmd1 = create_cmd(),
+			*cmd2 = create_cmd(),
+			*cmd3 = create_cmd(),
+			*cmd4 = create_cmd();
+	
+	cmd1->name = ft_strdup("a=b");
+	cmd1->args = (char**)malloc(sizeof(char*) * 3);
+	cmd1->args[0] = ft_strdup("ls");
+	cmd1->args[1] = ft_strdup("-l");
+	cmd1->args[2] = NULL;
+	cmd1->pipe_status = false;
 
-	print_env(env, 1);
-	printf("\n\n\n");
-	t_env *copy;
-	copy = copy_env(env);
-	sort_env(&copy);
-	print_env_export(copy, 1);
-	remove_env(&copy);
+	cmd2->name = ft_strdup("export");
+	cmd2->args = (char**)malloc(sizeof(char*) * 2);
+	cmd2->args[0] = ft_strdup("a");
+	cmd2->args[1] = NULL;
+	cmd2->pipe_status = false;
 
-	add_to_env(env, "a=");
-	printf("\n\n\n");
-	print_env(env, 1);
+	cmd3->name = ft_strdup("env");
+	cmd3->args = (char**)malloc(sizeof(char*));
+	cmd3->args[0] = NULL;
+	cmd3->pipe_status = false;
+
+	cmd4->name = ft_strdup("export");
+	cmd4->args = (char**)malloc(sizeof(char*));
+	cmd4->args[0] = NULL;
+	cmd4->pipe_status = false;
+		
+	g_status = handle_cmd(cmd1, env);
+	printf("1 : ret : %d\n", g_status);
+
+	g_status = handle_cmd(cmd2, env);
+	printf("2 : ret : %d\n", g_status);
+
+	g_status = handle_cmd(cmd3, env);
+	printf("3 : ret : %d\n", g_status);
+
+	g_status = handle_cmd(cmd4, env);
+	printf("4 : ret : %d\n", g_status);
+
 }
 
 static	void	minishell(t_env *env)
@@ -142,7 +165,8 @@ static	void	minishell(t_env *env)
 
 	while (true)
 	{
-		test(env);
+		//test(env);
+		test1(env);
 		break ;
 
 
@@ -180,15 +204,6 @@ int				main(int argc, char **argv, char **env)
 	signal(SIGINT, signals_handler);
 	signal(SIGQUIT, signals_handler);
 	init_prompt_vars(env_list);
-
-
-
-	test_env(env_list);
-	return (0);
-
-
-
-
 	if (argv != NULL)
 		minishell(env_list);
 	remove_env(&env_list);

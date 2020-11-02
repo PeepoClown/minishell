@@ -20,7 +20,7 @@ static	bool	arg_valid(const char *arg)
 
 static	void	empty_args_export(t_cmd *cmd, t_env *env)
 {
-	t_cmd	*copy;
+	t_env	*copy;
 
 	copy = copy_env(env);
 	sort_env(&copy);
