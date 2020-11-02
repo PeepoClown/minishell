@@ -1,23 +1,42 @@
 #include "../../include/minishell.h"
 
-//void	print_struct(t_cmd *cmd)
-//{
-//	while(cmd)
-//	{
-//		printf("cmd name: %s\n", cmd->name);
-//		printf("fd_in: %d\n", cmd->fd_in);
-//		printf("fd_out: %d\n", cmd->fd_out);
-//		printf("fd_append_out: %d\n", cmd->fd_append_out);
-//		printf("pipe: %d\n", cmd->pipe);
-//		int i = 0;
-//		while (cmd->args[i])
-//		{
-//			printf("args: %s\n", cmd->args[i]);
-//			i++;
-//		}
-//		cmd = cmd->next;
-//	}
-//}
+void	print_struct(t_cmd *cmd)
+{
+	while(cmd)
+	{
+		printf("cmd name: %s\n", cmd->name);
+		int i = 0;
+		if (cmd->args[i])
+			while (cmd->args[i][0] != '\0')
+			{
+				printf("args: %s\n", cmd->args[i]);
+				i++;
+			}
+		i = 0;
+		if (cmd->redir_out[i])
+			while (*cmd->redir_out[i] != '\0')
+			{
+				printf("redir_out: %s\n", cmd->redir_out[i]);
+				i++;
+			}
+		i = 0;
+		if (cmd->redir_append_out[i])
+			while (cmd->redir_append_out[i][0] != '\0')
+			{
+				printf("redir_append_out: %s\n", cmd->redir_append_out[i]);
+				i++;
+			}
+		i = 0;
+		if (cmd->redir_in[i])
+			while (cmd->redir_in[i][0] != '\0')
+			{
+				printf("redir_in: %s\n", cmd->redir_in[i]);
+				i++;
+			}
+		printf("last_out_redir: %s\n", cmd->last_out_redir);
+		cmd = cmd->next;
+	}
+}
 
 int		get_command(t_cmd *cmd, char *s)
 {
@@ -129,19 +148,53 @@ int		get_arguments(t_cmd *cmd, char *s)
 	return (i);
 }
 
-char *parse_it_all(char *el)
+void	get_env(char *s, char **parsed)
 {
-	char *parsed = el;
 
-	
-	return (parsed);
+}
+
+//char *parse_it_all(char *el)
+//{
+//	char *parsed;
+//	int i = 0;
+//
+//	while (el[i])
+//	{
+//		if (el[i] == '$')
+//
+//	}
+//	return (parsed);
+//}
+
+char	**add_line_to_array(char **mod_array, char *line)
+{
+	char **tmp = mod_array;
+	int	i = 0;
+
+	if (!mod_array)
+		i = 0;
+	else
+	{
+		while (mod_array[i]) //mod_array[i] = NULL;
+			i++;
+	}
+	mod_array = (char **)malloc(sizeof(char *) * (i + 2));
+	i = -1;
+	if (tmp)
+		while(tmp[++i])
+			mod_array[i] = ft_strdup(tmp[i]);
+	mod_array[i++] = ft_strdup(line);
+	mod_array[i] = ft_strdup("");
+	return (mod_array);
 }
 
 void parse_input(t_cmd **cmd, char **input, int *i)
 {
 	int j = *i;
 	char *token;
-	while(input[j] != NULL)
+	t_cmd *tmp = ft_lst_new();
+	*cmd = tmp;
+	while(input[j])
 	{
 		if (!(ft_strcmp(input[j], ";")))
 		{
@@ -150,20 +203,33 @@ void parse_input(t_cmd **cmd, char **input, int *i)
 		}
 		if (!(ft_strcmp(input[j], "|")))
 		{
-			(*cmd)->pipe_status = true;
-			//(*cmd) = (*cmd)->next;
+			tmp->pipe_status = true;
+			tmp->next = ft_lst_new();
+			tmp = tmp->next;
 			j++;
 			continue ;
 		}
-		token = parse_it_all(input[j]);
-		if (!(*cmd)->name)
-			(*cmd)->name = input[j];
-		else if (*input[j] == '>')
-			//redirect output
-		else if (*input[j] == '<')
-			//redirect input
+//		token = parse_it_all(input[j]);
+		if (!tmp->name)
+			tmp->name = input[j];
+		else if (!(ft_strcmp(input[j], ">")))
+		{
+			tmp->last_out_redir_type = TRUNC;
+			//add input[j] into struct, not char**, argument to this struct as well
+			tmp->redir_out = add_line_to_array(tmp->redir_out, input[++j]);
+		}
+		else if (!(ft_strcmp(input[j], ">>")))
+		{
+			tmp->last_out_redir_type = APPEND;
+			//add input[j] into struct, not char**, argument to this struct as well
+			tmp->redir_append_out = add_line_to_array(tmp->redir_append_out, input[++j]);
+		}
+		else if (!(ft_strcmp(input[j], "<")))
+		{
+			tmp->redir_out = add_line_to_array(tmp->redir_out, input[++j]);
+		}
 		else
-			(*cmd)->args = add_string_to_array(*cmd, input[j]);
+			tmp->args = add_line_to_array(tmp->args, input[j]);
 		j++;
 	}
 	*i = j;
@@ -174,7 +240,7 @@ int main(int argc, char **argv)
 {
 	char *s = NULL;
 	t_lexer lex;
-	t_cmd	*cmd;
+	t_cmd	*cmd = NULL;
 	int fd = open(argv[1], O_RDONLY);
 	int i = 0;
 	int j = 0;
@@ -194,7 +260,8 @@ int main(int argc, char **argv)
 		free(s);
 		s = NULL;
 		parse_input(&cmd, res,  &j);
-		ft_remove_char_matrix(res);
+//		print_struct(cmd);
+//		ft_remove_char_matrix(res);
 		if (gnl == 0)
 			break ;
 	}

@@ -59,8 +59,9 @@ int unexpected_token(char unexpected)
 int unexpected_eof(char match_quote)
 {
 	write(1, GRN, 6);
-	write(1, "bash: unexpected EOF while looking for matching ", 48);
+	write(1, "bash: unexpected EOF while looking for matching `", 49);
 	write(1, &match_quote, 1);
+	write(1, "\"", 1);
 	write(1, NRM, 6);
 	write(1, "\n", 1);
 	return (1);

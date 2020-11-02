@@ -44,6 +44,7 @@ t_cmd	*ft_lst_new()
 	tmp->redir_append_out = NULL;
 	tmp->last_out_redir_type = NONE;
 	tmp->pipe_status = false;
+	tmp->next = NULL;
 	return (tmp);
 }
 
