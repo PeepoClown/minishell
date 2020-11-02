@@ -6,28 +6,28 @@ void	print_struct(t_cmd *cmd)
 	{
 		printf("cmd name: %s\n", cmd->name);
 		int i = 0;
-		if (cmd->args[i])
+		if (cmd->args)
 			while (cmd->args[i][0] != '\0')
 			{
 				printf("args: %s\n", cmd->args[i]);
 				i++;
 			}
 		i = 0;
-		if (cmd->redir_out[i])
+		if (cmd->redir_out)
 			while (*cmd->redir_out[i] != '\0')
 			{
 				printf("redir_out: %s\n", cmd->redir_out[i]);
 				i++;
 			}
 		i = 0;
-		if (cmd->redir_append_out[i])
+		if (cmd->redir_append_out)
 			while (cmd->redir_append_out[i][0] != '\0')
 			{
 				printf("redir_append_out: %s\n", cmd->redir_append_out[i]);
 				i++;
 			}
 		i = 0;
-		if (cmd->redir_in[i])
+		if (cmd->redir_in)
 			while (cmd->redir_in[i][0] != '\0')
 			{
 				printf("redir_in: %s\n", cmd->redir_in[i]);
@@ -260,7 +260,7 @@ int main(int argc, char **argv)
 		free(s);
 		s = NULL;
 		parse_input(&cmd, res,  &j);
-//		print_struct(cmd);
+		print_struct(cmd);
 //		ft_remove_char_matrix(res);
 		if (gnl == 0)
 			break ;
