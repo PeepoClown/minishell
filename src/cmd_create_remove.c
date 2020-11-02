@@ -24,16 +24,16 @@ void	remove_cmd(t_cmd *cmd)
 		return ;
 	if (cmd->name != NULL)
 		free(cmd->name);
-	if (cmd->args != NULL)
-		ft_remove_char_matrix(cmd->args);
-	if (cmd->redir_out != NULL)
-		ft_remove_char_matrix(cmd->redir_out);
-	if (cmd->redir_append_out != NULL)
-		ft_remove_char_matrix(cmd->redir_append_out);
-	if (cmd->redir_in != NULL)
-		ft_remove_char_matrix(cmd->redir_in);
-	if (cmd->last_out_redir != NULL)
-		free(cmd->last_out_redir);
+	// if (cmd->args != NULL)
+	// 	ft_remove_char_matrix(cmd->args);
+	// if (cmd->redir_out != NULL)
+	// 	ft_remove_char_matrix(cmd->redir_out);
+	// if (cmd->redir_append_out != NULL)
+	// 	ft_remove_char_matrix(cmd->redir_append_out);
+	// if (cmd->redir_in != NULL)
+	// 	ft_remove_char_matrix(cmd->redir_in);
+	// if (cmd->last_out_redir != NULL)
+	// 	free(cmd->last_out_redir);
 	if (cmd->builtin != NULL)
 	{
 		free(cmd->builtin->cmd);

@@ -165,6 +165,8 @@ void	test1(t_env *env)
 	g_status = handle_cmd(cmd4, env);
 	printf("4 : ret : %d\n", g_status);
 
+	remove_cmd(cmd1);
+
 }
 
 static	void	minishell(t_env *env)
