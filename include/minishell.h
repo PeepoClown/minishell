@@ -32,7 +32,8 @@ typedef struct	s_env
 {
 	char			*key;
 	char			*value;
-	int				is_hidden; // 0 - visible, 1 - hidden, 2 - visible in export
+	int				is_hidden; // 0 - visible, 1 - hidden,
+							// 2 - visible in export, 3 - visible in env
 	struct s_env	*next;
 }				t_env;
 
@@ -51,6 +52,7 @@ void			print_env(t_env *env, int fd_out);
 void			print_env_export(t_env *env, int fd_out);
 void			sort_env(t_env **env);
 char			**get_env_matrix(t_env *env);
+t_env			*copy_env(t_env *env);
 
 /*
 ** structure of command

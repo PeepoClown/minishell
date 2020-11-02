@@ -37,6 +37,6 @@ t_env	*create_env(char **env_vars)
 		env = env->next;
 		env_vars++;
 	}
-	set_env_hidden(head, "_", 1);
+	set_env_hidden(head, "_", 3);
 	return (head);
 }

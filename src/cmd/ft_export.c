@@ -18,6 +18,16 @@ static	bool	arg_valid(const char *arg)
 	return (true);
 }
 
+static	void	empty_args_export(t_cmd *cmd, t_env *env)
+{
+	t_cmd	*copy;
+
+	copy = copy_env(env);
+	sort_env(&copy);
+	print_env_export(copy, cmd->fd_out);
+	remove_env(&copy);
+}
+
 int				ft_export(t_cmd *cmd, t_env *env)
 {
 	int		ret;
@@ -27,8 +37,7 @@ int				ft_export(t_cmd *cmd, t_env *env)
 	ret = 0;
 	if (*(cmd->args) == NULL)
 	{
-		sort_env(&env);
-		print_env_export(env, cmd->fd_out);
+		empty_args_export(cmd, env);
 		return (ret);
 	}
 	while (*(cmd->args) != NULL)

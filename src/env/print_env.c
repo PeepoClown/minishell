@@ -4,7 +4,7 @@ void	print_env(t_env *env, int fd_out)
 {
 	while (env != NULL)
 	{
-		if (env->is_hidden != 0) // ne tochno !!!
+		if (env->is_hidden == 1 || env->is_hidden == 2)
 		{
 			env = env->next;
 			continue ;
@@ -21,7 +21,7 @@ void	print_env_export(t_env *env, int fd_out)
 {
 	while (env != NULL)
 	{
-		if (env->is_hidden == 1)
+		if (env->is_hidden == 1 || env->is_hidden == 3)
 		{
 			env = env->next;
 			continue ;

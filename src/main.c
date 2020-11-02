@@ -117,13 +117,22 @@ void	test(t_env *env)
 void	test_env(t_env *env)
 {
 	print_env_export(env, 1);
-
 	printf("\n\n\n");
 	add_to_env(env, "a");
 	add_to_env(env, "b=");
 	add_to_env(env, "c=4");
 
-	print_env_export(env, 1);
+	print_env(env, 1);
+	printf("\n\n\n");
+	t_env *copy;
+	copy = copy_env(env);
+	sort_env(&copy);
+	print_env_export(copy, 1);
+	remove_env(&copy);
+
+	add_to_env(env, "a=");
+	printf("\n\n\n");
+	print_env(env, 1);
 }
 
 static	void	minishell(t_env *env)
