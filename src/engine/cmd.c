@@ -49,6 +49,8 @@ int				handle_cmd(t_cmd *cmd, t_env *env)
 	int			status;
 
 	errno = 0;
+	// if (cmd->name == NULL)
+	// 	return (status = g_status);
 	validate_hidden_env(env, cmd); // ??? need tests
 	if (cmd->name == NULL)
 		return (status = 0);

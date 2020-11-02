@@ -46,8 +46,11 @@ void			validate_hidden_env(t_env *env, t_cmd *cmd)
 		return ;
 	if (validate_hidden_env_name(cmd->name) == false)
 		return ;
-	add_to_env(env, cmd->name);
 	key = ft_substr(cmd->name, 0, ft_find_first_of(cmd->name, '='));
+	if (check_env_key(env, key) == true)
+		change_env_value(env, cmd->name);
+	else
+		add_to_env(env, cmd->name);
 	set_env_hidden(env, key, 1);
 	free(key);
 	free(cmd->name);

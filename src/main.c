@@ -119,7 +119,8 @@ void	test1(t_env *env)
 	t_cmd	*cmd1 = create_cmd(),
 			*cmd2 = create_cmd(),
 			*cmd3 = create_cmd(),
-			*cmd4 = create_cmd();
+			*cmd4 = create_cmd(),
+			*cmd5 = create_cmd();
 	
 	cmd1->name = ft_strdup("a=b");
 	cmd1->args = (char**)malloc(sizeof(char*) * 3);
@@ -128,9 +129,14 @@ void	test1(t_env *env)
 	cmd1->args[2] = NULL;
 	cmd1->pipe_status = false;
 
+	cmd5->name = ft_strdup("_a=    ");
+	cmd5->args = (char**)malloc(sizeof(char*));
+	cmd5->args[0] = NULL;
+	cmd5->pipe_status = false;
+
 	cmd2->name = ft_strdup("export");
 	cmd2->args = (char**)malloc(sizeof(char*) * 2);
-	cmd2->args[0] = ft_strdup("a");
+	cmd2->args[0] = ft_strdup("_a");
 	cmd2->args[1] = NULL;
 	cmd2->pipe_status = false;
 
@@ -146,6 +152,9 @@ void	test1(t_env *env)
 		
 	g_status = handle_cmd(cmd1, env);
 	printf("1 : ret : %d\n", g_status);
+
+	g_status = handle_cmd(cmd5, env);
+	printf("1.5 : ret : %d\n", g_status);
 
 	g_status = handle_cmd(cmd2, env);
 	printf("2 : ret : %d\n", g_status);
