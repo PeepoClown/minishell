@@ -100,6 +100,7 @@ typedef struct	s_cmd
 	bool		pipe_status; //+-
 	int			pipe[2];
 	t_builtin	*builtin;
+	struct s_cmd	*next;
 }				t_cmd;
 
 /*

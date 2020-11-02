@@ -7,33 +7,34 @@ void	print_struct(t_cmd *cmd)
 		printf("cmd name: %s\n", cmd->name);
 		int i = 0;
 		if (cmd->args)
-			while (cmd->args[i][0] != '\0')
+			while (cmd->args[i] != NULL)
 			{
 				printf("args: %s\n", cmd->args[i]);
 				i++;
 			}
 		i = 0;
 		if (cmd->redir_out)
-			while (*cmd->redir_out[i] != '\0')
+			while (cmd->redir_out[i] != NULL)
 			{
 				printf("redir_out: %s\n", cmd->redir_out[i]);
 				i++;
 			}
 		i = 0;
 		if (cmd->redir_append_out)
-			while (cmd->redir_append_out[i][0] != '\0')
+			while (cmd->redir_append_out[i] != NULL)
 			{
 				printf("redir_append_out: %s\n", cmd->redir_append_out[i]);
 				i++;
 			}
 		i = 0;
 		if (cmd->redir_in)
-			while (cmd->redir_in[i][0] != '\0')
+			while (cmd->redir_in[i] != NULL)
 			{
 				printf("redir_in: %s\n", cmd->redir_in[i]);
 				i++;
 			}
 		printf("last_out_redir: %s\n", cmd->last_out_redir);
+		printf("last_out_redir_type: %d\n", (int)cmd->last_out_redir_type);
 		cmd = cmd->next;
 	}
 }
@@ -168,24 +169,22 @@ void	get_env(char *s, char **parsed)
 
 char	**add_line_to_array(char **mod_array, char *line)
 {
-	char **tmp = mod_array;
-	int	i = 0;
+	char	**copy;
+	int		arr_size = 0;
+	int	i = -1;
 
-	if (!mod_array)
-		i = 0;
-	else
-	{
-		while (mod_array[i]) //mod_array[i] = NULL;
-			i++;
-	}
-	mod_array = (char **)malloc(sizeof(char *) * (i + 2));
+	if (mod_array != NULL)
+		while (mod_array[arr_size] != NULL) 
+			arr_size++;
+
+	copy = (char**)malloc(sizeof(char*) * (arr_size + 2));
 	i = -1;
-	if (tmp)
-		while(tmp[++i])
-			mod_array[i] = ft_strdup(tmp[i]);
-	mod_array[i++] = ft_strdup(line);
-	mod_array[i] = ft_strdup("");
-	return (mod_array);
+	while (++i < arr_size)
+		copy[i] = ft_strdup(mod_array[i]);
+	copy[i++] = ft_strdup(line);
+	copy[i] = NULL;
+	// free mod_array
+	return (copy);
 }
 
 void parse_input(t_cmd **cmd, char **input, int *i)
@@ -215,18 +214,21 @@ void parse_input(t_cmd **cmd, char **input, int *i)
 		else if (!(ft_strcmp(input[j], ">")))
 		{
 			tmp->last_out_redir_type = TRUNC;
+			tmp->last_out_redir = ft_strdup(input[j + 1]);
 			//add input[j] into struct, not char**, argument to this struct as well
-			tmp->redir_out = add_line_to_array(tmp->redir_out, input[++j]);
+			tmp->redir_out = add_line_to_array(tmp->redir_out, input[j + 1]);
+			j++;
 		}
 		else if (!(ft_strcmp(input[j], ">>")))
 		{
 			tmp->last_out_redir_type = APPEND;
+			tmp->last_out_redir = ft_strdup(input[j + 1]);
 			//add input[j] into struct, not char**, argument to this struct as well
 			tmp->redir_append_out = add_line_to_array(tmp->redir_append_out, input[++j]);
 		}
 		else if (!(ft_strcmp(input[j], "<")))
 		{
-			tmp->redir_out = add_line_to_array(tmp->redir_out, input[++j]);
+			tmp->redir_in = add_line_to_array(tmp->redir_in, input[++j]);
 		}
 		else
 			tmp->args = add_line_to_array(tmp->args, input[j]);
@@ -259,8 +261,12 @@ int main(int argc, char **argv)
 		}
 		free(s);
 		s = NULL;
-		parse_input(&cmd, res,  &j);
-		print_struct(cmd);
+		j = 0;
+		while (res[j])
+		{
+			parse_input(&cmd, res, &j);
+			print_struct(cmd);
+		}
 //		ft_remove_char_matrix(res);
 		if (gnl == 0)
 			break ;
