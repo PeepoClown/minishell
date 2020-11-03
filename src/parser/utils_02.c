@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+
 #include <minishell.h>
 
 int		array_size(char **array)
@@ -53,22 +54,6 @@ char *combine_tokens(char *token, char c)
 	return (s);
 }
 
-//char	**add_line_to_array(char **mod_array, char *line)
-//{
-//	char **tmp = mod_array;
-//	int	i = 0;
-//
-//	while (mod_array[i])
-//		i++;
-//	mod_array = (char **)malloc(sizeof(char *) * (i + 2));
-//	i = -1;
-//	while(tmp[++i])
-//		mod_array[i] = ft_strdup(tmp[i]);
-//	mod_array[i++] = ft_strdup(line);
-//	mod_array[i] = ft_strdup("");
-//	return (mod_array);
-//}
-
 char	**add_token_to_array(t_lexer *lexer, char *arg, int i)
 {
 	char	**new;
@@ -81,6 +66,7 @@ char	**add_token_to_array(t_lexer *lexer, char *arg, int i)
 		new[i] = lexer->tokens[i];
 	new[i++] = ft_strdup(arg);
 	new[i] = ft_strdup("");
+
 //	free_array(cmd->args);
 	return (new);
 }

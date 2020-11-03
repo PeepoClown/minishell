@@ -14,6 +14,11 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <sys/stat.h>
+#include <fcntl.h>
+
+#define NRM  "\x1B[0m"
+#define RED  "\x1B[31m"
+#define GRN  "\x1B[32m"
 
 # define READ_END 0
 # define WRITE_END 1
@@ -67,6 +72,20 @@ t_env			*copy_env(t_env *env);
 void			set_path_env_var(t_env *env, const char *path);
 
 /*
+** structure of lexer
+*/
+
+typedef struct s_lexer
+{
+	int	i;
+	int	error;
+	int	token_len;
+	char match_quote;
+	char unexp_token;
+	char **tokens;
+}				t_lexer;
+
+/*
 ** structure of command
 */
 
@@ -103,25 +122,12 @@ typedef struct	s_cmd
 	struct	s_cmd	*next;
 }				t_cmd;
 
-/*
-** structure of lexer
-*/
-
-typedef struct	s_lexer
-{
-	int		i;
-	int		error;
-	int		token_len;
-	char 	match_quote;
-	char 	unexp_token;
-	char 	**tokens;
-}				t_lexer;
 
 /*
 ** input syntax check
 */
 
-char			**lexer(char *s, t_lexer *lexer);
+char	**lexer(char *s, t_lexer *lexer);
 
 /*
 ** input parsing

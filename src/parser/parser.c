@@ -149,11 +149,6 @@ int		get_arguments(t_cmd *cmd, char *s)
 	return (i);
 }
 
-void	get_env(char *s, char **parsed)
-{
-
-}
-
 //char *parse_it_all(char *el)
 //{
 //	char *parsed;
@@ -191,6 +186,7 @@ void parse_input(t_cmd **cmd, char **input, int *i)
 {
 	int j = *i;
 	char *token;
+
 	t_cmd *tmp = ft_lst_new();
 	*cmd = tmp;
 	while(input[j])
