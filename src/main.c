@@ -182,7 +182,7 @@ void	test1(t_env *env)
 
 }
 
-static	t_cmd	*main_loop(t_env *env, char *input)
+static	int		main_loop(t_env *env, char *input)
 {
 	t_lexer	lex;
 	char	**tokens;
@@ -190,19 +190,25 @@ static	t_cmd	*main_loop(t_env *env, char *input)
 	t_cmd	*cmd;
 
 	if (!(tokens = lexer(input, &lex)))
-		return (NULL);
+		return (0);
 	i = 0;
 	cmd = NULL;
 	while (tokens[i] != NULL)
+	{
 		parse_input(&cmd, tokens, &i);
-	return (cmd);
+		while (cmd)
+		{
+			g_status = handle_cmd(cmd, env);
+			cmd = cmd->next;
+		}
+		// remove cmd
+	}
+	return (1);
 }
 
 static	void	minishell(t_env *env)
 {
 	char	*input;
-	t_cmd	*commands;
-	int		i;
 
 	while (true)
 	{
@@ -210,20 +216,13 @@ static	void	minishell(t_env *env)
 		display_prompt();
 		if (!(input = user_input()))
 			ft_error(NULL, NULL, "can't read this line");
-		if (!(commands = main_loop(env, input)))
+		if (!main_loop(env, input))
 		{
 			ft_putstr_fd("materi svoey takoe napishi\n", 2);
 			free(input);
 			continue ;
 		}
-		i = 0;
-		while (commands != NULL)
-		{
-			g_status = handle_cmd(commands, env);
-			commands = commands->next;
-		}
 		free(input);
-		// remove commandds
 	}
 }
 

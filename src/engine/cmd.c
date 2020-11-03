@@ -15,7 +15,10 @@ static	int		execute(t_cmd *cmd, t_env *env)
 	int		ret;
 
 	if (cmd->builtin != NULL)
+	{
 		ret = cmd->builtin->func(cmd, env);
+		set_path_env_var(env, cmd->name);
+	}
 	else
 		ret = execute_programm(cmd, env);
 	return (ret);

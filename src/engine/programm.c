@@ -75,6 +75,7 @@ int				execute_programm(t_cmd *cmd, t_env *env)
 	g_pid = fork();
 	env_matrix = NULL;
 	args_matrix = NULL;
+	set_path_env_var(env, cmd->name);
 	if ((pid = g_pid) < 0)
 	{
 		ft_error("fork", NULL, strerror(errno));

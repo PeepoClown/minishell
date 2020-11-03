@@ -45,6 +45,7 @@ t_cmd	*ft_lst_new()
 	tmp->redir_out[0] = NULL;
 	tmp->redir_append_out = (char**)malloc(sizeof(char*));
 	tmp->redir_append_out[0] = NULL;
+	tmp->last_out_redir = NULL;
 	tmp->last_out_redir_type = NONE;
 	tmp->redir_in = (char**)malloc(sizeof(char*));
 	tmp->redir_in[0] = NULL;
