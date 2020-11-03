@@ -56,7 +56,6 @@ char *combine_tokens(char *token, char c)
 //char	**add_line_to_array(char **mod_array, char *line)
 //{
 //	char **tmp = mod_array;
-//	int	i = 0;
 //
 //	while (mod_array[i])
 //		i++;
