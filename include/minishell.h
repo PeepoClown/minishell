@@ -116,6 +116,7 @@ char	**lexer(char *s, t_lexer *lexer);
 void	parse_input(t_cmd **cmd, char **input, int *i); //check this function
 int		get_arguments(t_cmd *cmd, char *s);
 int		get_command(t_cmd *cmd, char *s);
+char	*parse_tokens(char *tokens);
 
 /*
 ** processing quotes

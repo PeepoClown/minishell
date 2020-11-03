@@ -177,6 +177,11 @@ char	**lexer(char *s, t_lexer *lexer)
 		}
 		else if(s[lexer->i] == '\\')
 		{
+			if (!s[lexer->i + 1])
+			{
+				unexpected_token('\\');
+				return (NULL);
+			}
 			current_token = combine_tokens(current_token, s[lexer->i]);
 			lexer->i++;
 			if (s[lexer->i])
@@ -197,12 +202,14 @@ char	**lexer(char *s, t_lexer *lexer)
 			lexer->i++;
 		}
 	}
+	if (!current_token)
+		return (NULL);
 	write(1, "end of lexer\n", 13);
 	int b;
 	char **new = ft_split(current_token, '\n');
 	printf("each token:\n");
 	b = -1;
-	while(new[++b] != NULL)
+	while(new[++b])
 	{
 		printf("token number %02d --> |%s%s%s|\n", b + 1, GRN, new[b], NRM);
 	}

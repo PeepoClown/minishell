@@ -208,30 +208,30 @@ void parse_input(t_cmd **cmd, char **input, int *i)
 			j++;
 			continue ;
 		}
-//		token = parse_it_all(input[j]);
 		if (!tmp->name)
-			tmp->name = input[j];
+			tmp->name = parse_tokens(input[j]);
 		else if (!(ft_strcmp(input[j], ">")))
 		{
 			tmp->last_out_redir_type = TRUNC;
-			tmp->last_out_redir = ft_strdup(input[j + 1]);
+			tmp->last_out_redir = ft_strdup(parse_tokens(input[j + 1]));
 			//add input[j] into struct, not char**, argument to this struct as well
-			tmp->redir_out = add_line_to_array(tmp->redir_out, input[j + 1]);
+			tmp->redir_out = add_line_to_array(tmp->redir_out, parse_tokens(input[j + 1]));
 			j++;
 		}
 		else if (!(ft_strcmp(input[j], ">>")))
 		{
 			tmp->last_out_redir_type = APPEND;
-			tmp->last_out_redir = ft_strdup(input[j + 1]);
+			tmp->last_out_redir = ft_strdup(parse_tokens(input[j + 1]));
 			//add input[j] into struct, not char**, argument to this struct as well
-			tmp->redir_append_out = add_line_to_array(tmp->redir_append_out, input[++j]);
+			tmp->redir_append_out = add_line_to_array(tmp->redir_append_out, parse_tokens(input[j + 1]));
+			j++;
 		}
 		else if (!(ft_strcmp(input[j], "<")))
 		{
-			tmp->redir_in = add_line_to_array(tmp->redir_in, input[++j]);
+			tmp->redir_in = add_line_to_array(tmp->redir_in, parse_tokens(input[++j]));
 		}
 		else
-			tmp->args = add_line_to_array(tmp->args, input[j]);
+			tmp->args = add_line_to_array(tmp->args, parse_tokens(input[j]));
 		j++;
 	}
 	*i = j;
@@ -249,7 +249,7 @@ int main(int argc, char **argv)
 	int gnl;
 	char **res;
 
-	while((gnl = get_next_line(fd, &s)) >= 0)
+	while(get_next_line(fd, &s) > 0)
 	{
 		i++;
 		printf("%sTEST %02d: ---> %s%s\n", RED, i, s, NRM);
@@ -264,12 +264,10 @@ int main(int argc, char **argv)
 		j = 0;
 		while (res[j])
 		{
-			parse_input(&cmd, res, &j);
+			parse_input(&cmd, res, &j, env);
 			print_struct(cmd);
 		}
 //		ft_remove_char_matrix(res);
-		if (gnl == 0)
-			break ;
 	}
 
 	return (0);
