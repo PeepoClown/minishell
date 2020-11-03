@@ -1,4 +1,4 @@
-#include "../../include/minishell.h"
+#include <minishell.h>
 
 void	print_struct(t_cmd *cmd)
 {
@@ -187,7 +187,7 @@ char	**add_line_to_array(char **mod_array, char *line)
 	return (copy);
 }
 
-void parse_input(t_cmd **cmd, char **input, int *i)
+void parse_input(t_cmd **cmd, char **input, int *i, t_env *env)
 {
 	int j = *i;
 	char *token;
@@ -208,7 +208,7 @@ void parse_input(t_cmd **cmd, char **input, int *i)
 			j++;
 			continue ;
 		}
-		if (!tmp->name)
+		if (!tmp->name && ft_strcmp(input[j], ">>") && ft_strcmp(input[j], ">") && ft_strcmp(input[j], "<"))
 			tmp->name = parse_tokens(input[j]);
 		else if (!(ft_strcmp(input[j], ">")))
 		{
@@ -235,43 +235,45 @@ void parse_input(t_cmd **cmd, char **input, int *i)
 		j++;
 	}
 	*i = j;
-	printf("input %d\n\n", *i);
+	// printf("input %d\n\n", *i);
 }
 
-int main(int argc, char **argv)
-{
-	char *s = NULL;
-	t_lexer lex;
-	t_cmd	*cmd = NULL;
-	int fd = open(argv[1], O_RDONLY);
-	int i = 0;
-	int j = 0;
-	int gnl;
-	char **res;
+// int main(int argc, char **argv)
+// {
+// 	char *s = NULL;
+// 	t_lexer lex;
+// 	t_cmd	*cmd = NULL;
+// 	int fd = open(argv[1], O_RDONLY);
+// 	int i = 0;
+// 	int j = 0;
+// 	int gnl;
+// 	char **res;
 
-	while(get_next_line(fd, &s) > 0)
-	{
-		i++;
-		printf("%sTEST %02d: ---> %s%s\n", RED, i, s, NRM);
-		if (!(res = lexer(s, &lex)))
-		{
-			free(s);
-			s = NULL;
-			continue ;
-		}
-		free(s);
-		s = NULL;
-		j = 0;
-		while (res[j])
-		{
-			parse_input(&cmd, res, &j, env);
-			print_struct(cmd);
-		}
-//		ft_remove_char_matrix(res);
-	}
+// 	while((gnl = get_next_line(fd, &s)) >= 0)
+// 	{
+// 		i++;
+// 		printf("%sTEST %02d: ---> %s%s\n", RED, i, s, NRM);
+// 		if (!(res = lexer(s, &lex)))
+// 		{
+// 			free(s);
+// 			s = NULL;
+// 			continue ;
+// 		}
+// 		free(s);
+// 		s = NULL;
+// 		j = 0;
+// 		while (res[j])
+// 		{
+// 			parse_input(&cmd, res, &j);
+// 			print_struct(cmd);
+// 		}
+// //		ft_remove_char_matrix(res);
+// 		if (gnl == 0)
+// 			break ;
+// 	}
 
-	return (0);
-}
+// 	return (0);
+// }
 
 //void parse_input(t_cmd **cmd, char *input)
 //{

@@ -18,49 +18,40 @@ static	bool	arg_valid(const char *arg)
 	return (true);
 }
 
-static	void	add_to_env(t_env *env, const char *line)
+static	void	empty_args_export(t_cmd *cmd, t_env *env)
 {
-	char	*key;
+	t_env	*copy;
 
-	key = (ft_find_first_of(line, '=') == -1)
-		? ft_strdup(line)
-		: ft_substr(line, 0, ft_find_first_of(line, '='));
-	if (check_env_key(env, key) == true)
-	{
-		if (ft_find_first_of(line, '=') == -1)
-		{
-			free(key);
-			return ;
-		}
-		del_env(&env, key);
-	}
-	free(key);
-	add_env(&env, line);
+	copy = copy_env(env);
+	sort_env(&copy);
+	print_env_export(copy, cmd->fd_out);
+	remove_env(&copy);
 }
 
 int				ft_export(t_cmd *cmd, t_env *env)
 {
 	int		ret;
+	int		i;
 
 	if (!env)
 		return (errno = 1);
 	ret = 0;
-	if (*(cmd->args) == NULL)
+	i = 0;
+	if (cmd->args[i] == NULL)
 	{
-		sort_env(&env);
-		print_env_export(env, cmd->fd_out);
+		empty_args_export(cmd, env);
 		return (ret);
 	}
-	while (*(cmd->args) != NULL)
+	while (cmd->args[i] != NULL)
 	{
-		if (arg_valid(*(cmd->args)))
-			add_to_env(env, *(cmd->args));
+		if (arg_valid(cmd->args[i]))
+			add_to_env(env, cmd->args[i]);
 		else
 		{
-			ft_error("export", *(cmd->args), "not a valid identifier");
+			ft_error("export", cmd->args[i], "not a valid identifier");
 			ret = 1;
 		}
-		(cmd->args)++;
+		i++;
 	}
 	return (ret);
 }

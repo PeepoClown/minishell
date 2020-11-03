@@ -11,6 +11,7 @@ char	*ft_substr(const char *s, int start, size_t len);
 int		ft_find_first_of(const char *str, char sym);
 void	ft_putstr_fd(const char *s, int fd);
 void	ft_putendl_fd(int fd);
+void	ft_putnbr_fd(int n, int fd);
 int		ft_islowcase(int ch);
 int		ft_isupcase(int ch);
 int		ft_isdigit(int ch);
@@ -23,6 +24,6 @@ char	**ft_split(char const *s, char c);
 char	*ft_strtrim(char *s1, char const *set);
 char	*ft_strchr(const char *s, int c);
 void	ft_remove_char_matrix(char **matrix);
-int		get_next_line(int fd, char **line);
+char	**ft_copy_char_matrix(char **matrix, int row);
 
 #endif

@@ -16,7 +16,7 @@ SRCS =	main.c \
 		engine/builtin.c engine/cmd.c engine/error.c \
 		engine/open_redirections.c engine/programm_params.c engine/programm.c \
 		engine/prompt.c engine/signals.c engine/validate_cmd.c \
-		engine/validate_redirections.c engine/input.c \
+		engine/validate_redirections.c engine/input.c engine/validate_hidden_env.c \
 		\
 		cmd/ft_cd.c cmd/ft_echo.c cmd/ft_env.c \
 		cmd/ft_exit.c cmd/ft_export.c cmd/ft_pwd.c \
@@ -24,9 +24,11 @@ SRCS =	main.c \
 		\
 		env/add_env.c env/create_env.c env/del_env.c \
 		env/get_env_matrix.c env/get_env_value.c env/print_env.c \
-		env/remove_env.c env/sort_env.c
-		#\
-		#parser/parser.c parser/quoting.c parser/utils_01.c parser/utils_02.c
+		env/remove_env.c env/sort_env.c env/change_env_value.c \
+		env/copy_env.c \
+		\
+		parser/lexer.c parser/parser.c parser/quoting.c \
+		parser/utils_01.c parser/utils_02.c parser/tokens.c
 SRC_DIR = src/
 SRC = $(addprefix $(SRC_DIR), $(SRCS))
 OBJS = $(SRC:.c=.o)

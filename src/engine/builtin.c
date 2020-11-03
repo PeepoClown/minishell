@@ -6,7 +6,7 @@ t_builtin	*get_builtin(const char *cmd_name)
 		{ "pwd", ft_pwd }, { "export", ft_export }, { "env", ft_env },
 		{ "unset", ft_unset }, { "exit", ft_exit } };
 	t_builtin		*res;
-	int 			i;
+	int				i;
 
 	i = 0;
 	while (i < 7)

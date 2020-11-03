@@ -9,6 +9,7 @@ t_env	*create_env_item(const char *line)
 		return (NULL);
 	item->value = NULL;
 	item->next = NULL;
+	item->is_hidden = 0;
 	delim_pos = ft_find_first_of(line, '=');
 	if (delim_pos >= 0)
 	{
@@ -36,5 +37,6 @@ t_env	*create_env(char **env_vars)
 		env = env->next;
 		env_vars++;
 	}
+	set_env_hidden(head, "_", ENV_VIS);
 	return (head);
 }

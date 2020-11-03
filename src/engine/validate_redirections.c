@@ -45,18 +45,16 @@ bool			validate_output_redirects(t_cmd *cmd)
 bool			validate_input_redirects(t_cmd *cmd)
 {
 	int		i;
-	char	*tmp;
 
 	i = 0;
 	if (cmd->redir_in != NULL)
 	{
-		tmp = NULL;
 		while (cmd->redir_in[i] != NULL)
+		{
+			if (!check_file(cmd->redir_in[i], O_RDONLY, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH))
+				return (false);
 			i++;
-		if (i > 0)
-			tmp = cmd->redir_in[i - 1];
-		if (tmp != NULL && !check_file(tmp, O_RDONLY, 0))
-			return (false);
+		}
 	}
 	return (true);
 }

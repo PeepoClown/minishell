@@ -15,7 +15,10 @@ static	int		execute(t_cmd *cmd, t_env *env)
 	int		ret;
 
 	if (cmd->builtin != NULL)
+	{
 		ret = cmd->builtin->func(cmd, env);
+		set_path_env_var(env, cmd->name);
+	}
 	else
 		ret = execute_programm(cmd, env);
 	return (ret);
@@ -49,6 +52,9 @@ int				handle_cmd(t_cmd *cmd, t_env *env)
 	int			status;
 
 	errno = 0;
+	validate_hidden_env(env, cmd);
+	if (cmd->name == NULL)
+		return (status = 0);
 	if (!validate_output_redirects(cmd) || !validate_input_redirects(cmd))
 		return (status = 1);
 	if ((cmd->builtin = get_builtin(cmd->name)) != NULL ||

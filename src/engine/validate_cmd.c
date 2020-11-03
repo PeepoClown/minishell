@@ -21,7 +21,7 @@ bool			validate_non_builtin_cmd(t_cmd *cmd, t_env *env)
 	char		**paths;
 	char		*valid_path;
 
-	alloc_check(paths = ft_split(get_env_value(env, "PATH"), ':'));
+	paths = ft_split(get_env_value(env, "PATH"), ':');
 	valid_path = get_programm_path(cmd->name, paths);
 	ft_remove_char_matrix(paths);
 	if (valid_path == NULL)
