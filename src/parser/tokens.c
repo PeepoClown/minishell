@@ -49,7 +49,7 @@ char	*parse_tokens(char *token)
 	char	*parsed;
 	int		i;
 
-	i = -1;
+	i = -1; 
 	if (!(parsed = parsing(token)))
 		return (NULL);
 //		free(tmp[i]);

@@ -187,7 +187,7 @@ char	**add_line_to_array(char **mod_array, char *line)
 	return (copy);
 }
 
-void parse_input(t_cmd **cmd, char **input, int *i)
+void parse_input(t_cmd **cmd, char **input, int *i, t_env *env)
 {
 	int j = *i;
 	char *token;
@@ -208,7 +208,7 @@ void parse_input(t_cmd **cmd, char **input, int *i)
 			j++;
 			continue ;
 		}
-		if (!tmp->name)
+		if (!tmp->name && ft_strcmp(input[j], ">>") && ft_strcmp(input[j], ">") && ft_strcmp(input[j], "<"))
 			tmp->name = parse_tokens(input[j]);
 		else if (!(ft_strcmp(input[j], ">")))
 		{

@@ -28,7 +28,7 @@ SRCS =	main.c \
 		env/copy_env.c \
 		\
 		parser/lexer.c parser/parser.c parser/quoting.c \
-		parser/utils_01.c parser/utils_02.c
+		parser/utils_01.c parser/utils_02.c parser/tokens.c
 SRC_DIR = src/
 SRC = $(addprefix $(SRC_DIR), $(SRCS))
 OBJS = $(SRC:.c=.o)
