@@ -11,10 +11,10 @@
 # include <errno.h>
 # include <signal.h>
 # include <stdbool.h>
+# include <fcntl.h>
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <sys/stat.h>
-#include <fcntl.h>
 
 # define READ_END 0
 # define WRITE_END 1
