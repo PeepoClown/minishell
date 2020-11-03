@@ -10,8 +10,13 @@ SRCS =	ft_strlen.c ft_strcmp.c ft_strdup.c \
 		ft_putendl_fd.c ft_islowcase.c ft_isupcase.c \
 		ft_isdigit.c ft_isalpha.c ft_isalnum.c \
 		ft_atoi.c ft_strcpy.c ft_strjoin.c \
+<<<<<<< HEAD
 		ft_split.c ft_strtrim.c ft_strchr.c \
 		ft_copy_char_matrix.c ft_remove_char_matrix.c ft_putnbr_fd.c
+=======
+		ft_split.c ft_strtrim.c ft_strchr.c ft_remove_char_matrix.c \
+		get_next_line.c
+>>>>>>> 355a0127eb7aadf3e50628ef748963166044c69a
 SRC_DIR = ./
 SRC = $(addprefix $(SRC_DIR), $(SRCS))
 

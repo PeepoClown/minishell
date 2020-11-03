@@ -216,6 +216,7 @@ static	void	minishell(t_env *env)
 		display_prompt();
 		if (!(input = user_input()))
 			ft_error(NULL, NULL, "can't read this line");
+<<<<<<< HEAD
 		if (!main_loop(env, input))
 		{
 			ft_putstr_fd("materi svoey takoe napishi\n", 2);
@@ -223,6 +224,20 @@ static	void	minishell(t_env *env)
 			continue ;
 		}
 		free(input);
+=======
+		free(input);
+		// parsing
+		// execute_input(input, env) for all list of commands
+//		cmd->name = ft_strdup("./1.sh");
+		cmd->fd_out = 1;
+		cmd->fd_in = 0;
+		char *args[] = { NULL };
+		cmd->args = args;
+		execute_cmd(cmd, env);
+		printf("ret : %d\n", g_status);
+		free(cmd->name);
+		break ;
+>>>>>>> 355a0127eb7aadf3e50628ef748963166044c69a
 	}
 }
 

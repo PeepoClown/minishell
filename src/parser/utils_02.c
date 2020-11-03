@@ -10,7 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+<<<<<<< HEAD
 #include <minishell.h>
+=======
+#include "../../include/minishell.h"
+>>>>>>> 355a0127eb7aadf3e50628ef748963166044c69a
 
 int		array_size(char **array)
 {
@@ -53,6 +57,7 @@ char *combine_tokens(char *token, char c)
 	return (s);
 }
 
+<<<<<<< HEAD
 //char	**add_line_to_array(char **mod_array, char *line)
 //{
 //	char **tmp = mod_array;
@@ -69,6 +74,8 @@ char *combine_tokens(char *token, char c)
 //	return (mod_array);
 //}
 
+=======
+>>>>>>> 355a0127eb7aadf3e50628ef748963166044c69a
 char	**add_token_to_array(t_lexer *lexer, char *arg, int i)
 {
 	char	**new;
@@ -80,7 +87,11 @@ char	**add_token_to_array(t_lexer *lexer, char *arg, int i)
 	while (lexer->tokens[++i])
 		new[i] = lexer->tokens[i];
 	new[i++] = ft_strdup(arg);
+<<<<<<< HEAD
 	new[i] = ft_strdup("");
+=======
+	new[i] = NULL;
+>>>>>>> 355a0127eb7aadf3e50628ef748963166044c69a
 //	free_array(cmd->args);
 	return (new);
 }
