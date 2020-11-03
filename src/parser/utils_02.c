@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include <minishell.h>
 
 int		array_size(char **array)
 {
@@ -19,8 +19,8 @@ int		array_size(char **array)
 	i = 0;
 	printf("arr size %d\n", i);
 //	printf("arr elem %s\n", array[i]);
-//	if (!array)
-//		return (0);
+	if (!array)
+		return (0);
 	while (array[i])
 		i++;
 	printf("--->arr size %d\n", i);
@@ -43,6 +43,47 @@ int		free_array(char **array)
 	return (i);
 }
 
+char *combine_tokens(char *token, char c)
+{
+	char	*s;
+
+	if (!token)
+		token = ft_strdup("");
+	s = add_char(token, c);
+	return (s);
+}
+
+//char	**add_line_to_array(char **mod_array, char *line)
+//{
+//	char **tmp = mod_array;
+//	int	i = 0;
+//
+//	while (mod_array[i])
+//		i++;
+//	mod_array = (char **)malloc(sizeof(char *) * (i + 2));
+//	i = -1;
+//	while(tmp[++i])
+//		mod_array[i] = ft_strdup(tmp[i]);
+//	mod_array[i++] = ft_strdup(line);
+//	mod_array[i] = ft_strdup("");
+//	return (mod_array);
+//}
+
+char	**add_token_to_array(t_lexer *lexer, char *arg, int i)
+{
+	char	**new;
+
+	printf("arr size %d\n", i);
+	if (!(new = (char **)malloc(sizeof(char *) * (i + 2))))
+		return (NULL);
+	i = -1;
+	while (lexer->tokens[++i])
+		new[i] = lexer->tokens[i];
+	new[i++] = ft_strdup(arg);
+	new[i] = ft_strdup("");
+//	free_array(cmd->args);
+	return (new);
+}
 char	**add_string_to_array(t_cmd *cmd, char *arg)
 {
 	char	**new;
@@ -53,7 +94,7 @@ char	**add_string_to_array(t_cmd *cmd, char *arg)
 	if (!(new = (char **)malloc(sizeof(char *) * (i + 2))))
 		return (NULL);
 	i = -1;
-	while (cmd->args[++i])
+	while (cmd->args != NULL && cmd->args[++i] != NULL)
 		new[i] = cmd->args[i];
 	new[i++] = ft_strdup(arg);
 	new[i] = NULL;

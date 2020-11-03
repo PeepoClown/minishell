@@ -24,3 +24,13 @@ char	*get_env_value(t_env *env, const char *key)
 	}
 	return (NULL);
 }
+
+void	set_path_env_var(t_env *env, const char *path)
+{
+	char	*tmp;
+
+	tmp = ft_strjoin("_=", path);
+	add_to_env(env, tmp);
+	free(tmp);
+	set_env_hidden(env, "_", ENV_VIS);
+}

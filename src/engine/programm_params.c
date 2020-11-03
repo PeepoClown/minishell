@@ -8,6 +8,8 @@ char	*get_programm_path(const char *cmd, char **paths)
 	char		*tmp1;
 	char		*tmp2;
 
+	if (!paths)
+		return (NULL);
 	i = 0;
 	res = NULL;
 	while (paths[i] != NULL)

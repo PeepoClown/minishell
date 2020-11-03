@@ -4,6 +4,7 @@ static	void	swap_env_items(t_env *item1, t_env *item2)
 {
 	char	*key;
 	char	*value;
+	int		is_hidden;
 
 	key = item1->key;
 	value = item1->value;
@@ -11,6 +12,9 @@ static	void	swap_env_items(t_env *item1, t_env *item2)
 	item1->value = item2->value;
 	item2->key = key;
 	item2->value = value;
+	is_hidden = item1->is_hidden;
+	item1->is_hidden = item2->is_hidden;
+	item2->is_hidden = is_hidden;
 }
 
 void			sort_env(t_env **env)

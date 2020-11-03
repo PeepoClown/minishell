@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include <minishell.h>
 
 char	*add_char(char *s, char c)
 {
@@ -37,28 +37,35 @@ t_cmd	*ft_lst_new()
 	if(!(tmp = (t_cmd *)malloc(sizeof(t_cmd))))
 		return (NULL);
 	tmp->name = NULL;
-	tmp->args = (char **)malloc(sizeof(char *));
+	tmp->args = (char**)malloc(sizeof(char*));
 	tmp->args[0] = NULL;
 	tmp->fd_in = 0;
 	tmp->fd_out = 0;
-	tmp->fd_append_out = 0;
-	tmp->pipe = 0;
+	tmp->redir_out = (char**)malloc(sizeof(char*));
+	tmp->redir_out[0] = NULL;
+	tmp->redir_append_out = (char**)malloc(sizeof(char*));
+	tmp->redir_append_out[0] = NULL;
+	tmp->last_out_redir = NULL;
+	tmp->last_out_redir_type = NONE;
+	tmp->redir_in = (char**)malloc(sizeof(char*));
+	tmp->redir_in[0] = NULL;
+	tmp->pipe_status = false;
 	tmp->next = NULL;
 	return (tmp);
 }
 
-void	ft_lst_add_back(t_cmd **cmd, t_cmd *new) //lstnew
-{
-	t_cmd *a;
-
-	a = *cmd;
-	if (a)
-	{
-		while (a->next)
-			a = a->next;
-		a->next = new;
-	}
-	else
-		*cmd = new;
-}
+//void	ft_lst_add_back(t_cmd **cmd, t_cmd *new) //lstnew
+//{
+//	t_cmd *a;
+//
+//	a = *cmd;
+//	if (a)
+//	{
+//		while (a->next)
+//			a = a->next;
+//		a->next = new;
+//	}
+//	else
+//		*cmd = new;
+//}
 

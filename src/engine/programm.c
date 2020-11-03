@@ -34,12 +34,12 @@ static	int		prepare_child_proc(t_cmd *cmd, t_env *env,
 {
 	if (dup2(cmd->fd_out, STDOUT_FILENO) < 0)
 	{
-		ft_error("pipe", NULL, strerror(errno));
+		ft_error("dup", NULL, strerror(errno));
 		return (errno);
 	}
 	if (dup2(cmd->fd_in, STDIN_FILENO) < 0)
 	{
-		ft_error("pipe", NULL, strerror(errno));
+		ft_error("dup", NULL, strerror(errno));
 		return (errno);
 	}
 	alloc_check(*env_matrix = get_env_matrix(env));
@@ -75,6 +75,7 @@ int				execute_programm(t_cmd *cmd, t_env *env)
 	g_pid = fork();
 	env_matrix = NULL;
 	args_matrix = NULL;
+	set_path_env_var(env, cmd->name);
 	if ((pid = g_pid) < 0)
 	{
 		ft_error("fork", NULL, strerror(errno));

@@ -32,6 +32,7 @@ static	char	*cut_home_path(void)
 		j = 1;
 		while (i < (int)ft_strlen(path))
 			path_with_home[j++] = path[i++];
+		path_with_home[j] = '\0';
 		free(path);
 		return (path_with_home);
 	}
@@ -47,19 +48,21 @@ void			display_prompt(void)
 	char	*path;
 
 	path = (g_home != NULL) ? cut_home_path() : NULL;
+	ft_putstr_fd("\e[1;34m[ ", 1);
 	if (g_user != NULL)
 	{
-		ft_putstr_fd("\e[1;35m", 1);
+		ft_putstr_fd("\e[1;31m", 1);
 		ft_putstr_fd(g_user, 1);
-		ft_putstr_fd("\e[0m:", 1);
 	}
 	if (g_home != NULL)
 	{
-		ft_putstr_fd("\e[1;33m", 1);
+		ft_putstr_fd("\e[1;31m:", 1);
 		ft_putstr_fd(path, 1);
-		ft_putstr_fd("\e[0m\n", 1);
 	}
-	ft_putstr_fd("$> ", 1);
+	ft_putstr_fd("\e[1;34m ]\n\e[0m", 1);
+	ft_putstr_fd("(current status : \e[4;33m", 1);
+	ft_putnbr_fd(g_status, 1);
+	ft_putstr_fd("\e[0m ) $> ", 1);
 	if (path != NULL)
 		free(path);
 }
