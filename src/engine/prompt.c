@@ -5,6 +5,8 @@ void			init_prompt_vars(t_env *env)
 	g_user = ft_strdup(get_env_value(env, "USER"));
 	g_home = ft_strdup(get_env_value(env, "HOME"));
 	g_status = 0;
+
+	iscommand = 0;
 }
 
 void			remove_prompt_vars(char *user, char *home)

@@ -198,6 +198,7 @@ static	int		main_loop(t_env *env, char *input)
 		parse_input(&cmd, tokens, &i);
 		while (cmd)
 		{
+			iscommand = 1;
 			g_status = handle_cmd(cmd, env);
 			cmd = cmd->next;
 		}
@@ -212,6 +213,7 @@ static	void	minishell(t_env *env)
 
 	while (true)
 	{
+		iscommand = 0;
 		input = NULL;
 		display_prompt();
 		if (!(input = user_input()))
