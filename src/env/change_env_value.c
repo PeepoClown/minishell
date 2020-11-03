@@ -21,7 +21,7 @@ void	change_env_value(t_env *env, const char *line)
 	}
 }
 
-void	set_env_hidden(t_env *env, const char *key, int status)
+void	set_env_hidden(t_env *env, const char *key, t_hidden_status status)
 {
 	if (!env)
 		return ;

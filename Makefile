@@ -25,9 +25,10 @@ SRCS =	main.c \
 		env/add_env.c env/create_env.c env/del_env.c \
 		env/get_env_matrix.c env/get_env_value.c env/print_env.c \
 		env/remove_env.c env/sort_env.c env/change_env_value.c \
-		env/add_to_env.c env/copy_env.c
-		#\
-		#parser/parser.c parser/quoting.c parser/utils_01.c parser/utils_02.c
+		env/copy_env.c \
+		\
+		parser/lexer.c parser/parser.c parser/quoting.c \
+		parser/utils_01.c parser/utils_02.c
 SRC_DIR = src/
 SRC = $(addprefix $(SRC_DIR), $(SRCS))
 OBJS = $(SRC:.c=.o)

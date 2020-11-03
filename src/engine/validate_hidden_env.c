@@ -52,7 +52,7 @@ void			validate_hidden_env(t_env *env, t_cmd *cmd)
 		change_env_value(env, cmd->name);
 	else
 		add_to_env(env, cmd->name);
-	set_env_hidden(env, key, 1);
+	set_env_hidden(env, key, HIDDEN);
 	free(key);
 	free(cmd->name);
 	cmd->name = ft_strdup(cmd->args[0]);

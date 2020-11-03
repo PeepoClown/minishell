@@ -19,6 +19,10 @@
 # define WRITE_END 1
 //# define PATH_MAX 4096
 
+# define NRM "\x1B[0m"
+# define RED "\x1B[31m"
+# define GRN "\x1B[32m"
+
 extern char		*g_user;
 extern char		*g_home;
 extern int		g_status;
@@ -28,12 +32,19 @@ extern pid_t	g_pid;
 ** interface for env vars
 */
 
+typedef enum	e_hidden_status
+{
+	VISIBLE = 0,
+	HIDDEN,
+	EXPORT_VIS,
+	ENV_VIS
+}				t_hidden_status;
+
 typedef struct	s_env
 {
 	char			*key;
 	char			*value;
-	int				is_hidden; // 0 - visible, 1 - hidden,
-							// 2 - visible in export, 3 - visible in env
+	t_hidden_status	is_hidden;
 	struct s_env	*next;
 }				t_env;
 
@@ -46,7 +57,7 @@ void			del_env(t_env **env, const char *key);
 void			remove_env(t_env **env);
 char			*get_env_value(t_env *env, const char *key);
 void			change_env_value(t_env *env, const char *line);
-void			set_env_hidden(t_env *env, const char *key, int status);
+void			set_env_hidden(t_env *env, const char *key, t_hidden_status status);
 bool			check_env_key(t_env *env, const char *key);
 void			print_env(t_env *env, int fd_out);
 void			print_env_export(t_env *env, int fd_out);
@@ -92,10 +103,39 @@ typedef struct	s_cmd
 }				t_cmd;
 
 /*
+** structure of lexer
+*/
+
+typedef struct	s_lexer
+{
+	int		i;
+	int		error;
+	int		token_len;
+	char 	match_quote;
+	char 	unexp_token;
+	char 	**tokens;
+}				t_lexer;
+
+/*
+** input syntax check
+*/
+
+char			**lexer(char *s, t_lexer *lexer);
+
+/*
 ** input parsing
 */
 
-//void	parse_input(t_cmd *cmd, char *input);
+void			parse_input(t_cmd **cmd, char **input, int *i);
+int				get_arguments(t_cmd *cmd, char *s);
+int				get_command(t_cmd *cmd, char *s);
+
+/*
+** processing quotes
+*/
+
+int				double_quotes(char *s, char **token);
+int				single_quotes(char *s, char **token);
 
 /*
 ** builtin commands & other programms
@@ -135,28 +175,17 @@ char			*user_input(void);
 t_cmd			*create_cmd(void);
 void			remove_cmd(t_cmd *cmd);
 
-
-void	parse_input(t_cmd **cmd, char *input); //check this function
-int		get_arguments(t_cmd *cmd, char *s);
-int		get_command(t_cmd *cmd, char *s);
-
 /*
-** processing quotes
+** utilities and auxiliaries
 */
 
-int		double_quotes(char *s, char **token);
-int		single_quotes(char *s, char **token);
-
-/*
-** utilities and auxularies
-** нихуя тут уровень инглиша, я бы ютилс написал)
-*/
-
-char	*add_char(char *s, char c);
-t_cmd	*ft_lst_new();
-void	ft_lst_add_back(t_cmd **cmd, t_cmd *new);
-int		array_size(char **array);
-int		free_array(char **array);
-char	**add_string_to_array(t_cmd *cmd, char *arg);
+char			*add_char(char *s, char c);
+t_cmd			*ft_lst_new();
+void			ft_lst_add_back(t_cmd **cmd, t_cmd *new);
+int				array_size(char **array);
+int				free_array(char **array);
+char			**add_string_to_array(t_cmd *cmd, char *arg);
+char			**add_token_to_array(t_lexer *lexer, char *arg, int i);
+char			*combine_tokens(char *token, char c);
 
 #endif

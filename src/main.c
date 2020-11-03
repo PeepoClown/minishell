@@ -182,39 +182,48 @@ void	test1(t_env *env)
 
 }
 
+static	t_cmd	*main_loop(t_env *env, char *input)
+{
+	t_lexer	lex;
+	char	**tokens;
+	int		i;
+	t_cmd	*cmd;
+
+	if (!(tokens = lexer(input, &lex)))
+		return (NULL);
+	i = 0;
+	cmd = NULL;
+	while (tokens[i] != NULL)
+		parse_input(&cmd, tokens, &i);
+	return (cmd);
+}
+
 static	void	minishell(t_env *env)
 {
 	char	*input;
-	t_cmd	*cmd;
+	t_cmd	*commands;
+	int		i;
 
 	while (true)
 	{
-		//test(env);
-		test1(env);
-		//break ;
-
-
 		input = NULL;
 		display_prompt();
 		if (!(input = user_input()))
 			ft_error(NULL, NULL, "can't read this line");
-		free(input);
-		break ;
-
-	/*
-		// validate all line
-		while (*input != '\0') // list != NULL
+		if (!(commands = main_loop(env, input)))
 		{
-			// create command
-			// parse_input(&cmd, input);
-			if (cmd != NULL)
-				g_status = handle_cmd(cmd, env);
-			// remove_cmd(cmd);
-			*input = 0;
-			printf("ret : %d\n", g_status);
+			ft_putstr_fd("materi svoey takoe napishi\n", 2);
+			free(input);
+			continue ;
+		}
+		i = 0;
+		while (commands != NULL)
+		{
+			g_status = handle_cmd(commands, env);
+			commands = commands->next;
 		}
 		free(input);
-		break ; */
+		// remove commandds
 	}
 }
 
