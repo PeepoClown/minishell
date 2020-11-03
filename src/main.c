@@ -226,7 +226,7 @@ static	void	minishell(t_env *env)
 	}
 }
 
-int				main(int argc, char **argv, char **env)
+int				main(int argc, char **argv)
 {
 	t_env	*env_list;
 

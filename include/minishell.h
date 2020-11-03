@@ -89,19 +89,19 @@ typedef enum	e_out_redir
 
 typedef struct	s_cmd
 {
-	char			*name;
-	char			**args;
-	int				fd_out;
-	int				fd_in;
-	char			**redir_out;
-	char			**redir_append_out;
-	char			*last_out_redir;
-	t_out_redir		last_out_redir_type;
-	char			**redir_in;
-	bool			pipe_status;
-	int				pipe[2];
-	t_builtin		*builtin;
-	struct	s_cmd	*next;
+	char		*name;
+	char		**args;
+	int			fd_out;
+	int			fd_in;
+	char		**redir_out; //> text > test1
+	char		**redir_append_out; //>> text >> test2
+	char		*last_out_redir; // test2
+	t_out_redir	last_out_redir_type; //APPEND
+	char		**redir_in; //<test
+	bool		pipe_status; //+-
+	int			pipe[2];
+	t_builtin	*builtin;
+	struct s_cmd	*next;
 }				t_cmd;
 
 /*
@@ -131,6 +131,7 @@ char			**lexer(char *s, t_lexer *lexer);
 void			parse_input(t_cmd **cmd, char **input, int *i);
 int				get_arguments(t_cmd *cmd, char *s);
 int				get_command(t_cmd *cmd, char *s);
+char			*parse_tokens(char *tokens);
 
 /*
 ** processing quotes

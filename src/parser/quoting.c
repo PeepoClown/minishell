@@ -37,33 +37,25 @@
 
 int		double_quotes(char *s, char **token)
 {
-	int i = 0;
-	int close = 0;
-	i++;
-	s++;
-	while(*s)
+	int i = 1;
+
+	while(s[i])
 	{
-		if (*s == '\"')
+		if (s[i] == '\"')
 		{
 			i++;
-			close = 1;
 			break ;
 		}
-//		if (*s == '\\')
-//		{
-//			i++;
-//			s++;
-//		}
-		if (!*s)
+		if (s[i] == '\\')
+		{
+			if (s[i + 1] != '\\' && s[i + 1] != '\"' && s[i + 1] != '$')
+				*token = add_char(*token, s[i]);
+			i++;
+		}
+		if (!s[i])
 			break ;
-		*token = add_char(*token, *s);
+		*token = add_char(*token, s[i]);
 		i++;
-		s++;
-	}
-	if (!close)
-	{
-		write(1, "Bad quoting\n", 12);
-		return (i);
 	}
 	return (i);
 }
@@ -71,35 +63,20 @@ int		double_quotes(char *s, char **token)
 int		single_quotes(char *s, char **token)
 {
 	int i = 0;
-	int close = 0;
 	if (*s++ == '\'')
 		i++;
 	while(*s)
 	{
-		close = 0;
 		if (*s == '\'')
 		{
 			i++;
-			close = 1;
 			break ;
 		}
-//		if (*s == '\\')
-//		{
-//			i++;
-//			s++;
-//		}
 		if (!*s)
 			break ;
-//		if (*s == '$') //metacharacters
-//			;
 		*token = add_char(*token, *s);
 		i++;
 		s++;
-	}
-	if (!close)
-	{
-		write(1, "Bad quoting\n", 12);
-		return (i);
 	}
 	return (i);
 }
