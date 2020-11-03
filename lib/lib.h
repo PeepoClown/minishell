@@ -24,10 +24,6 @@ char	**ft_split(char const *s, char c);
 char	*ft_strtrim(char *s1, char const *set);
 char	*ft_strchr(const char *s, int c);
 void	ft_remove_char_matrix(char **matrix);
-<<<<<<< HEAD
 char	**ft_copy_char_matrix(char **matrix, int row);
-=======
-int		get_next_line(int fd, char **line);
->>>>>>> 355a0127eb7aadf3e50628ef748963166044c69a
 
 #endif

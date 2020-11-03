@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 #include <minishell.h>
 
 void	print_struct(t_cmd *cmd)
@@ -39,28 +38,6 @@ void	print_struct(t_cmd *cmd)
 		cmd = cmd->next;
 	}
 }
-=======
-#include "../../include/minishell.h"
-
-//void	print_struct(t_cmd *cmd)
-//{
-//	while(cmd)
-//	{
-//		printf("cmd name: %s\n", cmd->name);
-//		printf("fd_in: %d\n", cmd->fd_in);
-//		printf("fd_out: %d\n", cmd->fd_out);
-//		printf("fd_append_out: %d\n", cmd->fd_append_out);
-//		printf("pipe: %d\n", cmd->pipe);
-//		int i = 0;
-//		while (cmd->args[i])
-//		{
-//			printf("args: %s\n", cmd->args[i]);
-//			i++;
-//		}
-//		cmd = cmd->next;
-//	}
-//}
->>>>>>> 355a0127eb7aadf3e50628ef748963166044c69a
 
 int		get_command(t_cmd *cmd, char *s)
 {
@@ -172,7 +149,6 @@ int		get_arguments(t_cmd *cmd, char *s)
 	return (i);
 }
 
-<<<<<<< HEAD
 void	get_env(char *s, char **parsed)
 {
 
@@ -211,21 +187,10 @@ char	**add_line_to_array(char **mod_array, char *line)
 	return (copy);
 }
 
-=======
-char *parse_it_all(char *el)
-{
-	char *parsed = el;
-
-	
-	return (parsed);
-}
-
->>>>>>> 355a0127eb7aadf3e50628ef748963166044c69a
 void parse_input(t_cmd **cmd, char **input, int *i)
 {
 	int j = *i;
 	char *token;
-<<<<<<< HEAD
 	t_cmd *tmp = ft_lst_new();
 	*cmd = tmp;
 	while(input[j])
@@ -310,69 +275,6 @@ void parse_input(t_cmd **cmd, char **input, int *i)
 // 	return (0);
 // }
 
-=======
-	while(input[j] != NULL)
-	{
-		if (!(ft_strcmp(input[j], ";")))
-		{
-			j++;
-			break ;
-		}
-		if (!(ft_strcmp(input[j], "|")))
-		{
-			(*cmd)->pipe_status = true;
-			//(*cmd) = (*cmd)->next;
-			j++;
-			continue ;
-		}
-		token = parse_it_all(input[j]);
-		if (!(*cmd)->name)
-			(*cmd)->name = input[j];
-		else if (*input[j] == '>')
-			//redirect output
-		else if (*input[j] == '<')
-			//redirect input
-		else
-			(*cmd)->args = add_string_to_array(*cmd, input[j]);
-		j++;
-	}
-	*i = j;
-	printf("input %d\n\n", *i);
-}
-
-int main(int argc, char **argv)
-{
-	char *s = NULL;
-	t_lexer lex;
-	t_cmd	*cmd;
-	int fd = open(argv[1], O_RDONLY);
-	int i = 0;
-	int j = 0;
-	int gnl;
-	char **res;
-
-	while((gnl = get_next_line(fd, &s)) >= 0)
-	{
-		i++;
-		printf("%sTEST %02d: ---> %s%s\n", RED, i, s, NRM);
-		if (!(res = lexer(s, &lex)))
-		{
-			free(s);
-			s = NULL;
-			continue ;
-		}
-		free(s);
-		s = NULL;
-		parse_input(&cmd, res,  &j);
-		ft_remove_char_matrix(res);
-		if (gnl == 0)
-			break ;
-	}
-
-	return (0);
-}
-
->>>>>>> 355a0127eb7aadf3e50628ef748963166044c69a
 //void parse_input(t_cmd **cmd, char *input)
 //{
 //	char *s = ft_strtrim(input, " ");

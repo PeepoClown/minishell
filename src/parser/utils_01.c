@@ -10,11 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-<<<<<<< HEAD
 #include <minishell.h>
-=======
-#include "../../include/minishell.h"
->>>>>>> 355a0127eb7aadf3e50628ef748963166044c69a
 
 char	*add_char(char *s, char c)
 {
@@ -41,7 +37,6 @@ t_cmd	*ft_lst_new()
 	if(!(tmp = (t_cmd *)malloc(sizeof(t_cmd))))
 		return (NULL);
 	tmp->name = NULL;
-<<<<<<< HEAD
 	tmp->args = (char**)malloc(sizeof(char*));
 	tmp->args[0] = NULL;
 	tmp->fd_in = 0;
@@ -56,15 +51,6 @@ t_cmd	*ft_lst_new()
 	tmp->redir_in[0] = NULL;
 	tmp->pipe_status = false;
 	tmp->next = NULL;
-=======
-	tmp->args = NULL;
-	tmp->fd_in = 0;
-	tmp->fd_out = 0;
-	tmp->redir_out = NULL;
-	tmp->redir_append_out = NULL;
-	tmp->last_out_redir_type = NONE;
-	tmp->pipe_status = false;
->>>>>>> 355a0127eb7aadf3e50628ef748963166044c69a
 	return (tmp);
 }
 

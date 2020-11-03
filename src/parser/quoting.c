@@ -10,11 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-<<<<<<< HEAD
 #include <minishell.h>
-=======
-#include "../../include/minishell.h"
->>>>>>> 355a0127eb7aadf3e50628ef748963166044c69a
 
 //void	quotes_multiline(char quote, char **token)
 //{

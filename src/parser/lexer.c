@@ -10,11 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-<<<<<<< HEAD
 #include <minishell.h>
-=======
-#include "../../include/minishell.h"
->>>>>>> 355a0127eb7aadf3e50628ef748963166044c69a
 
 int		check_quote_pair(char *s, char quote, int *error) //return
 {
@@ -63,14 +59,9 @@ int unexpected_token(char unexpected)
 int unexpected_eof(char match_quote)
 {
 	write(1, GRN, 6);
-<<<<<<< HEAD
 	write(1, "bash: unexpected EOF while looking for matching `", 49);
 	write(1, &match_quote, 1);
 	write(1, "\"", 1);
-=======
-	write(1, "bash: unexpected EOF while looking for matching ", 48);
-	write(1, &match_quote, 1);
->>>>>>> 355a0127eb7aadf3e50628ef748963166044c69a
 	write(1, NRM, 6);
 	write(1, "\n", 1);
 	return (1);
@@ -209,21 +200,12 @@ char	**lexer(char *s, t_lexer *lexer)
 	write(1, "end of lexer\n", 13);
 	int b;
 	char **new = ft_split(current_token, '\n');
-<<<<<<< HEAD
 	// printf("each token:\n");
 	// b = -1;
 	// while(new[++b] != NULL)
 	// {
 	// 	printf("token number %02d --> |%s%s%s|\n", b + 1, GRN, new[b], NRM);
 	// }
-=======
-	printf("each token:\n");
-	b = -1;
-	while(new[++b] != NULL)
-	{
-		printf("token number %02d --> |%s%s%s|\n", b + 1, GRN, new[b], NRM);
-	}
->>>>>>> 355a0127eb7aadf3e50628ef748963166044c69a
 	return (new);
 }
 

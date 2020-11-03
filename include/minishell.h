@@ -68,20 +68,6 @@ t_env			*copy_env(t_env *env);
 void			set_path_env_var(t_env *env, const char *path);
 
 /*
-** structure of lexer
-*/
-
-typedef struct s_lexer
-{
-	int	i;
-	int	error;
-	int	token_len;
-	char match_quote;
-	char unexp_token;
-	char **tokens;
-}				t_lexer;
-
-/*
 ** structure of command
 */
 
@@ -103,7 +89,6 @@ typedef enum	e_out_redir
 
 typedef struct	s_cmd
 {
-<<<<<<< HEAD
 	char			*name;
 	char			**args;
 	int				fd_out;
@@ -138,67 +123,21 @@ typedef struct	s_lexer
 */
 
 char			**lexer(char *s, t_lexer *lexer);
-=======
-	char		*name;
-	char		**args;
-	int			fd_out;
-	int			fd_in;
-	char		**redir_out; //> text > test1
-	char		**redir_append_out; //>> text >> test2
-	char		*last_out_redir; // test2
-	t_out_redir	last_out_redir_type; //APPEND
-	char		**redir_in; //<test
-	bool		pipe_status; //+-
-	int			pipe[2];
-	t_builtin	*builtin;
-}				t_cmd;
-
-/*
-** input syntax check
-*/
-
-char	**lexer(char *s, t_lexer *lexer);
->>>>>>> 355a0127eb7aadf3e50628ef748963166044c69a
 
 /*
 ** input parsing
 */
 
-<<<<<<< HEAD
 void			parse_input(t_cmd **cmd, char **input, int *i);
 int				get_arguments(t_cmd *cmd, char *s);
 int				get_command(t_cmd *cmd, char *s);
-=======
-void	parse_input(t_cmd **cmd, char **input, int *i); //check this function
-int		get_arguments(t_cmd *cmd, char *s);
-int		get_command(t_cmd *cmd, char *s);
->>>>>>> 355a0127eb7aadf3e50628ef748963166044c69a
 
 /*
 ** processing quotes
 */
 
-<<<<<<< HEAD
 int				double_quotes(char *s, char **token);
 int				single_quotes(char *s, char **token);
-=======
-int		double_quotes(char *s, char **token);
-int		single_quotes(char *s, char **token);
-
-/*
-** utilities and auxiliaries
-*/
-
-char	*add_char(char *s, char c);
-t_cmd	*ft_lst_new();
-void	ft_lst_add_back(t_cmd **cmd, t_cmd *new);
-int		array_size(char **array);
-int		free_array(char **array);
-char	**add_string_to_array(t_cmd *cmd, char *arg);
-char	**add_token_to_array(t_lexer *lexer, char *arg, int i);
-char *combine_tokens(char *token, char c);
-
->>>>>>> 355a0127eb7aadf3e50628ef748963166044c69a
 
 /*
 ** builtin commands & other programms
@@ -238,7 +177,6 @@ char			*user_input(void);
 t_cmd			*create_cmd(void);
 void			remove_cmd(t_cmd *cmd);
 
-<<<<<<< HEAD
 /*
 ** utilities and auxiliaries
 */
@@ -252,6 +190,4 @@ char			**add_string_to_array(t_cmd *cmd, char *arg);
 char			**add_token_to_array(t_lexer *lexer, char *arg, int i);
 char			*combine_tokens(char *token, char c);
 
-=======
->>>>>>> 355a0127eb7aadf3e50628ef748963166044c69a
 #endif
