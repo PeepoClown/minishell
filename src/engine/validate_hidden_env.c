@@ -36,6 +36,7 @@ static	void	decrease_cmd_args(t_cmd *cmd)
 		free(tmp);
 		i++;
 	}
+	cmd->args[i] = NULL;
 }
 
 void			validate_hidden_env(t_env *env, t_cmd *cmd)

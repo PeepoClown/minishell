@@ -49,7 +49,7 @@ int				handle_cmd(t_cmd *cmd, t_env *env)
 	int			status;
 
 	errno = 0;
-	validate_hidden_env(env, cmd); // ??? need tests
+	validate_hidden_env(env, cmd);
 	if (cmd->name == NULL)
 		return (status = 0);
 	if (!validate_output_redirects(cmd) || !validate_input_redirects(cmd))

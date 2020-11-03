@@ -24,8 +24,5 @@ CMakeLists.txt
 cmake-build-debug
 .idea
 
-# Shell scripts
-*.sh
-
 # Cache
 .DS_Store
