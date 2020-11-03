@@ -5,16 +5,36 @@ void	print_struct(t_cmd *cmd)
 	while(cmd)
 	{
 		printf("cmd name: %s\n", cmd->name);
-		printf("fd_in: %d\n", cmd->fd_in);
-		printf("fd_out: %d\n", cmd->fd_out);
-		printf("fd_append_out: %d\n", cmd->fd_append_out);
-		printf("pipe: %d\n", cmd->pipe);
 		int i = 0;
-		while (cmd->args[i])
-		{
-			printf("args: %s\n", cmd->args[i]);
-			i++;
-		}
+		if (cmd->args)
+			while (cmd->args[i] != NULL)
+			{
+				printf("args: %s\n", cmd->args[i]);
+				i++;
+			}
+		i = 0;
+		if (cmd->redir_out)
+			while (cmd->redir_out[i] != NULL)
+			{
+				printf("redir_out: %s\n", cmd->redir_out[i]);
+				i++;
+			}
+		i = 0;
+		if (cmd->redir_append_out)
+			while (cmd->redir_append_out[i] != NULL)
+			{
+				printf("redir_append_out: %s\n", cmd->redir_append_out[i]);
+				i++;
+			}
+		i = 0;
+		if (cmd->redir_in)
+			while (cmd->redir_in[i] != NULL)
+			{
+				printf("redir_in: %s\n", cmd->redir_in[i]);
+				i++;
+			}
+		printf("last_out_redir: %s\n", cmd->last_out_redir);
+		printf("last_out_redir_type: %d\n", (int)cmd->last_out_redir_type);
 		cmd = cmd->next;
 	}
 }
@@ -129,32 +149,129 @@ int		get_arguments(t_cmd *cmd, char *s)
 	return (i);
 }
 
-void parse_input(t_cmd **cmd, char *input)
+void	get_env(char *s, char **parsed)
 {
-	(void)cmd;
-	(void)input;
+
 }
 
-
-//int main()
+//char *parse_it_all(char *el)
 //{
-//	char *s;
-//	t_lexer lex;
-//	int fd = open("test_commands", O_RDONLY);
+//	char *parsed;
 //	int i = 0;
-//	int gnl = 0;
-//	while((gnl = get_next_line(fd, &s)) >= 0)
+//
+//	while (el[i])
 //	{
-//		i++;
-//		printf("%sTEST %2d:\t%s%s\n", RED, i, s, NRM);
-//		lexer(s, &lex);
-//		free(s);
-//		s = NULL;
-//		if (gnl == 0)
-//			break ;
+//		if (el[i] == '$')
+//
 //	}
-//	return (0);
+//	return (parsed);
 //}
+
+char	**add_line_to_array(char **mod_array, char *line)
+{
+	char	**copy;
+	int		arr_size = 0;
+	int	i = -1;
+
+	if (mod_array != NULL)
+		while (mod_array[arr_size] != NULL) 
+			arr_size++;
+
+	copy = (char**)malloc(sizeof(char*) * (arr_size + 2));
+	i = -1;
+	while (++i < arr_size)
+		copy[i] = ft_strdup(mod_array[i]);
+	copy[i++] = ft_strdup(line);
+	copy[i] = NULL;
+	// free mod_array
+	return (copy);
+}
+
+void parse_input(t_cmd **cmd, char **input, int *i)
+{
+	int j = *i;
+	char *token;
+	t_cmd *tmp = ft_lst_new();
+	*cmd = tmp;
+	while(input[j])
+	{
+		if (!(ft_strcmp(input[j], ";")))
+		{
+			j++;
+			break ;
+		}
+		if (!(ft_strcmp(input[j], "|")))
+		{
+			tmp->pipe_status = true;
+			tmp->next = ft_lst_new();
+			tmp = tmp->next;
+			j++;
+			continue ;
+		}
+		if (!tmp->name)
+			tmp->name = parse_tokens(input[j]);
+		else if (!(ft_strcmp(input[j], ">")))
+		{
+			tmp->last_out_redir_type = TRUNC;
+			tmp->last_out_redir = ft_strdup(parse_tokens(input[j + 1]));
+			//add input[j] into struct, not char**, argument to this struct as well
+			tmp->redir_out = add_line_to_array(tmp->redir_out, parse_tokens(input[j + 1]));
+			j++;
+		}
+		else if (!(ft_strcmp(input[j], ">>")))
+		{
+			tmp->last_out_redir_type = APPEND;
+			tmp->last_out_redir = ft_strdup(parse_tokens(input[j + 1]));
+			//add input[j] into struct, not char**, argument to this struct as well
+			tmp->redir_append_out = add_line_to_array(tmp->redir_append_out, parse_tokens(input[j + 1]));
+			j++;
+		}
+		else if (!(ft_strcmp(input[j], "<")))
+		{
+			tmp->redir_in = add_line_to_array(tmp->redir_in, parse_tokens(input[++j]));
+		}
+		else
+			tmp->args = add_line_to_array(tmp->args, parse_tokens(input[j]));
+		j++;
+	}
+	*i = j;
+	printf("input %d\n\n", *i);
+}
+
+int main(int argc, char **argv)
+{
+	char *s = NULL;
+	t_lexer lex;
+	t_cmd	*cmd = NULL;
+	int fd = open(argv[1], O_RDONLY);
+	int i = 0;
+	int j = 0;
+	int gnl;
+	char **res;
+
+	while(get_next_line(fd, &s) > 0)
+	{
+		i++;
+		printf("%sTEST %02d: ---> %s%s\n", RED, i, s, NRM);
+		if (!(res = lexer(s, &lex)))
+		{
+			free(s);
+			s = NULL;
+			continue ;
+		}
+		free(s);
+		s = NULL;
+		j = 0;
+		while (res[j])
+		{
+			parse_input(&cmd, res, &j, env);
+			print_struct(cmd);
+		}
+//		ft_remove_char_matrix(res);
+	}
+
+	return (0);
+}
 
 //void parse_input(t_cmd **cmd, char *input)
 //{
