@@ -235,7 +235,7 @@ void parse_input(t_cmd **cmd, char **input, int *i)
 		j++;
 	}
 	*i = j;
-	printf("input %d\n\n", *i);
+	// printf("input %d\n\n", *i);
 }
 
 // int main(int argc, char **argv)

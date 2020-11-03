@@ -197,7 +197,7 @@ char	**lexer(char *s, t_lexer *lexer)
 			lexer->i++;
 		}
 	}
-	write(1, "end of lexer\n", 13);
+	// write(1, "end of lexer\n", 13);
 	int b;
 	char **new = ft_split(current_token, '\n');
 	// printf("each token:\n");
