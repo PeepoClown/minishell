@@ -190,8 +190,8 @@ static	void	minishell(t_env *env)
 	while (true)
 	{
 		//test(env);
-		test(env);
-		break ;
+		test1(env);
+		//break ;
 
 
 		input = NULL;
@@ -199,9 +199,9 @@ static	void	minishell(t_env *env)
 		if (!(input = user_input()))
 			ft_error(NULL, NULL, "can't read this line");
 		free(input);
-	/*	break ;
+		break ;
 
-
+	/*
 		// validate all line
 		while (*input != '\0') // list != NULL
 		{

@@ -59,7 +59,9 @@ void			display_prompt(void)
 		ft_putstr_fd(path, 1);
 		ft_putstr_fd("\e[0m\n", 1);
 	}
-	ft_putstr_fd("$> ", 1);
+	ft_putstr_fd("(current status : \e[1;34m", 1);
+	ft_putnbr_fd(g_status, 1);
+	ft_putstr_fd("\e[0m )$> ", 1);
 	if (path != NULL)
 		free(path);
 }
