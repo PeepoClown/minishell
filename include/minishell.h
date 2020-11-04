@@ -20,10 +20,6 @@
 # define WRITE_END 1
 //# define PATH_MAX 4096
 
-# define NRM "\x1B[0m"
-# define RED "\x1B[31m"
-# define GRN "\x1B[32m"
-
 extern char		*g_user;
 extern char		*g_home;
 extern int		g_status;
@@ -131,13 +127,14 @@ char			**lexer(char *s, t_lexer *lexer);
 void			parse_input(t_cmd **cmd, char **input, int *i, t_env *env);
 int				get_arguments(t_cmd *cmd, char *s);
 int				get_command(t_cmd *cmd, char *s);
-char			*parse_tokens(char *tokens);
+char			*parse_tokens(char *tokens, t_env *env);
+int				replace_env(char *s, t_env *env, char **token);
 
 /*
 ** processing quotes
 */
 
-int				double_quotes(char *s, char **token);
+int				double_quotes(char *s, char **token, t_env *env);
 int				single_quotes(char *s, char **token);
 
 /*

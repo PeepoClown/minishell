@@ -198,8 +198,8 @@ static	int		main_loop(t_env *env, char *input)
 		parse_input(&cmd, tokens, &i, env);
 		while (cmd)
 		{
-			printf("%s\n", cmd->name);
-			printf("%s\n", cmd->last_out_redir);
+//			printf("%s\n", cmd->name);
+//			printf("%s\n", cmd->last_out_redir);
 			g_status = handle_cmd(cmd, env);
 			cmd = cmd->next;
 		}

@@ -53,18 +53,15 @@ int unexpected_token(char unexpected)
 	write(1, "bash: syntax error near unexpected token `", 42);
 	write(1, &unexpected, 1);
 	write(1, "'\n", 2);
-	return (1);
+	return (0);
 }
 
 int unexpected_eof(char match_quote)
 {
-	write(1, GRN, 6);
 	write(1, "bash: unexpected EOF while looking for matching `", 49);
 	write(1, &match_quote, 1);
-	write(1, "\"", 1);
-	write(1, NRM, 6);
-	write(1, "\n", 1);
-	return (1);
+	write(1, "\"\n", 2);
+	return (0);
 }
 
 
@@ -96,7 +93,7 @@ int		token_quotes(t_lexer *lexer, char *s, char **current_token)
 		quote_token = NULL;
 		lexer->i += lexer->token_len; //move string to the char after the pair quote
 	}
-	return (0);
+	return (1);
 }
 
 
@@ -119,7 +116,7 @@ int		token_separators(t_lexer *lexer, char *s, char **current_token)
 		*current_token = combine_tokens(*current_token, lexer->unexp_token);
 		*current_token = combine_tokens(*current_token, '\n');
 	}
-	return (0);
+	return (1);
 }
 
 int		token_redirects(t_lexer *lexer, char *s, char **current_token)
@@ -135,19 +132,60 @@ int		token_redirects(t_lexer *lexer, char *s, char **current_token)
 		token = combine_tokens(token, lexer->unexp_token);
 		lexer->i++;
 	}
-	printf("current redirect token %s\n", token);
 	if (!ft_strcmp(token, "<") || !ft_strcmp(token, ">") || !ft_strcmp(token, ">>"))
 	{
 		token = combine_tokens(token, '\n');
 		*current_token = ft_strjoin(*current_token, token);
-		return (0);
+		return (1);
 	}
 	return (unexpected_token(lexer->unexp_token));
+}
+
+int		lexer_backslash(char *s, t_lexer *lexer, char **current_token)
+{
+	if (!s[lexer->i + 1])
+	{
+		return (unexpected_token('\\'));
+	}
+	*current_token = combine_tokens(*current_token, s[lexer->i]);
+	lexer->i++;
+	if (s[lexer->i])
+		*current_token = combine_tokens(*current_token, s[lexer->i]);
+	lexer->i++;
+	return (1);
+}
+
+int		lexer_symbols(char *s, t_lexer *lexer, char **current_token)
+{
+	int		status;
+
+	status = 1;
+	if (s[lexer->i] == '\'' || s[lexer->i] == '\"') //"token" -> check_quote: returns 7 ->
+		status = token_quotes(lexer, s, current_token);
+	else if (s[lexer->i] == ';' || s[lexer->i] == '|')
+		status = token_separators(lexer, s, current_token);
+	else if (s[lexer->i] == '>' || s[lexer->i] == '<')
+		status = token_redirects(lexer, s, current_token);
+	else if(s[lexer->i] == '\\')
+		status = lexer_backslash(s, lexer, current_token);
+	else if (s[lexer->i] == ' ')
+	{
+		lexer->i += skip_spaces(&s[lexer->i]);
+		if (s[lexer->i])
+			*current_token = combine_tokens(*current_token, '\n');
+	}
+	else
+	{
+		*current_token = combine_tokens(*current_token, s[lexer->i]);
+		lexer->i++;
+	}
+	return (status);
 }
 
 char	**lexer(char *s, t_lexer *lexer)
 {
 	char	*current_token;
+	char	**parsed;
 
 	lexer_init(lexer);
 	current_token = NULL;
@@ -160,60 +198,13 @@ char	**lexer(char *s, t_lexer *lexer)
 	while(s[lexer->i])
 	{
 		lexer->token_len = 0;
-		if (s[lexer->i] == '\'' || s[lexer->i] == '\"') //"token" -> check_quote: returns 7 ->
-		{
-			if (token_quotes(lexer, s, &current_token))
-				return (NULL);
-		}
-		else if (s[lexer->i] == ';' || s[lexer->i] == '|')
-		{
-			if (token_separators(lexer, s, &current_token))
-				return (NULL);
-		}
-		else if (s[lexer->i] == '>' || s[lexer->i] == '<')
-		{
-			if (token_redirects(lexer, s, &current_token))
-				return (NULL);
-		}
-		else if(s[lexer->i] == '\\')
-		{
-			if (!s[lexer->i + 1])
-			{
-				unexpected_token('\\');
-				return (NULL);
-			}
-			current_token = combine_tokens(current_token, s[lexer->i]);
-			lexer->i++;
-			if (s[lexer->i])
-				current_token = combine_tokens(current_token, s[lexer->i]);
-			else
-				break ;
-			lexer->i++;
-		}
-		else if (s[lexer->i] == ' ')
-		{
-			lexer->i += skip_spaces(&s[lexer->i]);
-			if (s[lexer->i])
-				current_token = combine_tokens(current_token, '\n');
-		}
-		else
-		{
-			current_token = combine_tokens(current_token, s[lexer->i]);
-			lexer->i++;
-		}
+		if (!lexer_symbols(s, lexer, &current_token))
+			return (NULL);
 	}
 	if (!current_token)
 		return (NULL);
-	write(1, "end of lexer\n", 13);
-	int b;
-	char **new = ft_split(current_token, '\n');
-	printf("each token:\n");
-	b = -1;
-	while(new[++b])
-	{
-		printf("token number %02d --> |%s%s%s|\n", b + 1, GRN, new[b], NRM);
-	}
-	return (new);
+	parsed = ft_split(current_token, '\n');
+	return (parsed);
 }
 
 
