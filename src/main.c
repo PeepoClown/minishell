@@ -38,6 +38,7 @@ static	void	minishell(t_env *env)
 	while (true)
 	{
 		input = NULL;
+		g_pid = 0;
 		display_prompt();
 		if (!(input = user_input()))
 			ft_error(NULL, NULL, "can't read this line");
@@ -56,7 +57,10 @@ int				main(int argc, char **argv, char **env)
 	t_env	*env_list;
 
 	if (argc > 1)
+	{
 		ft_error(NULL, NULL, "too much arguments passed to shell");
+		return (0); // 1 ???
+	}
 	alloc_check(env_list = create_env(env));
 	signal(SIGINT, signals_handler);
 	signal(SIGQUIT, signals_handler);

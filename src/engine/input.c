@@ -33,6 +33,8 @@ char			*user_input(void)
 	}
 	if (*input == '\0' && read_res == 0)
 	{
+		ft_putstr_fd("exit", 1);
+		ft_putendl_fd(1);
 		free(input);
 		exit(g_status);
 	}
