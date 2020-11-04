@@ -27,5 +27,11 @@ cmake-build-debug
 # Cache
 .DS_Store
 
+# Test files
+*.text
+*.txt
+*.sh
+*.test
+
 # Cases
 src/parser/test_commands
