@@ -29,8 +29,6 @@ extern char		*g_home;
 extern int		g_status;
 extern pid_t	g_pid;
 
-int iscommand;
-
 /*
 ** interface for env vars
 */

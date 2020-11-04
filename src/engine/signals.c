@@ -8,7 +8,7 @@ static	void	on_sig_int(void)
 		ft_putendl_fd(1);
 		return ;
 	}
-	else if (iscommand && g_pid != 0)
+	else if (g_pid != 0)
 	{
 		g_status = 1;
 		ft_putstr_fd("\b\b  \b\b", 1);

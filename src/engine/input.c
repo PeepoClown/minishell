@@ -29,13 +29,6 @@ char			*user_input(void)
 	{
 		if (buff[0] == '\n')
 			break ;
-		// if (g_sigint == 1)
-		// {
-		// 	ft_putstr_fd("\b\b  \b\b", 1);
-		// 	ft_putendl_fd(1);
-		// 	display_prompt();
-
-		// }
 		input = add_to_str(input, buff[0]);
 	}
 	input = add_to_str(input, '\0');
