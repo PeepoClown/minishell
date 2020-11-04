@@ -31,6 +31,11 @@ char			*user_input(void)
 			break ;
 		input = add_to_str(input, buff[0]);
 	}
+	if (*input == '\0' && read_res == 0)
+	{
+		free(input);
+		exit(g_status);
+	}
 	input = add_to_str(input, '\0');
 	if (read_res < 0)
 	{

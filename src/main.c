@@ -5,6 +5,8 @@ char	*g_home;
 int		g_status;
 pid_t	g_pid;
 
+int input_start;
+
 static	int		main_loop(t_env *env, char *input)
 {
 	t_lexer	lex;
