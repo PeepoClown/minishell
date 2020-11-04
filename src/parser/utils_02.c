@@ -53,9 +53,10 @@ char *combine_tokens(char *token, char c)
 	return (s);
 }
 
-//char	**add_line_to_array(char **mod_array, char *line)
+//char	**extend_arr(char **mod_array, char *line)
 //{
 //	char **tmp = mod_array;
+//	int	i = 0;
 //
 //	while (mod_array[i])
 //		i++;
@@ -89,7 +90,7 @@ char	**add_string_to_array(t_cmd *cmd, char *arg)
 	int		i;
 
 	i = array_size(cmd->args);
-	printf("arr size %d\n", i);
+//	printf("arr size %d\n", i);
 	if (!(new = (char **)malloc(sizeof(char *) * (i + 2))))
 		return (NULL);
 	i = -1;

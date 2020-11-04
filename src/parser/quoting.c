@@ -12,58 +12,88 @@
 
 #include <minishell.h>
 
-//void	quotes_multiline(char quote, char **token)
-//{
-//	char	*s;
-//	int		pair;
-//	int		i;
-//
-//	pair = 1;
-//	i = -1;
-//	s = user_input();
-//	while(s[++i] != '\0')
-//	{
-//		if (s[i] == quote)
-//			break ;
-//		*token = add_char(*token, s[i]);
-//	}
-//	while(s[i])
-//	{
-//		if (s[i] == quote)
-//			pair++;
-//
-//	}
-//}
-
-int		double_quotes(char *s, char **token)
+char	escape_char(char c)
 {
-	int i = 0;
-	int close = 0;
-	i++;
-	s++;
-	while(*s)
+	int i;
+	char *s;
+	char *t;
+	char escape[10] = { '\a', '\n', '\e', '\f', '\n', '\r', '\t', '\v', '\\', '\''};
+	i = 0;
+	t = "anefnrtv\\\'";
+	while (t[i] && t[i] != c)
+		i++;
+	return (escape[i]);
+}
+
+int	env_single_quote(char *s, char **token)
+{
+	int	i;
+
+	i = 1;
+	while(s[i] && s[i] != '\'')
 	{
-		if (*s == '\"')
+		if (s[i] == '\\' && ft_strchr("abefnrtv\\\'", s[i + 1]))
 		{
 			i++;
-			close = 1;
+			*token = add_char(*token, escape_char(s[i]));
+		}
+		else
+			*token = add_char(*token, s[i]);
+		i++;
+	}
+	return (i + 1);
+}
+
+int replace_env(char *s, t_env *env, char **token)
+{
+	int i;
+	char *path;
+
+	i = 1;
+	if (ft_isdigit(s[i]))
+		return (i + 1);
+	else if (s[i] == '\'')
+		return (env_single_quote(&s[i], token));
+	else if (s[i] == '$')
+		i++;
+	else
+		while(!ft_isdigit(s[i]) && !ft_strchr("\"\'\\ $=", s[i]))
+			i++;
+	if (i == 1)
+		return (i);
+	path = ft_substr(s, 1, i - 1);
+	*token = ft_strjoin(*token, get_env_value(env, path));
+	free(path);
+	path = NULL;
+	return (i);
+}
+
+int		double_quotes(char *s, char **token, t_env *env)
+{
+	int i = 1;
+
+	while(s[i])
+	{
+		if (s[i] == '\"')
+		{
+			i++;
 			break ;
 		}
-//		if (*s == '\\')
-//		{
-//			i++;
-//			s++;
-//		}
-		if (!*s)
+		if (s[i] == '$')
+		{
+			i += replace_env(&s[i], env, token);
+			continue ;
+		}
+		if (s[i] == '\\')
+		{
+			if (s[i + 1] != '\\' && s[i + 1] != '\"' && s[i + 1] != '$')
+				*token = add_char(*token, s[i]);
+			i++;
+		}
+		if (!s[i])
 			break ;
-		*token = add_char(*token, *s);
+		*token = add_char(*token, s[i]);
 		i++;
-		s++;
-	}
-	if (!close)
-	{
-		write(1, "Bad quoting\n", 12);
-		return (i);
 	}
 	return (i);
 }
@@ -71,35 +101,20 @@ int		double_quotes(char *s, char **token)
 int		single_quotes(char *s, char **token)
 {
 	int i = 0;
-	int close = 0;
 	if (*s++ == '\'')
 		i++;
 	while(*s)
 	{
-		close = 0;
 		if (*s == '\'')
 		{
 			i++;
-			close = 1;
 			break ;
 		}
-//		if (*s == '\\')
-//		{
-//			i++;
-//			s++;
-//		}
 		if (!*s)
 			break ;
-//		if (*s == '$') //metacharacters
-//			;
 		*token = add_char(*token, *s);
 		i++;
 		s++;
-	}
-	if (!close)
-	{
-		write(1, "Bad quoting\n", 12);
-		return (i);
 	}
 	return (i);
 }

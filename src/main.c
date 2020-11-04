@@ -23,6 +23,8 @@ static	int		main_loop(t_env *env, char *input)
 		parse_input(&cmd, tokens, &i);
 		while (cmd != NULL)
 		{
+//			printf("%s\n", cmd->name);
+//			printf("%s\n", cmd->last_out_redir);
 			g_status = handle_cmd(cmd, env);
 			cmd = cmd->next;
 		}
@@ -42,6 +44,11 @@ static	void	minishell(t_env *env)
 		display_prompt();
 		if (!(input = user_input()))
 			ft_error(NULL, NULL, "can't read this line");
+		if (*input == '\0')
+		{
+			free(input);
+			continue ;
+		}
 		if (!main_loop(env, input))
 		{
 			ft_putstr_fd("materi svoey takoe napishi\n", 2);
