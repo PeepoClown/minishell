@@ -4,8 +4,7 @@ char	*g_user;
 char	*g_home;
 int		g_status;
 pid_t	g_pid;
-
-int input_start;
+bool	input_start;
 
 static	int		main_loop(t_env *env, char *input)
 {
@@ -23,8 +22,6 @@ static	int		main_loop(t_env *env, char *input)
 		parse_input(&cmd, tokens, &i, env);
 		while (cmd != NULL)
 		{
-//			printf("%s\n", cmd->name);
-//			printf("%s\n", cmd->last_out_redir);
 			g_status = handle_cmd(cmd, env);
 			cmd = cmd->next;
 		}
@@ -43,7 +40,10 @@ static	void	minishell(t_env *env)
 		g_pid = 0;
 		display_prompt();
 		if (!(input = user_input()))
+		{
 			ft_error(NULL, NULL, "can't read this line");
+			continue ;
+		}
 		if (*input == '\0')
 		{
 			free(input);

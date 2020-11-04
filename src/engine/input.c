@@ -24,8 +24,9 @@ char			*user_input(void)
 	char	buff[1];
 	int		read_res;
 
+	input_start = true;
 	input = ft_strdup("");
-	while ((read_res = read(0, buff, 1)) != 0)
+	while ((read_res = read(0, buff, 1)) > 0)
 	{
 		if (buff[0] == '\n')
 			break ;
@@ -38,11 +39,12 @@ char			*user_input(void)
 		free(input);
 		exit(g_status);
 	}
-	input = add_to_str(input, '\0');
 	if (read_res < 0)
 	{
 		free(input);
 		input = NULL;
 	}
+	input = add_to_str(input, '\0');
+	input_start = false;
 	return (input);
 }

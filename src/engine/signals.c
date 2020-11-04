@@ -15,8 +15,8 @@ static	void	on_sig_int(void)
 
 static	void	on_sig_quit(void)
 {
-	if (g_pid > 0)
-		kill(g_pid, SIGQUIT);
+	if (input_start == true)
+		ft_putstr_fd("\b\b  \b\b", 1);
 }
 
 void			signals_handler(int sig)
