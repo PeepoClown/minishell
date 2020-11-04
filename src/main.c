@@ -20,7 +20,7 @@ static	int		main_loop(t_env *env, char *input)
 	cmd = NULL;
 	while (tokens[i] != NULL)
 	{
-		parse_input(&cmd, tokens, &i);
+		parse_input(&cmd, tokens, &i, env);
 		while (cmd != NULL)
 		{
 //			printf("%s\n", cmd->name);
