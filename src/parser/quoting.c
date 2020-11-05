@@ -48,14 +48,22 @@ int replace_env(char *s, t_env *env, char **token)
 {
 	int i;
 	char *path;
+	char *tmp;
 
 	i = 1;
-	if (ft_isdigit(s[i]))
+	tmp = *token;
+	if (!s[i])
+		*token = add_char(*token, s[0]);
+	else if (ft_isdigit(s[i]))
 		return (i + 1);
 	else if (s[i] == '\'')
 		return (env_single_quote(&s[i], token));
-	else if (s[i] == '$')
-		i++;
+	else if (s[i] == '?')
+	{
+		*token = ft_strjoin(*token, ft_itoa(g_status));
+		free(tmp);
+		return (i + 1);
+	}
 	else
 		while(!ft_isdigit(s[i]) && !ft_strchr("\"\'\\ $=", s[i]))
 			i++;
@@ -63,6 +71,7 @@ int replace_env(char *s, t_env *env, char **token)
 		return (i);
 	path = ft_substr(s, 1, i - 1);
 	*token = ft_strjoin(*token, get_env_value(env, path));
+	free(tmp);
 	free(path);
 	path = NULL;
 	return (i);

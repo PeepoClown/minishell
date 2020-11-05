@@ -14,6 +14,7 @@ void	ft_putendl_fd(int fd);
 void	ft_putnbr_fd(int n, int fd);
 int		ft_islowcase(int ch);
 int		ft_isupcase(int ch);
+char	*ft_itoa(int n);
 int		ft_isdigit(int ch);
 int		ft_isalpha(int ch);
 int		ft_isalnum(int ch);

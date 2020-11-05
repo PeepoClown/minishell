@@ -174,8 +174,7 @@ void			init_prompt_vars(t_env *env);
 void			display_prompt(void);
 void			remove_prompt_vars(char *user, char *home, char *home_const);
 char			*user_input(void);
-t_cmd			*create_cmd(void);
-void			remove_cmd(t_cmd *cmd);
+void			ft_remove_cmd(t_cmd *cmd);
 
 /*
 ** utilities and auxiliaries
