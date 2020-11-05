@@ -8,7 +8,7 @@ t_env	*copy_env(t_env *env)
 	if (!env)
 		return (NULL);
 	if (!(curr = (t_env*)malloc(sizeof(t_env))))
-			return (NULL);
+		return (NULL);
 	copy = curr;
 	while (env != NULL)
 	{

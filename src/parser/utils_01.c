@@ -53,19 +53,3 @@ t_cmd	*ft_lst_new()
 	tmp->next = NULL;
 	return (tmp);
 }
-
-//void	ft_lst_add_back(t_cmd **cmd, t_cmd *new) //lstnew
-//{
-//	t_cmd *a;
-//
-//	a = *cmd;
-//	if (a)
-//	{
-//		while (a->next)
-//			a = a->next;
-//		a->next = new;
-//	}
-//	else
-//		*cmd = new;
-//}
-

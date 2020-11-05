@@ -13,7 +13,14 @@ void			remove_prompt_vars(char *user, char *home)
 	free(home);
 }
 
-static	char	*cut_home_path(void)
+static	void	set_slash_zero(int *i, int *j, char *path_with_home)
+{
+	path_with_home[0] = '~';
+	*i = ft_strlen(g_home);
+	*j = 1;
+}
+
+static	char	*init_home_path(void)
 {
 	char	*path;
 	char	*path_with_home;
@@ -27,9 +34,7 @@ static	char	*cut_home_path(void)
 		free(path_with_home);
 		path_with_home = (char*)malloc(sizeof(char) * (ft_strlen(path) -
 			ft_strlen(g_home) + 2));
-		path_with_home[0] = '~';
-		i = ft_strlen(g_home);
-		j = 1;
+		set_slash_zero(&i, &j, path_with_home);
 		while (i < (int)ft_strlen(path))
 			path_with_home[j++] = path[i++];
 		path_with_home[j] = '\0';
@@ -47,7 +52,7 @@ void			display_prompt(void)
 {
 	char	*path;
 
-	path = (g_home != NULL) ? cut_home_path() : NULL;
+	path = (g_home != NULL) ? init_home_path() : NULL;
 	ft_putstr_fd("\e[1;34m[ ", 1);
 	if (g_user != NULL)
 	{

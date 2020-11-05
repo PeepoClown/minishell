@@ -18,16 +18,12 @@
 
 # define READ_END 0
 # define WRITE_END 1
-//# define PATH_MAX 4096
-
-# define NRM "\x1B[0m"
-# define RED "\x1B[31m"
-# define GRN "\x1B[32m"
 
 extern char		*g_user;
 extern char		*g_home;
 extern int		g_status;
 extern pid_t	g_pid;
+extern bool		g_input_start;
 
 /*
 ** interface for env vars
@@ -93,12 +89,12 @@ typedef struct	s_cmd
 	char		**args;
 	int			fd_out;
 	int			fd_in;
-	char		**redir_out; //> text > test1
-	char		**redir_append_out; //>> text >> test2
-	char		*last_out_redir; // test2
-	t_out_redir	last_out_redir_type; //APPEND
-	char		**redir_in; //<test
-	bool		pipe_status; //+-
+	char		**redir_out;
+	char		**redir_append_out;
+	char		*last_out_redir;
+	t_out_redir	last_out_redir_type;
+	char		**redir_in;
+	bool		pipe_status;
 	int			pipe[2];
 	t_builtin	*builtin;
 	struct s_cmd	*next;
@@ -131,13 +127,14 @@ char			**lexer(char *s, t_lexer *lexer);
 void			parse_input(t_cmd **cmd, char **input, int *i, t_env *env);
 int				get_arguments(t_cmd *cmd, char *s);
 int				get_command(t_cmd *cmd, char *s);
-char			*parse_tokens(char *tokens);
+char			*parse_tokens(char *tokens, t_env *env);
+int				replace_env(char *s, t_env *env, char **token);
 
 /*
 ** processing quotes
 */
 
-int				double_quotes(char *s, char **token);
+int				double_quotes(char *s, char **token, t_env *env);
 int				single_quotes(char *s, char **token);
 
 /*
@@ -170,6 +167,7 @@ int				execute_programm(t_cmd *cmd, t_env *env);
 
 void			ft_error(const char *cmd, const char *error, const char *desc);
 void			alloc_check(void *ptr);
+int				programm_error(const char *cmd);
 void			signals_handler(int sig);
 void			init_prompt_vars(t_env *env);
 void			display_prompt(void);
