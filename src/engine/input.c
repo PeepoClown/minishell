@@ -24,27 +24,24 @@ char			*user_input(void)
 	char	buff[1];
 	int		read_res;
 
-	input_start = true;
+	g_input_start = true;
 	input = ft_strdup("");
-	while ((read_res = read(0, buff, 1)) > 0)
+	while ((read_res = read(0, buff, 1)) >= 0)
 	{
 		if (buff[0] == '\n')
 			break ;
-		input = add_to_str(input, buff[0]);
+		if (*input == '\0' && read_res == 0)
+		{
+			ft_putstr_fd("exit", 1);
+			ft_putendl_fd(1);
+			free(input);
+			exit(g_status);
+		}
+		else if (read_res == 0)
+			ft_putstr_fd("  \b\b", 1);
+		else
+			input = add_to_str(input, buff[0]);
 	}
-	if (*input == '\0' && read_res == 0)
-	{
-		ft_putstr_fd("exit", 1);
-		ft_putendl_fd(1);
-		free(input);
-		exit(g_status);
-	}
-	if (read_res < 0)
-	{
-		free(input);
-		input = NULL;
-	}
-	input = add_to_str(input, '\0');
-	input_start = false;
+	g_input_start = false;
 	return (input);
 }

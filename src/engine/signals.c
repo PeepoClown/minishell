@@ -15,7 +15,7 @@ static	void	on_sig_int(void)
 
 static	void	on_sig_quit(void)
 {
-	if (input_start == true)
+	if (g_input_start == true)
 		ft_putstr_fd("\b\b  \b\b", 1);
 }
 
