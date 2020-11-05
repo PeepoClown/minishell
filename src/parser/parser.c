@@ -20,39 +20,39 @@ char	**extend_arr(char **mod_array, char *line)
 	return (copy);
 }
 
-void	fill_struct_redirects(t_cmd **tmp, char **input, t_env *env, int i)
+void	fill_struct_redirects(t_cmd **tmp, char **input, t_env *env, int *i)
 {
-	if (!(ft_strcmp(input[i], ">")))
+	if (!(ft_strcmp(input[*i], ">")))
 	{
+		(*tmp)->redir_out = extend_arr((*tmp)->redir_out, parse_tokens(input[*i + 1], env));
 		(*tmp)->last_out_redir_type = TRUNC;
-		(*tmp)->last_out_redir = ft_strdup(parse_tokens(input[i++], env));
-		(*tmp)->redir_out = extend_arr((*tmp)->redir_out, parse_tokens(input[i], env));
+		(*tmp)->last_out_redir = ft_strdup(parse_tokens(input[*i + 1], env));
+		(*i)++;
 	}
-	else if (!(ft_strcmp(input[i], ">>")))
+	else if (!(ft_strcmp(input[*i], ">>")))
 	{
+		(*tmp)->redir_append_out = extend_arr((*tmp)->redir_append_out, parse_tokens(input[*i + 1], env));
 		(*tmp)->last_out_redir_type = APPEND;
-		(*tmp)->last_out_redir = ft_strdup(parse_tokens(input[i++], env));
-		(*tmp)->redir_append_out = extend_arr((*tmp)->redir_append_out, parse_tokens(input[i], env));
+		(*tmp)->last_out_redir = ft_strdup(parse_tokens(input[*i + 1], env));
+		(*i)++;
 	}
-	else if (!(ft_strcmp(input[i], "<")))
+	else if (!(ft_strcmp(input[*i], "<")))
 	{
-		(*tmp)->redir_in = extend_arr((*tmp)->redir_in, parse_tokens(input[++i], env));
+		(*tmp)->redir_in = extend_arr((*tmp)->redir_in, parse_tokens(input[*i + 1], env));
+		(*i)++;
 	}
 }
 
 void	fill_structure(t_cmd **tmp, char **input, t_env *env, int *j)
 {
-	int i;
-
-	i = *j;
-	if (!(*tmp)->name && ft_strcmp(input[i], ">>") &&
-		ft_strcmp(input[i], ">") && ft_strcmp(input[i], "<"))
-		(*tmp)->name = parse_tokens(input[i], env);
-	else if (!(ft_strcmp(input[i], ">")) || !(ft_strcmp(input[i], ">>")) ||
-			!(ft_strcmp(input[i], "<")))
-		fill_struct_redirects(tmp, input, env, i);
+	if (!(*tmp)->name && ft_strcmp(input[*j], ">>") &&
+		ft_strcmp(input[*j], ">") && ft_strcmp(input[*j], "<"))
+		(*tmp)->name = parse_tokens(input[*j], env);
+	else if (!(ft_strcmp(input[*j], ">")) || !(ft_strcmp(input[*j], ">>")) ||
+			!(ft_strcmp(input[*j], "<")))
+		fill_struct_redirects(tmp, input, env, j);
 	else
-		(*tmp)->args = extend_arr((*tmp)->args, parse_tokens(input[i], env));
+		(*tmp)->args = extend_arr((*tmp)->args, parse_tokens(input[*j], env));
 }
 
 void	parse_input(t_cmd **cmd, char **input, int *i, t_env *env)

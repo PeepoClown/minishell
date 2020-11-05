@@ -52,7 +52,7 @@ void			display_prompt(void)
 {
 	char	*path;
 
-	path = (g_home != NULL) ? cut_home_path() : NULL;
+	path = (g_home != NULL) ? init_home_path() : NULL;
 	ft_putstr_fd("\e[1;34m[ ", 1);
 	if (g_user != NULL)
 	{
