@@ -46,7 +46,7 @@ static	int		oldpwd_handler(t_cmd *cmd, t_env *env, char *path)
 	}
 	if (!ft_strcmp(*(cmd->args), "-"))
 	{
-		ft_putstr_fd(path ,cmd->fd_out);
+		ft_putstr_fd(path, cmd->fd_out);
 		ft_putendl_fd(cmd->fd_out);
 	}
 	stat(path, &stat_buff);

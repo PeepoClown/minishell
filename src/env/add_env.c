@@ -23,7 +23,7 @@ static	void	modify_user_prompt(const char *line)
 
 	if (ft_find_first_of(line, '=') == -1)
 		return ;
-	user = ft_substr(line, ft_find_first_of(line , '=') + 1, ft_strlen(line));
+	user = ft_substr(line, ft_find_first_of(line, '=') + 1, ft_strlen(line));
 	if (g_user)
 		free(g_user);
 	g_user = ft_strdup(user);

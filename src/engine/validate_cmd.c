@@ -25,7 +25,7 @@ bool			validate_non_builtin_cmd(t_cmd *cmd, t_env *env)
 	valid_path = get_programm_path(cmd->name, paths);
 	ft_remove_char_matrix(paths);
 	if (valid_path == NULL)
-			return (false);
+		return (false);
 	free(cmd->name);
 	cmd->name = valid_path;
 	return (true);

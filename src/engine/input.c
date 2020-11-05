@@ -2,9 +2,10 @@
 
 static	char	*add_to_str(char *str, char c)
 {
-	int		i = 0;
+	int		i;
 	char	*res;
 
+	i = 0;
 	res = (char*)malloc((ft_strlen(str) + 2) * sizeof(char));
 	while (i < (int)ft_strlen(str))
 	{
