@@ -91,7 +91,7 @@ int				execute_programm(t_cmd *cmd, t_env *env)
 	else
 	{
 		if ((ret = prepare_child_proc(cmd, env, &args_matrix, &env_matrix)) > 0)
-			return (ret);
+			exit(ret);
 		execve(cmd->name, args_matrix, env_matrix);
 		ft_remove_char_matrix(args_matrix);
 		ft_remove_char_matrix(env_matrix);
