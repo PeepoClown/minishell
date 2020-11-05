@@ -12,7 +12,7 @@
 
 #include <minishell.h>
 
-int		check_quote_pair(char *s, char quote, int *error) //return
+int		check_quote_pair(char *s, char quote, int *error)
 {
 	int i = 1;
 
@@ -53,6 +53,7 @@ int unexpected_token(char unexpected)
 	write(2, "bash: syntax error near unexpected token `", 42);
 	write(2, &unexpected, 1);
 	write(2, "'\n", 2);
+	g_status = 258;
 	return (0);
 }
 
@@ -61,6 +62,7 @@ int unexpected_eof(char match_quote)
 	write(2, "bash: unexpected EOF while looking for matching `", 49);
 	write(2, &match_quote, 1);
 	write(2, "\"\n", 2);
+	g_status = 258;
 	return (0);
 }
 
@@ -76,22 +78,22 @@ int		token_quotes(t_lexer *lexer, char *s, char **current_token)
 {
 	char	*quote_token;
 
-	if (s[lexer->i] == '\'' || s[lexer->i] == '\"') //"token" -> check_quote: returns 7 ->
+	if (s[lexer->i] == '\'' || s[lexer->i] == '\"')
 	{
 		if (s[lexer->i - 1] == ' ')
 			*current_token = combine_tokens(*current_token, '\n');
-		lexer->match_quote = s[lexer->i]; //current quote
-		lexer->token_len = check_quote_pair(&s[lexer->i], s[lexer->i], &lexer->error); //len of string + 2 quotes
-		if (lexer->error) //free current token
+		lexer->match_quote = s[lexer->i];
+		lexer->token_len = check_quote_pair(&s[lexer->i], s[lexer->i], &lexer->error);
+		if (lexer->error)
 			return (unexpected_eof(lexer->match_quote));
-		quote_token = ft_substr(s, lexer->i, lexer->token_len); //string from position after first (quote) minus 2 quotes
+		quote_token = ft_substr(s, lexer->i, lexer->token_len);
 		if (lexer->token_len > 1)
 		{
 			*current_token = ft_strjoin(*current_token, quote_token);
 		}
 		free(quote_token);
 		quote_token = NULL;
-		lexer->i += lexer->token_len; //move string to the char after the pair quote
+		lexer->i += lexer->token_len;
 	}
 	return (1);
 }
@@ -107,7 +109,7 @@ int		token_separators(t_lexer *lexer, char *s, char **current_token)
 	if (s[lexer->i - 1] == lexer->unexp_token)
 		return (unexpected_token(lexer->unexp_token));
 	lexer->i = skip_spaces(&s[lexer->i]) ? lexer->i + skip_spaces(&s[lexer->i]) : lexer->i + 1;
-	if (s[lexer->i] == ';' || s[lexer->i] == '|') //'cmd ;    ' could be not valid!
+	if (s[lexer->i] == ';' || s[lexer->i] == '|')
 		return (unexpected_token(lexer->unexp_token));
 	if (s[lexer->i] == '\0')
 		*current_token = combine_tokens(*current_token, '\n');
@@ -160,7 +162,7 @@ int		lexer_symbols(char *s, t_lexer *lexer, char **current_token)
 	int		status;
 
 	status = 1;
-	if (s[lexer->i] == '\'' || s[lexer->i] == '\"') //"token" -> check_quote: returns 7 ->
+	if (s[lexer->i] == '\'' || s[lexer->i] == '\"')
 		status = token_quotes(lexer, s, current_token);
 	else if (s[lexer->i] == ';' || s[lexer->i] == '|')
 		status = token_separators(lexer, s, current_token);
@@ -204,6 +206,8 @@ char	**lexer(char *s, t_lexer *lexer)
 	if (!current_token)
 		return (NULL);
 	parsed = ft_split(current_token, '\n');
+	free(current_token);
+	current_token = NULL;
 	return (parsed);
 }
 

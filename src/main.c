@@ -12,6 +12,7 @@ static	int		main_loop(t_env *env, char *input)
 	char	**tokens;
 	int		i;
 	t_cmd	*cmd;
+	t_cmd	*tmp;
 
 	if (!(tokens = lexer(input, &lex)))
 		return (0);
@@ -20,13 +21,15 @@ static	int		main_loop(t_env *env, char *input)
 	while (tokens[i] != NULL)
 	{
 		parse_input(&cmd, tokens, &i, env);
+		tmp = cmd;
 		while (cmd != NULL)
 		{
 			g_status = handle_cmd(cmd, env);
 			cmd = cmd->next;
 		}
-		// remove cmd
+		ft_remove_cmd(tmp);
 	}
+	ft_remove_char_matrix(tokens);
 	return (1);
 }
 

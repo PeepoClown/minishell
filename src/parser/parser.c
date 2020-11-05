@@ -9,14 +9,17 @@ char	**extend_arr(char **mod_array, char *line)
 	if (mod_array != NULL)
 		while (mod_array[arr_size] != NULL) 
 			arr_size++;
-
 	copy = (char**)malloc(sizeof(char*) * (arr_size + 2));
 	i = -1;
 	while (++i < arr_size)
+	{
 		copy[i] = ft_strdup(mod_array[i]);
+	}
 	copy[i++] = ft_strdup(line);
 	copy[i] = NULL;
-	// free mod_array
+	free(line);
+	line = NULL;
+	ft_remove_char_matrix(mod_array);
 	return (copy);
 }
 
@@ -26,6 +29,8 @@ void	fill_struct_redirects(t_cmd **tmp, char **input, t_env *env, int *i)
 	{
 		(*tmp)->redir_out = extend_arr((*tmp)->redir_out, parse_tokens(input[*i + 1], env));
 		(*tmp)->last_out_redir_type = TRUNC;
+		if ((*tmp)->last_out_redir)
+			free((*tmp)->last_out_redir);
 		(*tmp)->last_out_redir = ft_strdup(parse_tokens(input[*i + 1], env));
 		(*i)++;
 	}
@@ -33,6 +38,8 @@ void	fill_struct_redirects(t_cmd **tmp, char **input, t_env *env, int *i)
 	{
 		(*tmp)->redir_append_out = extend_arr((*tmp)->redir_append_out, parse_tokens(input[*i + 1], env));
 		(*tmp)->last_out_redir_type = APPEND;
+		if ((*tmp)->last_out_redir)
+			free((*tmp)->last_out_redir);
 		(*tmp)->last_out_redir = ft_strdup(parse_tokens(input[*i + 1], env));
 		(*i)++;
 	}
