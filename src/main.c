@@ -66,11 +66,11 @@ int				main(int argc, char **argv, char **env)
 	if (argc > 1)
 	{
 		ft_error(NULL, NULL, "too much arguments passed to shell");
-		return (0); // 1 ???
+		return (1);
 	}
 	alloc_check(env_list = create_env(env));
-	signal(SIGINT, signals_handler);
 	signal(SIGQUIT, signals_handler);
+	signal(SIGINT, signals_handler);
 	init_prompt_vars(env_list);
 	if (argv != NULL)
 		minishell(env_list);

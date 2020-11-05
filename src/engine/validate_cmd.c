@@ -2,11 +2,9 @@
 
 static	bool	validate_executable_file(const char *filename)
 {
-	if (ft_strlen(filename) < 3)
-		return (false);
 	if (filename[0] == '/')
 		return (true);
-	if (filename[0] == '.')
+	if (filename[0] == '.' && filename[1] == '/')
 		return (true);
 	if (filename[0] == '~')
 		return (true);

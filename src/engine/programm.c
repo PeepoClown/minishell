@@ -5,15 +5,20 @@ static	char	*replace_to_home(char *cmd)
 	char	*res;
 	char	*cuted_path;
 
-	if (cmd[0] != '~' || cmd[1] != '/')
+	if (cmd[0] != '~')
 	{
 		res = ft_strdup(cmd);
 		free(cmd);
 		return (res);
 	}
-	cuted_path = ft_substr(cmd, 1, ft_strlen(cmd));
-	res = ft_strjoin(g_home, cuted_path);
-	free(cuted_path);
+	if (!ft_strcmp(cmd, "~"))
+		res = ft_strdup(g_home);
+	else
+	{
+		cuted_path = ft_substr(cmd, 1, ft_strlen(cmd));
+		res = ft_strjoin(g_home, cuted_path);
+		free(cuted_path);
+	}
 	free(cmd);
 	return (res);
 }
