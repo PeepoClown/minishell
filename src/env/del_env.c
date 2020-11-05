@@ -4,9 +4,15 @@ void			del_env_item(t_env *env)
 {
 	if (!ft_strcmp(env->key, "USER"))
 	{
-		if (g_user)
+		if (g_user != NULL)
 			free(g_user);
 		g_user = ft_strdup("defaultUser");
+	}
+	if (!ft_strcmp(env->key, "HOME"))
+	{
+		if (g_home != NULL)
+			free(g_home);
+		g_home = ft_strdup(g_home_const);
 	}
 	free(env->key);
 	if (env->value != NULL)

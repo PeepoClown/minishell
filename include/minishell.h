@@ -21,6 +21,7 @@
 
 extern char		*g_user;
 extern char		*g_home;
+extern char		*g_home_const;
 extern int		g_status;
 extern pid_t	g_pid;
 extern bool		g_input_start;
@@ -171,7 +172,7 @@ int				programm_error(const char *cmd);
 void			signals_handler(int sig);
 void			init_prompt_vars(t_env *env);
 void			display_prompt(void);
-void			remove_prompt_vars(char *user, char *home);
+void			remove_prompt_vars(char *user, char *home, char *home_const);
 char			*user_input(void);
 t_cmd			*create_cmd(void);
 void			remove_cmd(t_cmd *cmd);

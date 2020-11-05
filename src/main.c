@@ -2,6 +2,7 @@
 
 char	*g_user;
 char	*g_home;
+char	*g_home_const;
 int		g_status;
 pid_t	g_pid;
 bool	g_input_start;
@@ -44,14 +45,8 @@ static	void	minishell(t_env *env)
 			ft_error(NULL, NULL, "can't read this line");
 			continue ;
 		}
-		if (*input == '\0')
+		if (*input == '\0' || !main_loop(env, input))
 		{
-			free(input);
-			continue ;
-		}
-		if (!main_loop(env, input))
-		{
-			ft_putstr_fd("materi svoey takoe napishi\n", 2);
 			free(input);
 			continue ;
 		}
@@ -75,6 +70,6 @@ int				main(int argc, char **argv, char **env)
 	if (argv != NULL)
 		minishell(env_list);
 	remove_env(&env_list);
-	remove_prompt_vars(g_user, g_home);
+	remove_prompt_vars(g_user, g_home, g_home_const);
 	return (0);
 }

@@ -24,10 +24,23 @@ static	void	modify_user_prompt(const char *line)
 	if (ft_find_first_of(line, '=') == -1)
 		return ;
 	user = ft_substr(line, ft_find_first_of(line, '=') + 1, ft_strlen(line));
-	if (g_user)
+	if (g_user != NULL)
 		free(g_user);
 	g_user = ft_strdup(user);
 	free(user);
+}
+
+static	void	set_home_dir(const char *line)
+{
+	char	*home;
+
+	if (ft_find_first_of(line, '=') == -1)
+		return ;
+	home = ft_substr(line, ft_find_first_of(line, '=') + 1, ft_strlen(line));
+	if (g_home != NULL)
+		free(g_home);
+	g_home = ft_strdup(home);
+	free(home);
 }
 
 void			add_to_env(t_env *env, const char *line)
@@ -39,6 +52,8 @@ void			add_to_env(t_env *env, const char *line)
 		: ft_substr(line, 0, ft_find_first_of(line, '='));
 	if (!ft_strcmp(key, "USER"))
 		modify_user_prompt(line);
+	if (!ft_strcmp(key, "HOME"))
+		set_home_dir(line);
 	if (check_env_key(env, key) == true)
 	{
 		set_env_hidden(env, key, VISIBLE);

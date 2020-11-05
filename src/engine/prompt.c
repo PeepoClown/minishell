@@ -4,13 +4,15 @@ void			init_prompt_vars(t_env *env)
 {
 	g_user = ft_strdup(get_env_value(env, "USER"));
 	g_home = ft_strdup(get_env_value(env, "HOME"));
+	g_home_const = ft_strdup(get_env_value(env, "HOME"));
 	g_status = 0;
 }
 
-void			remove_prompt_vars(char *user, char *home)
+void			remove_prompt_vars(char *user, char *home, char *home_const)
 {
 	free(user);
 	free(home);
+	free(home_const);
 }
 
 static	void	set_slash_zero(int *i, int *j, char *path_with_home)
