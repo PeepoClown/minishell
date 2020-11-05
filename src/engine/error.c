@@ -25,3 +25,14 @@ void	ft_error(const char *cmd, const char *error, const char *desc)
 	ft_putstr_fd(desc, 2);
 	ft_putendl_fd(2);
 }
+
+int		programm_error(const char *cmd)
+{
+	if (errno == 0)
+		return (0);
+	ft_error(cmd, NULL, strerror(errno));
+	if (errno == ENOENT)
+		return (127);
+	else
+		return (126);
+}

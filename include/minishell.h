@@ -168,6 +168,7 @@ int				execute_programm(t_cmd *cmd, t_env *env);
 
 void			ft_error(const char *cmd, const char *error, const char *desc);
 void			alloc_check(void *ptr);
+int				programm_error(const char *cmd);
 void			signals_handler(int sig);
 void			init_prompt_vars(t_env *env);
 void			display_prompt(void);
