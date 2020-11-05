@@ -27,6 +27,7 @@ int				ft_exit(t_cmd *cmd, t_env *env)
 	int		ret;
 	int		args_count;
 
+	env = NULL;
 	ft_putstr_fd(cmd->name, 2);
 	ft_putendl_fd(2);
 	args_count = 0;

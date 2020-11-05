@@ -51,7 +51,8 @@ bool			validate_input_redirects(t_cmd *cmd)
 	{
 		while (cmd->redir_in[i] != NULL)
 		{
-			if (!check_file(cmd->redir_in[i], O_RDONLY, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH))
+			if (!check_file(cmd->redir_in[i], O_RDONLY,
+				S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH))
 				return (false);
 			i++;
 		}

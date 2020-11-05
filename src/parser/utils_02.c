@@ -17,13 +17,13 @@ int		array_size(char **array)
 	int	i;
 
 	i = 0;
-	printf("arr size %d\n", i);
+	//printf("arr size %d\n", i);
 //	printf("arr elem %s\n", array[i]);
 	if (!array)
 		return (0);
 	while (array[i])
 		i++;
-	printf("--->arr size %d\n", i);
+	//printf("--->arr size %d\n", i);
 	return (i);
 }
 
@@ -73,7 +73,7 @@ char	**add_token_to_array(t_lexer *lexer, char *arg, int i)
 {
 	char	**new;
 
-	printf("arr size %d\n", i);
+	//printf("arr size %d\n", i);
 	if (!(new = (char **)malloc(sizeof(char *) * (i + 2))))
 		return (NULL);
 	i = -1;

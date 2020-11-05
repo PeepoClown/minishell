@@ -50,17 +50,17 @@ int		skip_spaces(char *s)
 
 int unexpected_token(char unexpected)
 {
-	write(1, "bash: syntax error near unexpected token `", 42);
-	write(1, &unexpected, 1);
-	write(1, "'\n", 2);
+	write(2, "bash: syntax error near unexpected token `", 42);
+	write(2, &unexpected, 1);
+	write(2, "'\n", 2);
 	return (0);
 }
 
 int unexpected_eof(char match_quote)
 {
-	write(1, "bash: unexpected EOF while looking for matching `", 49);
-	write(1, &match_quote, 1);
-	write(1, "\"\n", 2);
+	write(2, "bash: unexpected EOF while looking for matching `", 49);
+	write(2, &match_quote, 1);
+	write(2, "\"\n", 2);
 	return (0);
 }
 

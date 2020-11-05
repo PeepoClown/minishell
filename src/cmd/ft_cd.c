@@ -1,15 +1,24 @@
 #include <minishell.h>
 
-static	char	*replace_to_home(char *path)
+static	char	*replace_path(char *path, t_env *env)
 {
 	char	*res;
 	char	*tmp;
 
-	if (path[0] != '~' || path[1] != '/')
+	if (path[0] != '~' && path[0] != '-')
 		return (NULL);
-	tmp = ft_substr(path, 1, ft_strlen(path));
-	res = ft_strjoin(g_home, tmp);
-	free(tmp);
+	if (path[0] == '~')
+	{
+		tmp = ft_substr(path, 1, ft_strlen(path));
+		res = ft_strjoin(g_home, tmp);
+		free(tmp);
+	}
+	else if (!ft_strcmp(path, "-"))
+	{
+		if (!get_env_value(env, "OLDPWD"))
+			return (NULL);
+		res = ft_strdup(get_env_value(env, "OLDPWD"));
+	}
 	return (res);
 }
 
@@ -25,6 +34,27 @@ static	void	set_pwd(t_env *env, const char *type)
 	free(path);
 }
 
+static	int		oldpwd_handler(t_cmd *cmd, t_env *env, char *path)
+{
+	struct stat stat_buff;
+
+	if (!ft_strcmp(path, "-"))
+	{
+		ft_error(cmd->name, NULL, "OLDPWD not set");
+		free(path);
+		return (0);
+	}
+	if (!ft_strcmp(*(cmd->args), "-"))
+	{
+		ft_putstr_fd(path, cmd->fd_out);
+		ft_putendl_fd(cmd->fd_out);
+	}
+	stat(path, &stat_buff);
+	if (S_ISDIR(stat_buff.st_mode) == true)
+		set_pwd(env, "OLDPWD=");
+	return (1);
+}
+
 int				ft_cd(t_cmd *cmd, t_env *env)
 {
 	char	*dest_path;
@@ -35,11 +65,12 @@ int				ft_cd(t_cmd *cmd, t_env *env)
 		ft_error(cmd->name, NULL, "too few arguments");
 		return (1);
 	}
-	path_with_home = replace_to_home(*(cmd->args));
+	path_with_home = replace_path(*(cmd->args), env);
 	dest_path = (path_with_home != NULL)
 				? path_with_home
 				: *(cmd->args);
-	set_pwd(env, "OLDPWD=");
+	if (!oldpwd_handler(cmd, env, dest_path))
+		return (1);
 	if ((chdir(dest_path) < 0))
 	{
 		if (path_with_home != NULL)

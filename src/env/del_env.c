@@ -2,6 +2,12 @@
 
 void			del_env_item(t_env *env)
 {
+	if (!ft_strcmp(env->key, "USER"))
+	{
+		if (g_user)
+			free(g_user);
+		g_user = ft_strdup("defaultUser");
+	}
 	free(env->key);
 	if (env->value != NULL)
 		free(env->value);
