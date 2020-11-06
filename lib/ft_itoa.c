@@ -47,10 +47,8 @@ static char	*itoa_string(int n, int b)
 char		*ft_itoa(int n)
 {
 	char	*itoa;
-	int		i;
 	int		b;
 
-	i = 0;
 	if (n == -2147483648)
 		return (ft_substr("-2147483648", 0, 11));
 	b = itoa_count(n);

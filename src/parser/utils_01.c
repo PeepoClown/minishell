@@ -1,42 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   utils_01.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qcraghas <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: wupdegra <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/25 17:48:05 by qcraghas          #+#    #+#             */
-/*   Updated: 2020/10/25 17:48:29 by qcraghas         ###   ########.fr       */
+/*   Updated: 2020/11/06 11:41:29 by wupdegra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
 t_cmd	*ft_lst_new()
-{
-	t_cmd *tmp;
-
-	if(!(tmp = (t_cmd *)malloc(sizeof(t_cmd))))
-		return (NULL);
-	tmp->name = NULL;
-	tmp->args = (char**)malloc(sizeof(char*));
-	tmp->args[0] = NULL;
-	tmp->fd_in = 0;
-	tmp->fd_out = 0;
-	tmp->redir_out = (char**)malloc(sizeof(char*));
-	tmp->redir_out[0] = NULL;
-	tmp->redir_append_out = (char**)malloc(sizeof(char*));
-	tmp->redir_append_out[0] = NULL;
-	tmp->last_out_redir = NULL;
-	tmp->last_out_redir_type = NONE;
-	tmp->redir_in = (char**)malloc(sizeof(char*));
-	tmp->redir_in[0] = NULL;
-	tmp->pipe_status = false;
-	tmp->next = NULL;
-	return (tmp);
-}
-
-t_cmd	*ft_create_cmd_item()
 {
 	t_cmd *tmp;
 
@@ -77,6 +53,11 @@ void	ft_remove_cmd(t_cmd *cmd)
 		ft_remove_char_matrix(tmp->redir_in);
 		if (tmp->last_out_redir)
 			free(tmp->last_out_redir);
+		if (tmp->builtin)
+		{
+			free(tmp->builtin->cmd);
+			free(tmp->builtin);
+		}
 		free(tmp);
 	}
 }
