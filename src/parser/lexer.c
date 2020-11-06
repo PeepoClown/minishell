@@ -124,6 +124,7 @@ int		token_separators(t_lexer *lexer, char *s, char **current_token)
 int		token_redirects(t_lexer *lexer, char *s, char **current_token)
 {
 	char	*token;
+	char	*tmp;
 
 	token = NULL;
 	lexer->unexp_token = s[lexer->i];
@@ -137,7 +138,11 @@ int		token_redirects(t_lexer *lexer, char *s, char **current_token)
 	if (!ft_strcmp(token, "<") || !ft_strcmp(token, ">") || !ft_strcmp(token, ">>"))
 	{
 		token = combine_tokens(token, '\n');
+		tmp = *current_token;
 		*current_token = ft_strjoin(*current_token, token);
+		free(token);
+		free(tmp);
+		tmp = NULL;
 		return (1);
 	}
 	return (unexpected_token(lexer->unexp_token));
