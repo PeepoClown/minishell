@@ -3,6 +3,7 @@
 char	*g_user;
 char	*g_home;
 char	*g_home_const;
+bool	g_is_copy_rm;
 int		g_status;
 pid_t	g_pid;
 bool	g_input_start;

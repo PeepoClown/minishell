@@ -2,8 +2,6 @@
 
 static	bool	arg_valid(const char *arg)
 {
-	int		delim_pos;
-
 	if (!ft_isalpha(*arg) && !(*arg == '_'))
 		return (false);
 	arg++;
@@ -25,7 +23,9 @@ static	void	empty_args_export(t_cmd *cmd, t_env *env)
 	copy = copy_env(env);
 	sort_env(&copy);
 	print_env_export(copy, cmd->fd_out);
+	g_is_copy_rm = true;
 	remove_env(&copy);
+	g_is_copy_rm = false;
 }
 
 int				ft_export(t_cmd *cmd, t_env *env)

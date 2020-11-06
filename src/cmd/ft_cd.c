@@ -7,6 +7,7 @@ static	char	*replace_path(char *path, t_env *env)
 
 	if (path[0] != '~' && path[0] != '-')
 		return (NULL);
+	res = NULL;
 	if (path[0] == '~')
 	{
 		tmp = ft_substr(path, 1, ft_strlen(path));
@@ -41,7 +42,6 @@ static	int		oldpwd_handler(t_cmd *cmd, t_env *env, char *path)
 	if (!ft_strcmp(path, "-"))
 	{
 		ft_error(cmd->name, NULL, "OLDPWD not set");
-		free(path);
 		return (0);
 	}
 	if (!ft_strcmp(*(cmd->args), "-"))
@@ -66,16 +66,14 @@ int				ft_cd(t_cmd *cmd, t_env *env)
 		return (1);
 	}
 	path_with_home = replace_path(*(cmd->args), env);
-	dest_path = (path_with_home != NULL)
-				? path_with_home
-				: *(cmd->args);
+	dest_path = (path_with_home != NULL) ? path_with_home : *(cmd->args);
 	if (!oldpwd_handler(cmd, env, dest_path))
 		return (1);
 	if ((chdir(dest_path) < 0))
 	{
 		if (path_with_home != NULL)
 			free(path_with_home);
-		ft_error(cmd->name, *(cmd->args), strerror(errno));
+		ft_error(cmd->name, dest_path, strerror(errno));
 		return (1);
 	}
 	set_pwd(env, "PWD=");

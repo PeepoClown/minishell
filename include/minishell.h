@@ -22,6 +22,7 @@
 extern char		*g_user;
 extern char		*g_home;
 extern char		*g_home_const;
+extern bool		g_is_copy_rm;
 extern int		g_status;
 extern pid_t	g_pid;
 extern bool		g_input_start;

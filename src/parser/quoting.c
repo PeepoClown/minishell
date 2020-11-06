@@ -15,7 +15,7 @@
 char	escape_char(char c)
 {
 	int i;
-	char *s;
+	//char *s;
 	char *t;
 	char escape[10] = { '\a', '\n', '\e', '\f', '\n', '\r', '\t', '\v', '\\', '\''};
 	i = 0;

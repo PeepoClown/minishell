@@ -2,13 +2,13 @@
 
 void			del_env_item(t_env *env)
 {
-	if (!ft_strcmp(env->key, "USER"))
+	if (!ft_strcmp(env->key, "USER") && !g_is_copy_rm)
 	{
 		if (g_user != NULL)
 			free(g_user);
 		g_user = ft_strdup("defaultUser");
 	}
-	if (!ft_strcmp(env->key, "HOME"))
+	if (!ft_strcmp(env->key, "HOME") && !g_is_copy_rm)
 	{
 		if (g_home != NULL)
 			free(g_home);

@@ -6,6 +6,8 @@ void			init_prompt_vars(t_env *env)
 	g_home = ft_strdup(get_env_value(env, "HOME"));
 	g_home_const = ft_strdup(get_env_value(env, "HOME"));
 	g_status = 0;
+	g_is_copy_rm = false;
+	g_input_start = false;
 }
 
 void			remove_prompt_vars(char *user, char *home, char *home_const)

@@ -36,7 +36,11 @@ static	void	set_home_dir(const char *line)
 
 	if (ft_find_first_of(line, '=') == -1)
 		return ;
-	home = ft_substr(line, ft_find_first_of(line, '=') + 1, ft_strlen(line));
+	if (line[ft_find_first_of(line, '=') + 1] == '\0')
+		home = ft_strdup(g_home_const);
+	else
+		home = ft_substr(line, ft_find_first_of(line, '=') + 1,
+			ft_strlen(line));
 	if (g_home != NULL)
 		free(g_home);
 	g_home = ft_strdup(home);

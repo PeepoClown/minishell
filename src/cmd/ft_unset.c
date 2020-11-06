@@ -2,8 +2,6 @@
 
 static	bool	arg_valid(const char *arg)
 {
-	int		delim_pos;
-
 	if (!ft_isalpha(*arg) && !(*arg == '_'))
 		return (false);
 	arg++;

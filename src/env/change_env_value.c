@@ -3,7 +3,6 @@
 void	change_env_value(t_env *env, const char *line)
 {
 	char	*key;
-	char	*value;
 
 	key = ft_substr(line, 0, ft_find_first_of(line, '='));
 	while (env != NULL)
