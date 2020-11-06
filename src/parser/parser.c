@@ -31,7 +31,7 @@ void	fill_struct_redirects(t_cmd **tmp, char **input, t_env *env, int *i)
 		(*tmp)->last_out_redir_type = TRUNC;
 		if ((*tmp)->last_out_redir)
 			free((*tmp)->last_out_redir);
-		(*tmp)->last_out_redir = ft_strdup(parse_tokens(input[*i + 1], env));
+		(*tmp)->last_out_redir = parse_tokens(input[*i + 1], env);
 		(*i)++;
 	}
 	else if (!(ft_strcmp(input[*i], ">>")))
@@ -40,7 +40,7 @@ void	fill_struct_redirects(t_cmd **tmp, char **input, t_env *env, int *i)
 		(*tmp)->last_out_redir_type = APPEND;
 		if ((*tmp)->last_out_redir)
 			free((*tmp)->last_out_redir);
-		(*tmp)->last_out_redir = ft_strdup(parse_tokens(input[*i + 1], env));
+		(*tmp)->last_out_redir = parse_tokens(input[*i + 1], env);
 		(*i)++;
 	}
 	else if (!(ft_strcmp(input[*i], "<")))
