@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quoting.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qcraghas <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: wupdegra <wupdegra@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/25 17:46:05 by qcraghas          #+#    #+#             */
-/*   Updated: 2020/10/25 17:46:28 by qcraghas         ###   ########.fr       */
+/*   Updated: 2020/11/06 22:17:09 by wupdegra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ int	env_single_quote(char *s, char **token)
 		{
 			i++;
 			*token = add_char(*token, escape_char(s[i]));
+			if (s[i] == '\'')
+				i++;
 		}
 		else
 			*token = add_char(*token, s[i]);
@@ -49,6 +51,7 @@ int replace_env(char *s, t_env *env, char **token)
 	int i;
 	char *path;
 	char *tmp;
+	char *tmp_num;
 
 	i = 1;
 	tmp = *token;
@@ -60,8 +63,10 @@ int replace_env(char *s, t_env *env, char **token)
 		return (env_single_quote(&s[i], token));
 	else if (s[i] == '?')
 	{
-		*token = ft_strjoin(*token, ft_itoa(g_status));
+		tmp_num = ft_itoa(g_status);
+		*token = ft_strjoin(*token, tmp_num);
 		free(tmp);
+		free(tmp_num);
 		return (i + 1);
 	}
 	else

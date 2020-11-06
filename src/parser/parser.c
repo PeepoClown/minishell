@@ -27,26 +27,41 @@ void	fill_struct_redirects(t_cmd **tmp, char **input, t_env *env, int *i)
 {
 	if (!(ft_strcmp(input[*i], ">")))
 	{
-		(*tmp)->redir_out = extend_arr((*tmp)->redir_out, parse_tokens(input[*i + 1], env));
-		(*tmp)->last_out_redir_type = TRUNC;
-		if ((*tmp)->last_out_redir)
-			free((*tmp)->last_out_redir);
-		(*tmp)->last_out_redir = parse_tokens(input[*i + 1], env);
-		(*i)++;
+		if (input[*i + 1] != NULL)
+		{
+			(*tmp)->redir_out = extend_arr((*tmp)->redir_out, parse_tokens(input[*i + 1], env));
+			(*tmp)->last_out_redir_type = TRUNC;
+			if ((*tmp)->last_out_redir)
+				free((*tmp)->last_out_redir);
+			(*tmp)->last_out_redir = parse_tokens(input[*i + 1], env);
+			(*i)++;
+		}
+		// else
+			// error bash: syntax error near unexpected token `newline'
 	}
 	else if (!(ft_strcmp(input[*i], ">>")))
 	{
-		(*tmp)->redir_append_out = extend_arr((*tmp)->redir_append_out, parse_tokens(input[*i + 1], env));
-		(*tmp)->last_out_redir_type = APPEND;
-		if ((*tmp)->last_out_redir)
-			free((*tmp)->last_out_redir);
-		(*tmp)->last_out_redir = parse_tokens(input[*i + 1], env);
-		(*i)++;
+		if (input[*i + 1] != NULL)
+		{
+			(*tmp)->redir_append_out = extend_arr((*tmp)->redir_append_out, parse_tokens(input[*i + 1], env));
+			(*tmp)->last_out_redir_type = APPEND;
+			if ((*tmp)->last_out_redir)
+				free((*tmp)->last_out_redir);
+			(*tmp)->last_out_redir = parse_tokens(input[*i + 1], env);
+			(*i)++;
+		}
+		// else
+			// error
 	}
 	else if (!(ft_strcmp(input[*i], "<")))
 	{
-		(*tmp)->redir_in = extend_arr((*tmp)->redir_in, parse_tokens(input[*i + 1], env));
-		(*i)++;
+		if (input[*i + 1] != NULL)
+		{
+			(*tmp)->redir_in = extend_arr((*tmp)->redir_in, parse_tokens(input[*i + 1], env));
+			(*i)++;
+		}
+		// else
+			// error
 	}
 }
 

@@ -55,6 +55,14 @@ static	int		oldpwd_handler(t_cmd *cmd, t_env *env, char *path)
 	return (1);
 }
 
+static	void	removing_cd(char *dest_path, char *path)
+{
+	if (path != NULL)
+		free(path);
+	if (!ft_strcmp(dest_path, "./"))
+		free(dest_path);
+}
+
 int				ft_cd(t_cmd *cmd, t_env *env)
 {
 	char	*dest_path;
@@ -67,6 +75,8 @@ int				ft_cd(t_cmd *cmd, t_env *env)
 	}
 	path_with_home = replace_path(*(cmd->args), env);
 	dest_path = (path_with_home != NULL) ? path_with_home : *(cmd->args);
+	if (*dest_path == '\0')
+		dest_path = ft_strdup("./");
 	if (!oldpwd_handler(cmd, env, dest_path))
 		return (1);
 	if ((chdir(dest_path) < 0))
@@ -77,7 +87,6 @@ int				ft_cd(t_cmd *cmd, t_env *env)
 		return (1);
 	}
 	set_pwd(env, "PWD=");
-	if (path_with_home != NULL)
-		free(path_with_home);
+	removing_cd(dest_path, path_with_home);
 	return (0);
 }

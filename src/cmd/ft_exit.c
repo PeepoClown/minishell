@@ -15,10 +15,14 @@ static	bool	is_digital_arg(char *arg)
 	while (*arg)
 	{
 		if (!ft_isdigit(*arg))
-			return (false);
+			break ;
 		is_sign = false;
 		arg++;
 	}
+	while (*arg == ' ')
+		arg++;
+	if (*arg != '\0')
+		return (false);
 	return (!is_sign);
 }
 

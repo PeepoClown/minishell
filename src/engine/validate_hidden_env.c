@@ -57,6 +57,9 @@ void			validate_hidden_env(t_env *env, t_cmd *cmd)
 	free(cmd->name);
 	cmd->name = ft_strdup(cmd->args[0]);
 	if (cmd->name == NULL)
+	{
+		printf("dasdasd\n");
 		return ;
+	}
 	decrease_cmd_args(cmd);
 }

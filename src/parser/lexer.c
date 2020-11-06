@@ -6,7 +6,7 @@
 /*   By: wupdegra <wupdegra@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/27 14:41:36 by qcraghas          #+#    #+#             */
-/*   Updated: 2020/11/06 19:10:02 by wupdegra         ###   ########.fr       */
+/*   Updated: 2020/11/06 21:48:56 by wupdegra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,6 +165,11 @@ int		lexer_backslash(char *s, t_lexer *lexer, char **current_token)
 	return (1);
 }
 
+// int		lexer_env(t_lexer *lexer, char *s, char **current_token)
+// {
+	
+// }
+
 int		lexer_symbols(char *s, t_lexer *lexer, char **current_token)
 {
 	int		status;
@@ -176,8 +181,10 @@ int		lexer_symbols(char *s, t_lexer *lexer, char **current_token)
 		status = token_separators(lexer, s, current_token);
 	else if (s[lexer->i] == '>' || s[lexer->i] == '<')
 		status = token_redirects(lexer, s, current_token);
-	else if(s[lexer->i] == '\\')
+	else if (s[lexer->i] == '\\')
 		status = lexer_backslash(s, lexer, current_token);
+	// else if (s[lexer->i] == '$')
+	// 	status = lexer_env(lexer, s, current_token);
 	else if (s[lexer->i] == ' ')
 	{
 		lexer->i += skip_spaces(&s[lexer->i]);
@@ -209,7 +216,10 @@ char	**lexer(char *s, t_lexer *lexer)
 	{
 		lexer->token_len = 0;
 		if (!lexer_symbols(s, lexer, &current_token))
+		{
+			free(current_token);
 			return (NULL);
+		}
 	}
 	if (!current_token)
 		return (NULL);
