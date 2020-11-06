@@ -60,9 +60,9 @@ void			add_to_env(t_env *env, const char *line)
 		set_home_dir(line);
 	if (check_env_key(env, key) == true)
 	{
-		set_env_hidden(env, key, VISIBLE);
 		if (ft_find_first_of(line, '=') >= 0)
 			change_env_value(env, line);
+		set_env_hidden(env, key, VISIBLE);
 		free(key);
 		return ;
 	}

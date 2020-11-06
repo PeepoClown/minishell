@@ -6,7 +6,7 @@
 /*   By: wupdegra <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/25 17:48:05 by qcraghas          #+#    #+#             */
-/*   Updated: 2020/11/06 11:41:29 by wupdegra         ###   ########.fr       */
+/*   Updated: 2020/11/07 01:48:08 by wupdegra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ t_cmd	*ft_lst_new()
 	tmp->redir_in[0] = NULL;
 	tmp->pipe_status = false;
 	tmp->next = NULL;
+	tmp->builtin = NULL;
 	return (tmp);
 }
 
@@ -46,7 +47,8 @@ void	ft_remove_cmd(t_cmd *cmd)
 	{
 		tmp = list;
 		list = list->next;
-		free(tmp->name);
+		if (tmp->name)
+			free(tmp->name);
 		ft_remove_char_matrix(tmp->args);
 		ft_remove_char_matrix(tmp->redir_out);
 		ft_remove_char_matrix(tmp->redir_append_out);
@@ -55,7 +57,8 @@ void	ft_remove_cmd(t_cmd *cmd)
 			free(tmp->last_out_redir);
 		if (tmp->builtin)
 		{
-			free(tmp->builtin->cmd);
+			if (tmp->builtin->cmd)
+				free(tmp->builtin->cmd);
 			free(tmp->builtin);
 		}
 		free(tmp);

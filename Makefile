@@ -1,5 +1,5 @@
 NAME = minishell
-CFLAGS = -g -O2 -Wall -Werror -Wextra
+CFLAGS = -g -O2 #-Wall -Werror -Wextra
 
 HEADERS = minishell.h
 HEADER_DIR = include/
