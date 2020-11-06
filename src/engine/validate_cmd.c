@@ -18,7 +18,8 @@ bool			validate_non_builtin_cmd(t_cmd *cmd, t_env *env)
 
 	if (validate_executable_file(cmd->name) == true)
 		return (true);
-	if (get_env_value(env, "PATH") != NULL)
+	if (get_env_value(env, "PATH") != NULL &&
+		ft_strcmp(get_env_value(env, "PATH"), ""))
 		paths = ft_split(get_env_value(env, "PATH"), ':');
 	else
 		return (true);
