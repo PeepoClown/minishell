@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qcraghas <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: wupdegra <wupdegra@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/27 14:41:36 by qcraghas          #+#    #+#             */
-/*   Updated: 2020/10/27 14:41:39 by qcraghas         ###   ########.fr       */
+/*   Updated: 2020/11/06 19:10:02 by wupdegra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ void	lexer_init(t_lexer *lexer)
 int		token_quotes(t_lexer *lexer, char *s, char **current_token)
 {
 	char	*quote_token;
+	char	*tmp;
 
 	if (s[lexer->i] == '\'' || s[lexer->i] == '\"')
 	{
@@ -89,7 +90,9 @@ int		token_quotes(t_lexer *lexer, char *s, char **current_token)
 		quote_token = ft_substr(s, lexer->i, lexer->token_len);
 		if (lexer->token_len > 1)
 		{
+			tmp = *current_token;
 			*current_token = ft_strjoin(*current_token, quote_token);
+			free(tmp);
 		}
 		free(quote_token);
 		quote_token = NULL;
