@@ -6,7 +6,7 @@
 /*   By: wupdegra <wupdegra@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 18:02:07 by wupdegra          #+#    #+#             */
-/*   Updated: 2020/11/07 18:15:59 by wupdegra         ###   ########.fr       */
+/*   Updated: 2020/11/07 21:52:37 by wupdegra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ static	void	execute_init(char ***env_matrix, char ***args_matrix,
 	set_path_env_var(env, cmd->name);
 }
 
-int				execute_programm(t_cmd *cmd, t_env *env, bool is_cmd)
+int				execute_programm(t_cmd *cmd, t_env *env)
 {
 	pid_t	pid;
 	int		ret;
@@ -112,7 +112,7 @@ int				execute_programm(t_cmd *cmd, t_env *env, bool is_cmd)
 		execve(cmd->name, args_matrix, env_matrix);
 		ft_remove_char_matrix(args_matrix);
 		ft_remove_char_matrix(env_matrix);
-		exit(programm_error(cmd->name, is_cmd));
+		exit(programm_error(cmd->name));
 	}
 	return (check_sig_quit(pid));
 }

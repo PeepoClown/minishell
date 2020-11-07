@@ -6,7 +6,7 @@
 /*   By: wupdegra <wupdegra@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 18:06:32 by wupdegra          #+#    #+#             */
-/*   Updated: 2020/11/07 21:20:27 by wupdegra         ###   ########.fr       */
+/*   Updated: 2020/11/07 21:52:49 by wupdegra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,7 +193,7 @@ char			*get_programm_path(const char *cmd, char **paths);
 char			**get_args_matrix(const char *cmd, char **args);
 int				open_output_redirect(t_cmd *cmd, int fd_out);
 int				open_input_redirect(t_cmd *cmd, int fd_in);
-int				execute_programm(t_cmd *cmd, t_env *env, bool is_cmd);
+int				execute_programm(t_cmd *cmd, t_env *env);
 
 /*
 ** shell utils
@@ -201,7 +201,7 @@ int				execute_programm(t_cmd *cmd, t_env *env, bool is_cmd);
 
 void			ft_error(const char *cmd, const char *error, const char *desc);
 void			alloc_check(void *ptr);
-int				programm_error(const char *cmd, bool is_cmd);
+int				programm_error(const char *cmd);
 void			signals_handler(int sig);
 void			init_prompt_vars(t_env *env);
 void			display_prompt(void);
