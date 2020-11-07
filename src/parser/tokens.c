@@ -10,21 +10,21 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include <minishell.h>
 
 void	parsing(char *token, char **parsed, t_env *env)
 {
 	int		i;
 
 	i = 0;
-	while(token[i])
+	while (token[i])
 	{
 		if (token[i] == '\"')
 			i += double_quotes(&token[i], parsed, env);
 		else if (token[i] == '\'')
 			i += single_quotes(&token[i], parsed);
 		else if (token[i] == '$')
-			i += replace_env(&token[i], env, parsed);
+			i += replace_env(&token[i], env, parsed, 0);
 		else if (token[i] == '\\')
 		{
 			*parsed = add_char(*parsed, token[i + 1]);
@@ -48,9 +48,5 @@ char	*parse_tokens(char *token, t_env *env)
 		return (ft_strdup(token));
 	parsed = ft_strdup("");
 	parsing(token, &parsed, env);
-//		free(tmp[i]);
-//		tmp[i] = NULL;
-//	free(tmp);
-//	tmp = NULL;
 	return (parsed);
 }

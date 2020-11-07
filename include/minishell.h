@@ -133,23 +133,41 @@ typedef struct	s_lexer
 */
 
 char			**lexer(char *s, t_lexer *lexer);
+void			lexer_init(t_lexer *lexer);
+int				unexpected_token(char unexpected);
+int				unexpected_redirects(void);
+int				unexpected_eof(char match_quote);
+int				quote_pair(char *s, char quote, int *error);
+int				spaces(char *s);
+int				token_quotes(t_lexer *lexer, char *s, char **current_token);
+int				token_separators(t_lexer *lexer, char *s, char **current_token);
+int				token_redirects(t_lexer *lexer, char *s, char **current_token);
+int				lexer_backslash(char *s, t_lexer *lexer, char **current_token);
+void			lexer_env(t_lexer *lexer, char *s, char **current_token);
+int				lexer_symbols(char *s, t_lexer *lexer, char **current_token);
+char			**check_last_elem(char *current_token);
 
 /*
 ** input parsing
 */
 
 void			parse_input(t_cmd **cmd, char **input, int *i, t_env *env);
-int				get_arguments(t_cmd *cmd, char *s);
-int				get_command(t_cmd *cmd, char *s);
+void			fill_structure(t_cmd **tmp, char **input, t_env *env, int *j);
+int				fill_struct_redirects(t_cmd **tmp, char **input, t_env *env, int *i);
+char			**extend_arr(char **mod_array, char *line);
 char			*parse_tokens(char *tokens, t_env *env);
-int				replace_env(char *s, t_env *env, char **token);
+void			parsing(char *token, char **parsed, t_env *env);
 
 /*
 ** processing quotes
 */
 
+int				replace_env(char *s, t_env *env, char **token, int flag);
 int				double_quotes(char *s, char **token, t_env *env);
 int				single_quotes(char *s, char **token);
+int				env_single_quote(char *s, char **token);
+int				env_status(char *s, int i, char **token, char *tmp);
+char			escape_char(char c);
 
 /*
 ** builtin commands & other programms
@@ -195,11 +213,7 @@ void			ft_remove_cmd(t_cmd *cmd);
 
 char			*add_char(char *s, char c);
 t_cmd			*ft_lst_new();
-void			ft_lst_add_back(t_cmd **cmd, t_cmd *new);
 int				array_size(char **array);
-int				free_array(char **array);
-char			**add_string_to_array(t_cmd *cmd, char *arg);
-char			**add_token_to_array(t_lexer *lexer, char *arg, int i);
 char			*combine_tokens(char *token, char c);
 
 #endif
