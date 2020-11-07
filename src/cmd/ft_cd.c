@@ -6,7 +6,7 @@
 /*   By: wupdegra <wupdegra@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 18:00:46 by wupdegra          #+#    #+#             */
-/*   Updated: 2020/11/07 18:00:49 by wupdegra         ###   ########.fr       */
+/*   Updated: 2020/11/07 21:26:54 by wupdegra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,10 @@ int				ft_cd(t_cmd *cmd, t_env *env)
 
 	if (*(cmd->args) == NULL)
 	{
-		ft_error(cmd->name, NULL, "too few arguments");
-		return (1);
+		// ft_error(cmd->name, NULL, "too few arguments");
+		// return (1);
+		free(*(cmd->args));
+		*(cmd->args) = ft_strdup("~");
 	}
 	path_with_home = replace_path(*(cmd->args), env);
 	dest_path = (path_with_home != NULL) ? path_with_home : *(cmd->args);

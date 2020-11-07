@@ -6,7 +6,7 @@
 /*   By: wupdegra <wupdegra@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 18:03:29 by wupdegra          #+#    #+#             */
-/*   Updated: 2020/11/07 18:03:30 by wupdegra         ###   ########.fr       */
+/*   Updated: 2020/11/07 21:44:46 by wupdegra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,19 @@ void	change_env_value(t_env *env, const char *line)
 			break ;
 		env = env->next;
 	}
-	free(key);
 	if (env != NULL)
 	{
 		free(env->value);
 		env->value = ft_substr(line, ft_find_first_of(line, '=') + 1,
 			ft_strlen(line));
+		if (!ft_strcmp(key, "HOME"))
+		{
+			if (g_home)
+				free(g_home);
+			g_home = ft_strdup(env->value);
+		}
 	}
+	free(key);
 }
 
 void	set_env_hidden(t_env *env, const char *key, t_hidden_status status)

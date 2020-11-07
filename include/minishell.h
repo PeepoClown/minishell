@@ -6,7 +6,7 @@
 /*   By: wupdegra <wupdegra@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 18:06:32 by wupdegra          #+#    #+#             */
-/*   Updated: 2020/11/07 19:00:47 by wupdegra         ###   ########.fr       */
+/*   Updated: 2020/11/07 21:20:27 by wupdegra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ void			sort_env(t_env **env);
 char			**get_env_matrix(t_env *env);
 t_env			*copy_env(t_env *env);
 void			set_path_env_var(t_env *env, const char *path);
+void			set_oldpwd_null(t_env *env);
 
 /*
 ** structure of command
@@ -153,7 +154,8 @@ char			**check_last_elem(char *current_token);
 
 void			parse_input(t_cmd **cmd, char **input, int *i, t_env *env);
 void			fill_structure(t_cmd **tmp, char **input, t_env *env, int *j);
-int				fill_struct_redirects(t_cmd **tmp, char **input, t_env *env, int *i);
+int				fill_struct_redirects(t_cmd **tmp, char **input, t_env *env,
+										int *i);
 char			**extend_arr(char **mod_array, char *line);
 char			*parse_tokens(char *tokens, t_env *env);
 void			parsing(char *token, char **parsed, t_env *env);

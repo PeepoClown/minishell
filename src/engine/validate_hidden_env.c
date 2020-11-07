@@ -6,7 +6,7 @@
 /*   By: wupdegra <wupdegra@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 18:02:22 by wupdegra          #+#    #+#             */
-/*   Updated: 2020/11/07 18:02:23 by wupdegra         ###   ########.fr       */
+/*   Updated: 2020/11/07 21:35:03 by wupdegra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ void			validate_hidden_env(t_env *env, t_cmd *cmd)
 		add_to_env(env, cmd->name);
 		set_env_hidden(env, key, HIDDEN);
 	}
+	if (!ft_strcmp(key, "HOME"))
+		
 	free(key);
 	free(cmd->name);
 	cmd->name = ft_strdup(cmd->args[0]);

@@ -6,11 +6,31 @@
 /*   By: wupdegra <wupdegra@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 18:03:35 by wupdegra          #+#    #+#             */
-/*   Updated: 2020/11/07 18:03:36 by wupdegra         ###   ########.fr       */
+/*   Updated: 2020/11/07 21:22:50 by wupdegra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
+
+void	set_oldpwd_null(t_env *env)
+{
+	t_env	*oldpwd;
+
+	oldpwd = env;
+	while (oldpwd != NULL)
+	{
+		if (!ft_strcmp(oldpwd->key, "OLDPWD"))
+			break ;
+		oldpwd = oldpwd->next;
+	}
+	if (oldpwd != NULL)
+	{
+		if (oldpwd->value)
+			free(oldpwd->value);
+		oldpwd->value = NULL;
+		oldpwd->is_hidden = EXPORT_VIS;
+	}
+}
 
 t_env	*create_env_item(const char *line)
 {
