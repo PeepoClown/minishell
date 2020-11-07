@@ -6,7 +6,7 @@
 /*   By: wupdegra <wupdegra@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 18:01:48 by wupdegra          #+#    #+#             */
-/*   Updated: 2020/11/07 18:02:58 by wupdegra         ###   ########.fr       */
+/*   Updated: 2020/11/07 18:20:29 by wupdegra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static	void	set_command_fds(t_cmd *cmd, int *fd_out, int *fd_in)
 	cmd->fd_in = *fd_in;
 }
 
-static	int		execute(t_cmd *cmd, t_env *env)
+static	int		execute(t_cmd *cmd, t_env *env, bool is_cmd)
 {
 	int		ret;
 
@@ -32,11 +32,11 @@ static	int		execute(t_cmd *cmd, t_env *env)
 		set_path_env_var(env, cmd->name);
 	}
 	else
-		ret = execute_programm(cmd, env);
+		ret = execute_programm(cmd, env, is_cmd);
 	return (ret);
 }
 
-static	int		execute_command(t_cmd *cmd, t_env *env)
+static	int		execute_command(t_cmd *cmd, t_env *env, bool is_cmd)
 {
 	int			ret;
 
@@ -48,14 +48,8 @@ static	int		execute_command(t_cmd *cmd, t_env *env)
 		}
 	g_fd_out = (cmd->pipe_status == true) ? cmd->pipe[WRITE_END] :
 		STDOUT_FILENO;
-	if (g_status != 0)
-		if (g_fd_in != STDIN_FILENO)
-		{
-			close(g_fd_in);
-			g_fd_in = open("src/engine/empty", O_RDONLY);
-		}
 	set_command_fds(cmd, &g_fd_out, &g_fd_in);
-	ret = execute(cmd, env);
+	ret = execute(cmd, env, is_cmd);
 	if (g_fd_in != STDIN_FILENO)
 		close(g_fd_in);
 	if (cmd->pipe_status == true && cmd->last_out_redir == NULL)
@@ -76,11 +70,12 @@ int				handle_cmd(t_cmd *cmd, t_env *env)
 		return (status = 1);
 	if ((cmd->builtin = get_builtin(cmd->name)) != NULL ||
 			validate_non_builtin_cmd(cmd, env) == true)
-		status = execute_command(cmd, env);
+		status = execute_command(cmd, env, true);
 	else
 	{
 		ft_error(cmd->name, NULL, "command not found");
 		status = 127;
+		execute_command(cmd, env, false);
 	}
 	return (status);
 }

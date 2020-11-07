@@ -6,7 +6,7 @@
 /*   By: wupdegra <wupdegra@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 18:01:52 by wupdegra          #+#    #+#             */
-/*   Updated: 2020/11/07 18:01:53 by wupdegra         ###   ########.fr       */
+/*   Updated: 2020/11/07 18:16:30 by wupdegra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,9 @@ void	ft_error(const char *cmd, const char *error, const char *desc)
 	ft_putendl_fd(2);
 }
 
-int		programm_error(const char *cmd)
+int		programm_error(const char *cmd, bool is_cmd)
 {
-	if (errno == 0)
+	if (errno == 0 || !is_cmd)
 		return (0);
 	ft_error(cmd, NULL, strerror(errno));
 	if (errno == ENOENT)
