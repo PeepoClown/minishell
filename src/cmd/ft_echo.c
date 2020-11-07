@@ -24,8 +24,9 @@ int		ft_echo(t_cmd *cmd, t_env *env)
 		ft_putendl_fd(cmd->fd_out);
 		return (0);
 	}
-	nl_flag = (ft_strcmp(*(cmd->args), "-n") == 0) ? false : true;
-	i = (nl_flag == false) ? 1 : 0;
+	while(!ft_strcmp(cmd->args[i], "-n"))
+		i++;
+	nl_flag = i != 0 ? false : true;
 	while (cmd->args[i] != NULL)
 	{
 		ft_putstr_fd(cmd->args[i], cmd->fd_out);
