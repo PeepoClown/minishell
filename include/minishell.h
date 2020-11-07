@@ -6,12 +6,12 @@
 /*   By: wupdegra <wupdegra@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 18:06:32 by wupdegra          #+#    #+#             */
-/*   Updated: 2020/11/07 18:21:34 by wupdegra         ###   ########.fr       */
+/*   Updated: 2020/11/07 19:00:47 by wupdegra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef __MINISHELL_H__
-# define __MINISHELL_H__
+#ifndef MINISHELL_H
+# define MINISHELL_H
 
 # include "../lib/lib.h"
 # include <stdlib.h>
@@ -28,8 +28,8 @@
 # include <sys/wait.h>
 # include <sys/stat.h>
 
-# define READ_END 0
-# define WRITE_END 1
+# define READ_END	0
+# define WRITE_END	1
 
 extern char		*g_user;
 extern char		*g_home;
@@ -45,7 +45,7 @@ extern int		g_fd_in;
 ** interface for env vars
 */
 
-typedef enum	e_hidden_status
+typedef	enum	e_hidden_status
 {
 	VISIBLE = 0,
 	HIDDEN,
@@ -53,7 +53,7 @@ typedef enum	e_hidden_status
 	ENV_VIS
 }				t_hidden_status;
 
-typedef struct	s_env
+typedef	struct	s_env
 {
 	char			*key;
 	char			*value;
@@ -70,7 +70,8 @@ void			del_env(t_env **env, const char *key);
 void			remove_env(t_env **env);
 char			*get_env_value(t_env *env, const char *key);
 void			change_env_value(t_env *env, const char *line);
-void			set_env_hidden(t_env *env, const char *key, t_hidden_status status);
+void			set_env_hidden(t_env *env, const char *key,
+								t_hidden_status status);
 bool			check_env_key(t_env *env, const char *key);
 void			print_env(t_env *env, int fd_out);
 void			print_env_export(t_env *env, int fd_out);
@@ -83,13 +84,10 @@ void			set_path_env_var(t_env *env, const char *path);
 ** structure of command
 */
 
-typedef struct	s_cmd
-				t_cmd;
-
 typedef struct	s_builtin
 {
 	char	*cmd;
-	int		(*func)(t_cmd *, t_env *);
+	int		(*func)(void*, t_env*);
 }				t_builtin;
 
 typedef enum	e_out_redir
@@ -99,20 +97,20 @@ typedef enum	e_out_redir
 	APPEND
 }				t_out_redir;
 
-typedef struct	s_cmd
+typedef	struct	s_cmd
 {
-	char		*name;
-	char		**args;
-	int			fd_out;
-	int			fd_in;
-	char		**redir_out;
-	char		**redir_append_out;
-	char		*last_out_redir;
-	t_out_redir	last_out_redir_type;
-	char		**redir_in;
-	bool		pipe_status;
-	int			pipe[2];
-	t_builtin	*builtin;
+	char			*name;
+	char			**args;
+	int				fd_out;
+	int				fd_in;
+	char			**redir_out;
+	char			**redir_append_out;
+	char			*last_out_redir;
+	t_out_redir		last_out_redir_type;
+	char			**redir_in;
+	bool			pipe_status;
+	int				pipe[2];
+	t_builtin		*builtin;
 	struct s_cmd	*next;
 }				t_cmd;
 
@@ -125,9 +123,9 @@ typedef struct	s_lexer
 	int		i;
 	int		error;
 	int		token_len;
-	char 	match_quote;
-	char 	unexp_token;
-	char 	**tokens;
+	char	match_quote;
+	char	unexp_token;
+	char	**tokens;
 }				t_lexer;
 
 /*
