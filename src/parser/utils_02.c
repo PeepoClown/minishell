@@ -17,35 +17,32 @@ int		array_size(char **array)
 	int	i;
 
 	i = 0;
-	//printf("arr size %d\n", i);
-//	printf("arr elem %s\n", array[i]);
 	if (!array)
-		return (0);
+		return (i);
 	while (array[i])
 		i++;
-	//printf("--->arr size %d\n", i);
 	return (i);
 }
 
 char	*add_char(char *s, char c)
 {
-	int i;
-	char *new;
+	int		i;
+	char	*new;
 
 	i = ft_strlen(s);
 	if (!(new = (char *)malloc(sizeof(char) * (i + 2))))
 		return (NULL);
 	i = -1;
-	while(s[++i])
+	while (s[++i])
 		new[i] = s[i];
 	new[i++] = c;
 	new[i] = '\0';
 	free(s);
 	s = NULL;
-	return(new);
+	return (new);
 }
 
-char *combine_tokens(char *token, char c)
+char	*combine_tokens(char *token, char c)
 {
 	char	*s;
 
