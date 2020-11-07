@@ -12,11 +12,11 @@
 
 #include <minishell.h>
 
-t_cmd	*ft_lst_new()
+t_cmd	*ft_lst_new(void)
 {
 	t_cmd *tmp;
 
-	if(!(tmp = (t_cmd *)malloc(sizeof(t_cmd))))
+	if (!(tmp = (t_cmd *)malloc(sizeof(t_cmd))))
 		return (NULL);
 	tmp->name = NULL;
 	tmp->args = (char**)malloc(sizeof(char*));

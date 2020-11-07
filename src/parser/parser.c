@@ -1,13 +1,27 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: qcraghas <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/07 16:46:24 by qcraghas          #+#    #+#             */
+/*   Updated: 2020/11/07 16:46:26 by qcraghas         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <minishell.h>
 
-char	**extend_arr(char **mod_array, char *line)
+char		**extend_arr(char **mod_array, char *line)
 {
 	char	**copy;
-	int		arr_size = 0;
-	int	i = -1;
+	int		arr_size;
+	int		i;
 
+	arr_size = 0;
+	i = -1;
 	if (mod_array != NULL)
-		while (mod_array[arr_size] != NULL) 
+		while (mod_array[arr_size] != NULL)
 			arr_size++;
 	copy = (char**)malloc(sizeof(char*) * (arr_size + 2));
 	i = -1;
@@ -23,49 +37,47 @@ char	**extend_arr(char **mod_array, char *line)
 	return (copy);
 }
 
-void	fill_struct_redirects(t_cmd **tmp, char **input, t_env *env, int *i)
+static void	out_redirects(t_cmd **tmp, char **input, t_env *env, int *i)
 {
-	if (!(ft_strcmp(input[*i], ">")))
+	if (!ft_strcmp(input[*i], ">"))
 	{
-		if (input[*i + 1] != NULL)
-		{
-			(*tmp)->redir_out = extend_arr((*tmp)->redir_out, parse_tokens(input[*i + 1], env));
-			(*tmp)->last_out_redir_type = TRUNC;
-			if ((*tmp)->last_out_redir)
-				free((*tmp)->last_out_redir);
-			(*tmp)->last_out_redir = parse_tokens(input[*i + 1], env);
-			(*i)++;
-		}
-		// else
-			// error bash: syntax error near unexpected token `newline'
+		(*tmp)->redir_out = extend_arr((*tmp)->redir_out,
+						parse_tokens(input[*i + 1], env));
+		(*tmp)->last_out_redir_type = TRUNC;
+		if ((*tmp)->last_out_redir)
+			free((*tmp)->last_out_redir);
+		(*tmp)->last_out_redir = parse_tokens(input[*i + 1], env);
+		(*i)++;
 	}
 	else if (!(ft_strcmp(input[*i], ">>")))
 	{
-		if (input[*i + 1] != NULL)
-		{
-			(*tmp)->redir_append_out = extend_arr((*tmp)->redir_append_out, parse_tokens(input[*i + 1], env));
-			(*tmp)->last_out_redir_type = APPEND;
-			if ((*tmp)->last_out_redir)
-				free((*tmp)->last_out_redir);
-			(*tmp)->last_out_redir = parse_tokens(input[*i + 1], env);
-			(*i)++;
-		}
-		// else
-			// error
+		(*tmp)->redir_append_out = extend_arr((*tmp)->redir_append_out,
+						parse_tokens(input[*i + 1], env));
+		(*tmp)->last_out_redir_type = APPEND;
+		if ((*tmp)->last_out_redir)
+			free((*tmp)->last_out_redir);
+		(*tmp)->last_out_redir = parse_tokens(input[*i + 1], env);
+		(*i)++;
 	}
+}
+
+int			fill_struct_redirects(t_cmd **tmp, char **input, t_env *env, int *i)
+{
+	if (!ft_strcmp(input[*i], ">") || !ft_strcmp(input[*i], ">>"))
+		out_redirects(tmp, input, env, i);
 	else if (!(ft_strcmp(input[*i], "<")))
 	{
 		if (input[*i + 1] != NULL)
 		{
-			(*tmp)->redir_in = extend_arr((*tmp)->redir_in, parse_tokens(input[*i + 1], env));
+			(*tmp)->redir_in = extend_arr((*tmp)->redir_in,
+							parse_tokens(input[*i + 1], env));
 			(*i)++;
 		}
-		// else
-			// error
 	}
+	return (1);
 }
 
-void	fill_structure(t_cmd **tmp, char **input, t_env *env, int *j)
+void		fill_structure(t_cmd **tmp, char **input, t_env *env, int *j)
 {
 	if (!(*tmp)->name && ft_strcmp(input[*j], ">>") &&
 		ft_strcmp(input[*j], ">") && ft_strcmp(input[*j], "<"))
@@ -77,11 +89,13 @@ void	fill_structure(t_cmd **tmp, char **input, t_env *env, int *j)
 		(*tmp)->args = extend_arr((*tmp)->args, parse_tokens(input[*j], env));
 }
 
-void	parse_input(t_cmd **cmd, char **input, int *i, t_env *env)
+void		parse_input(t_cmd **cmd, char **input, int *i, t_env *env)
 {
-	t_cmd *tmp = ft_lst_new();
+	t_cmd *tmp;
+
+	tmp = ft_lst_new();
 	*cmd = tmp;
-	while(input[*i])
+	while (input[*i])
 	{
 		if (!(ft_strcmp(input[*i], ";")))
 		{
