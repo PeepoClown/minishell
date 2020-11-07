@@ -37,6 +37,8 @@ static	int		execute_command(t_cmd *cmd, t_env *env)
 			return (errno);
 		}
 	fd_out = (cmd->pipe_status == true) ? cmd->pipe[WRITE_END] : STDOUT_FILENO;
+	// if (g_status != 0)
+	// 	close(cmd->pipe[READ_END]);
 	set_command_fds(cmd, &fd_out, &fd_in);
 	ret = execute(cmd, env);
 	if (cmd->pipe_status == true && cmd->last_out_redir == NULL)
@@ -52,6 +54,7 @@ int				handle_cmd(t_cmd *cmd, t_env *env)
 	int			status;
 
 	errno = 0;
+	g_status = 0;
 	validate_hidden_env(env, cmd);
 	if (cmd->name == NULL)
 		return (status = 0);

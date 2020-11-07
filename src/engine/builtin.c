@@ -18,7 +18,8 @@ t_builtin	*get_builtin(const char *cmd_name)
 	res = NULL;
 	if (i != 7)
 	{
-		res = (t_builtin*)malloc(sizeof(t_builtin));
+		if (!(res = (t_builtin*)malloc(sizeof(t_builtin))))
+			return (NULL);
 		res->cmd = ft_strdup(builtins[i].cmd);
 		res->func = builtins[i].func;
 	}
