@@ -6,7 +6,7 @@
 /*   By: wupdegra <wupdegra@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 18:00:46 by wupdegra          #+#    #+#             */
-/*   Updated: 2020/11/07 21:26:54 by wupdegra         ###   ########.fr       */
+/*   Updated: 2020/11/07 22:57:54 by wupdegra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,9 @@ static	int		oldpwd_handler(t_cmd *cmd, t_env *env, char *path)
 	return (1);
 }
 
-static	void	removing_cd(char *dest_path, char *path)
+static	void	removing_cd(char *dest_path, char *path, t_env *env)
 {
+	set_pwd(env, "PWD=");
 	if (path != NULL)
 		free(path);
 	if (!ft_strcmp(dest_path, "./"))
@@ -82,10 +83,10 @@ int				ft_cd(t_cmd *cmd, t_env *env)
 
 	if (*(cmd->args) == NULL)
 	{
-		// ft_error(cmd->name, NULL, "too few arguments");
-		// return (1);
-		free(*(cmd->args));
+		free(cmd->args);
+		cmd->args = (char**)malloc(sizeof(char*) * 2);
 		*(cmd->args) = ft_strdup("~");
+		*(cmd->args + 1) = NULL;
 	}
 	path_with_home = replace_path(*(cmd->args), env);
 	dest_path = (path_with_home != NULL) ? path_with_home : *(cmd->args);
@@ -100,7 +101,6 @@ int				ft_cd(t_cmd *cmd, t_env *env)
 		ft_error(cmd->name, dest_path, strerror(errno));
 		return (1);
 	}
-	set_pwd(env, "PWD=");
-	removing_cd(dest_path, path_with_home);
+	removing_cd(dest_path, path_with_home, env);
 	return (0);
 }
