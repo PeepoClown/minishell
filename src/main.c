@@ -94,7 +94,7 @@ int				main(int argc, char **argv, char **env)
 	}
 	alloc_check(env_list = create_env(env));
 	set_oldpwd_null(env_list);
-	signal(SIGTERM, SIG_IGN);
+//	signal(SIGTERM, SIG_IGN);
 	signal(SIGQUIT, signals_handler);
 	signal(SIGINT, signals_handler);
 	init_prompt_vars(env_list);

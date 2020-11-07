@@ -55,6 +55,8 @@ char			*user_input(void)
 		else
 			input = add_to_str(input, buff[0]);
 	}
+	if (read_res == -1)
+		exit (g_status);
 	g_input_start = false;
 	return (input);
 }
