@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cmd.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: wupdegra <wupdegra@42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/07 18:01:48 by wupdegra          #+#    #+#             */
+/*   Updated: 2020/11/07 18:02:58 by wupdegra         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <minishell.h>
 
 static	void	set_command_fds(t_cmd *cmd, int *fd_out, int *fd_in)
@@ -27,8 +39,6 @@ static	int		execute(t_cmd *cmd, t_env *env)
 static	int		execute_command(t_cmd *cmd, t_env *env)
 {
 	int			ret;
-	static	int	fd_out;
-	static	int	fd_in;
 
 	if (cmd->pipe_status == true)
 		if (pipe(cmd->pipe) < 0)
@@ -36,16 +46,21 @@ static	int		execute_command(t_cmd *cmd, t_env *env)
 			ft_error("pipe", NULL, strerror(errno));
 			return (errno);
 		}
-	fd_out = (cmd->pipe_status == true) ? cmd->pipe[WRITE_END] : STDOUT_FILENO;
-	// if (g_status != 0)
-	// 	close(cmd->pipe[READ_END]);
-	set_command_fds(cmd, &fd_out, &fd_in);
+	g_fd_out = (cmd->pipe_status == true) ? cmd->pipe[WRITE_END] :
+		STDOUT_FILENO;
+	if (g_status != 0)
+		if (g_fd_in != STDIN_FILENO)
+		{
+			close(g_fd_in);
+			g_fd_in = open("src/engine/empty", O_RDONLY);
+		}
+	set_command_fds(cmd, &g_fd_out, &g_fd_in);
 	ret = execute(cmd, env);
+	if (g_fd_in != STDIN_FILENO)
+		close(g_fd_in);
 	if (cmd->pipe_status == true && cmd->last_out_redir == NULL)
 		close(cmd->pipe[WRITE_END]);
-	if (fd_in != STDIN_FILENO)
-		close(fd_in);
-	fd_in = (cmd->pipe_status == true) ? cmd->pipe[READ_END] : STDIN_FILENO;
+	g_fd_in = (cmd->pipe_status == true) ? cmd->pipe[READ_END] : STDIN_FILENO;
 	return (ret);
 }
 
@@ -54,7 +69,6 @@ int				handle_cmd(t_cmd *cmd, t_env *env)
 	int			status;
 
 	errno = 0;
-	g_status = 0;
 	validate_hidden_env(env, cmd);
 	if (cmd->name == NULL)
 		return (status = 0);

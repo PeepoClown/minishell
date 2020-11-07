@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: wupdegra <wupdegra@42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/07 18:06:32 by wupdegra          #+#    #+#             */
+/*   Updated: 2020/11/07 18:06:33 by wupdegra         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef __MINISHELL_H__
 # define __MINISHELL_H__
 
@@ -26,6 +38,8 @@ extern bool		g_is_copy_rm;
 extern int		g_status;
 extern pid_t	g_pid;
 extern bool		g_input_start;
+extern int		g_fd_out;
+extern int		g_fd_in;
 
 /*
 ** interface for env vars

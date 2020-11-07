@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   validate_cmd.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: wupdegra <wupdegra@42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/07 18:02:19 by wupdegra          #+#    #+#             */
+/*   Updated: 2020/11/07 18:02:20 by wupdegra         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <minishell.h>
 
 static	bool	validate_executable_file(const char *filename)
@@ -5,6 +17,8 @@ static	bool	validate_executable_file(const char *filename)
 	if (filename[0] == '/')
 		return (true);
 	if (filename[0] == '.' && filename[1] == '/')
+		return (true);
+	if (filename[0] == '.' && filename[1] == '.')
 		return (true);
 	if (filename[0] == '~')
 		return (true);
@@ -16,7 +30,7 @@ bool			validate_non_builtin_cmd(t_cmd *cmd, t_env *env)
 	char		**paths;
 	char		*valid_path;
 
-	if (validate_executable_file(cmd->name) == true)
+	if (validate_executable_file(cmd->name))
 		return (true);
 	if (get_env_value(env, "PATH") != NULL &&
 		ft_strcmp(get_env_value(env, "PATH"), ""))

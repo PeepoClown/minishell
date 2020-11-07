@@ -1,5 +1,5 @@
 NAME = minishell
-CFLAGS = -g -O2 #-Wall -Werror -Wextra
+CFLAGS = -g -O2 -Wall -Werror -Wextra
 
 HEADERS = minishell.h
 HEADER_DIR = include/
@@ -57,7 +57,3 @@ fclean : clean
 
 .PHONY : re
 re : fclean all
-
-.PHONY : norme
-norme :
-	norminette include/* lib/*.c lib/*.h src/*.c src/*/*.c

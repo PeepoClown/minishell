@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: wupdegra <wupdegra@42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/07 18:04:29 by wupdegra          #+#    #+#             */
+/*   Updated: 2020/11/07 18:04:30 by wupdegra         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <minishell.h>
 
 char	*g_user;
@@ -7,6 +19,17 @@ bool	g_is_copy_rm;
 int		g_status;
 pid_t	g_pid;
 bool	g_input_start;
+int		g_fd_out;
+int		g_fd_in;
+
+static	void	clear_cmd(t_cmd *tmp)
+{
+	if (g_fd_in != STDIN_FILENO)
+		close(g_fd_in);
+	if (g_fd_out != STDOUT_FILENO)
+		close(g_fd_out);
+	ft_remove_cmd(tmp);
+}
 
 static	int		main_loop(t_env *env, char *input)
 {
@@ -24,12 +47,14 @@ static	int		main_loop(t_env *env, char *input)
 	{
 		parse_input(&cmd, tokens, &i, env);
 		tmp = cmd;
+		g_fd_in = STDIN_FILENO;
+		g_fd_out = STDOUT_FILENO;
 		while (cmd != NULL)
 		{
 			g_status = handle_cmd(cmd, env);
 			cmd = cmd->next;
 		}
-		ft_remove_cmd(tmp);
+		clear_cmd(tmp);
 	}
 	ft_remove_char_matrix(tokens);
 	return (1);
