@@ -38,5 +38,6 @@ char	*ft_strtrim(char *s1, char const *set);
 char	*ft_strchr(const char *s, int c);
 void	ft_remove_char_matrix(char **matrix);
 char	**ft_copy_char_matrix(char **matrix, int row);
+char	*str_to_lower(char *s);
 
 #endif

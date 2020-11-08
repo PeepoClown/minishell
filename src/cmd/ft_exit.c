@@ -63,5 +63,6 @@ int				ft_exit(t_cmd *cmd, t_env *env)
 		else
 			ret = (unsigned char)ft_atoi(*(cmd->args));
 	}
+	remove_prompt_vars(g_user, g_home, g_home_const);
 	exit(ret);
 }

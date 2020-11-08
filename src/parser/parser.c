@@ -70,8 +70,9 @@ void		split_env(t_cmd **tmp, char *name)
 	free(name);
 	free((*tmp)->name);
 	(*tmp)->name = ft_strdup(split_env[i]);
-	free(split_env[i]);
-	while (++i < size)
+	(*tmp)->name = str_to_lower((*tmp)->name);
+	free(split_env[i++]);
+	while (i < size)
 	{
 		(*tmp)->args = extend_arr((*tmp)->args, split_env[i]);
 		i++;
@@ -81,7 +82,8 @@ void		split_env(t_cmd **tmp, char *name)
 
 void		fill_structure(t_cmd **tmp, char **input, t_env *env, int *j)
 {
-	char *name;
+	char	*name;
+	char	*s;
 
 	if (!(*tmp)->name && ft_strcmp(input[*j], ">>") &&
 		ft_strcmp(input[*j], ">") && ft_strcmp(input[*j], "<"))
@@ -90,13 +92,17 @@ void		fill_structure(t_cmd **tmp, char **input, t_env *env, int *j)
 		if (*input[*j] == '$')
 			split_env(tmp, name);
 		else
-			(*tmp)->name = name;
+			(*tmp)->name = str_to_lower(name);
 	}
 	else if (!(ft_strcmp(input[*j], ">")) || !(ft_strcmp(input[*j], ">>")) ||
 			!(ft_strcmp(input[*j], "<")))
 		fill_struct_redirects(tmp, input, env, j);
 	else
-		(*tmp)->args = extend_arr((*tmp)->args, parse_tokens(input[*j], env));
+	{
+		s = parse_tokens(input[*j], env);
+		if (s != NULL)
+			(*tmp)->args = extend_arr((*tmp)->args, s);
+	}
 }
 
 void		parse_input(t_cmd **cmd, char **input, int *i, t_env *env)
