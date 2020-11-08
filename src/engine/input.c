@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wupdegra <wupdegra@42.fr>                  +#+  +:+       +#+        */
+/*   By: wupdegra <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 18:01:56 by wupdegra          #+#    #+#             */
-/*   Updated: 2020/11/07 18:01:57 by wupdegra         ###   ########.fr       */
+/*   Updated: 2020/11/08 10:47:45 by wupdegra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,15 @@ char			*user_input(void)
 	{
 		if (buff[0] == '\n')
 			break ;
+		if (!g_input_start)
+		{
+			free(input);
+			input = ft_strdup("");
+			g_input_start = true;
+		}
 		if (*input == '\0' && read_res == 0)
 		{
-			ft_putstr_fd("exit", 1);
-			ft_putendl_fd(1);
+			ft_putstr_fd("exit\n", 1);
 			free(input);
 			exit(g_status);
 		}

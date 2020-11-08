@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wupdegra <wupdegra@42.fr>                  +#+  +:+       +#+        */
+/*   By: wupdegra <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 18:02:14 by wupdegra          #+#    #+#             */
-/*   Updated: 2020/11/07 22:16:45 by wupdegra         ###   ########.fr       */
+/*   Updated: 2020/11/08 10:47:05 by wupdegra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ static	void	on_sig_int(void)
 		ft_putstr_fd("\b\b  \b\b", 1);
 		ft_putendl_fd(1);
 		display_prompt();
+		g_input_start = false;
 	}
 }
 
