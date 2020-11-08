@@ -24,6 +24,31 @@ int		array_size(char **array)
 	return (i);
 }
 
+char	**extend_arr(char **mod_array, char *line)
+{
+	char	**copy;
+	int		arr_size;
+	int		i;
+
+	arr_size = 0;
+	i = -1;
+	if (mod_array != NULL)
+		while (mod_array[arr_size] != NULL)
+			arr_size++;
+	copy = (char**)malloc(sizeof(char*) * (arr_size + 2));
+	i = -1;
+	while (++i < arr_size)
+	{
+		copy[i] = ft_strdup(mod_array[i]);
+	}
+	copy[i++] = ft_strdup(line);
+	copy[i] = NULL;
+	free(line);
+	line = NULL;
+	ft_remove_char_matrix(mod_array);
+	return (copy);
+}
+
 char	*add_char(char *s, char c)
 {
 	int		i;

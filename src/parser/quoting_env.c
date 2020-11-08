@@ -58,11 +58,23 @@ int		env_status(char *s, int i, char **token, char *tmp)
 	return (i + 1);
 }
 
+void	not_env(char **token, char *path, t_env *env)
+{
+	char	*p;
+
+	p = get_env_value(env, path);
+	if (p != NULL)
+		*token = ft_strjoin(*token, p);
+	else
+		*token = NULL;
+}
+
 int		replace_env(char *s, t_env *env, char **token, int flag)
 {
 	int		i;
 	char	*path;
 	char	*tmp;
+	char	*p;
 
 	i = 1;
 	tmp = *token;
@@ -78,9 +90,8 @@ int		replace_env(char *s, t_env *env, char **token, int flag)
 	if (i == 1)
 		return (i);
 	path = ft_substr(s, 1, i - 1);
-	*token = ft_strjoin(*token, get_env_value(env, path));
+	not_env(token, path, env);
 	free(tmp);
 	free(path);
-	path = NULL;
 	return (i);
 }

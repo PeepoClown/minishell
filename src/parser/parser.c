@@ -12,31 +12,6 @@
 
 #include <minishell.h>
 
-char		**extend_arr(char **mod_array, char *line)
-{
-	char	**copy;
-	int		arr_size;
-	int		i;
-
-	arr_size = 0;
-	i = -1;
-	if (mod_array != NULL)
-		while (mod_array[arr_size] != NULL)
-			arr_size++;
-	copy = (char**)malloc(sizeof(char*) * (arr_size + 2));
-	i = -1;
-	while (++i < arr_size)
-	{
-		copy[i] = ft_strdup(mod_array[i]);
-	}
-	copy[i++] = ft_strdup(line);
-	copy[i] = NULL;
-	free(line);
-	line = NULL;
-	ft_remove_char_matrix(mod_array);
-	return (copy);
-}
-
 static void	out_redirects(t_cmd **tmp, char **input, t_env *env, int *i)
 {
 	if (!ft_strcmp(input[*i], ">"))
@@ -77,16 +52,57 @@ int			fill_struct_redirects(t_cmd **tmp, char **input, t_env *env, int *i)
 	return (1);
 }
 
+void		split_env(t_cmd **tmp, char *name)
+{
+	char	**split_env;
+	int		i;
+	int		size;
+
+	i = 0;
+	split_env = ft_split(name, ' ');
+	if ((size = array_size(split_env)) < 2)
+	{
+		free((*tmp)->name);
+		(*tmp)->name = name;
+		ft_remove_char_matrix(split_env);
+		return ;
+	}
+	free(name);
+	free((*tmp)->name);
+	(*tmp)->name = ft_strdup(split_env[i]);
+	(*tmp)->name = str_to_lower((*tmp)->name);
+	free(split_env[i++]);
+	while (i < size)
+	{
+		(*tmp)->args = extend_arr((*tmp)->args, split_env[i]);
+		i++;
+	}
+	free(split_env);
+}
+
 void		fill_structure(t_cmd **tmp, char **input, t_env *env, int *j)
 {
+	char	*name;
+	char	*s;
+
 	if (!(*tmp)->name && ft_strcmp(input[*j], ">>") &&
 		ft_strcmp(input[*j], ">") && ft_strcmp(input[*j], "<"))
-		(*tmp)->name = parse_tokens(input[*j], env);
+	{
+		name = parse_tokens(input[*j], env);
+		if (*input[*j] == '$')
+			split_env(tmp, name);
+		else
+			(*tmp)->name = str_to_lower(name);
+	}
 	else if (!(ft_strcmp(input[*j], ">")) || !(ft_strcmp(input[*j], ">>")) ||
 			!(ft_strcmp(input[*j], "<")))
 		fill_struct_redirects(tmp, input, env, j);
 	else
-		(*tmp)->args = extend_arr((*tmp)->args, parse_tokens(input[*j], env));
+	{
+		s = parse_tokens(input[*j], env);
+		if (s != NULL)
+			(*tmp)->args = extend_arr((*tmp)->args, s);
+	}
 }
 
 void		parse_input(t_cmd **cmd, char **input, int *i, t_env *env)

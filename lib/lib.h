@@ -39,5 +39,6 @@ char				*ft_strchr(const char *s, int c);
 void				ft_remove_char_matrix(char **matrix);
 char				**ft_copy_char_matrix(char **matrix, int row);
 unsigned long long	ft_atoll(const char *str);
+char				*str_to_lower(char *s);
 
 #endif
