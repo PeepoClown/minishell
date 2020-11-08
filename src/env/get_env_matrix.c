@@ -6,7 +6,7 @@
 /*   By: wupdegra <wupdegra@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 18:03:42 by wupdegra          #+#    #+#             */
-/*   Updated: 2020/11/07 18:03:43 by wupdegra         ###   ########.fr       */
+/*   Updated: 2020/11/08 14:02:25 by wupdegra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,22 @@ static	char	*concat_env(t_env *env)
 	return (res);
 }
 
+static	int		count_visible(t_env *env)
+{
+	t_env	*tmp;
+	int		count;
+
+	count = 0;
+	tmp = env;
+	while (tmp != NULL)
+	{
+		if (tmp->is_hidden == VISIBLE || tmp->is_hidden == ENV_VIS)
+			count++;
+		tmp = tmp->next;
+	}
+	return (count);
+}
+
 char			**get_env_matrix(t_env *env)
 {
 	char	**matrix;
@@ -40,15 +56,15 @@ char			**get_env_matrix(t_env *env)
 		count++;
 		tmp_env = tmp_env->next;
 	}
-	if (!(matrix = (char**)malloc(sizeof(char*) * (count + 1))))
+	if (!(matrix = (char**)malloc(sizeof(char*) * (count_visible(env) + 1))))
 		return (NULL);
 	count = 0;
 	tmp_env = env;
 	while (tmp_env != NULL)
 	{
-		matrix[count] = concat_env(tmp_env);
+		if (tmp_env->is_hidden == VISIBLE || tmp_env->is_hidden == ENV_VIS)
+			matrix[count++] = concat_env(tmp_env);
 		tmp_env = tmp_env->next;
-		count++;
 	}
 	matrix[count] = NULL;
 	return (matrix);
