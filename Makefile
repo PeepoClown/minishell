@@ -36,10 +36,13 @@ OBJ_DIR = ./
 OBJ = $(addprefix $(OBJ_DIR), $(OBJS))
 
 .PHONY : all
-all : $(NAME)
+all : libft $(NAME)
+
+.PHONY : libft
+libft :
+	@$(MAKE) all -C $(LIB_DIR)
 
 $(NAME) : $(OBJ)
-	@$(MAKE) all -C $(LIB_DIR)
 	@cp $(LIB_DIR)libft.a ./
 	@gcc $(CFLAGS) $(OBJ) $(LINK) -o $(NAME)
 

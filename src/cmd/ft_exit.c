@@ -6,7 +6,7 @@
 /*   By: wupdegra <wupdegra@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 18:01:07 by wupdegra          #+#    #+#             */
-/*   Updated: 2020/11/08 17:43:48 by wupdegra         ###   ########.fr       */
+/*   Updated: 2020/11/08 19:24:45 by wupdegra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,11 @@ static	bool		is_digital_arg(char *arg)
 	return (!is_sign);
 }
 
-static	long long	validate_exit_code(char *code)
+static long long	validate_exit_code(char *code)
 {
 	bool	minus;
 	char	*num;
 	char	*orig;
-
 
 	minus = false;
 	orig = code;
@@ -91,5 +90,6 @@ int					ft_exit(t_cmd *cmd, t_env *env)
 		else
 			ret = (unsigned char)validate_exit_code(*(cmd->args));
 	}
+	remove_prompt_vars(g_user, g_home, g_home_const);
 	exit(ret);
 }

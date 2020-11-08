@@ -6,7 +6,7 @@
 /*   By: wupdegra <wupdegra@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 18:01:48 by wupdegra          #+#    #+#             */
-/*   Updated: 2020/11/08 14:20:35 by wupdegra         ###   ########.fr       */
+/*   Updated: 2020/11/08 18:31:33 by wupdegra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,6 @@ static	int		execute_command(t_cmd *cmd, t_env *env)
 		}
 	g_fd_out = (cmd->pipe_status == true) ? cmd->pipe[WRITE_END] :
 		STDOUT_FILENO;
-	if (g_status != 0)
-		if (g_fd_in != STDIN_FILENO)
-		{
-			close(g_fd_in);
-			g_fd_in = open("src/engine/empty", O_RDONLY);
-		}
 	set_command_fds(cmd, &g_fd_out, &g_fd_in);
 	ret = execute(cmd, env);
 	if (g_fd_in != STDIN_FILENO)
@@ -62,6 +56,29 @@ static	int		execute_command(t_cmd *cmd, t_env *env)
 		close(cmd->pipe[WRITE_END]);
 	g_fd_in = (cmd->pipe_status == true) ? cmd->pipe[READ_END] : STDIN_FILENO;
 	return (ret);
+}
+
+static	void	create_empty_pipe(t_cmd *cmd)
+{
+	if (cmd->pipe_status == true)
+		if (pipe(cmd->pipe) < 0)
+		{
+			ft_error("pipe", NULL, strerror(errno));
+			g_status = errno;
+		}
+	g_fd_out = (cmd->pipe_status == true) ? cmd->pipe[WRITE_END] :
+		STDOUT_FILENO;
+	if (g_status != 0)
+		if (g_fd_in != STDIN_FILENO)
+		{
+			close(g_fd_in);
+			g_fd_in = open("src/engine/empty", O_RDONLY);
+		}
+	if (g_fd_in != STDIN_FILENO)
+		close(g_fd_in);
+	if (cmd->pipe_status == true && cmd->last_out_redir == NULL)
+		close(cmd->pipe[WRITE_END]);
+	g_fd_in = (cmd->pipe_status == true) ? cmd->pipe[READ_END] : STDIN_FILENO;
 }
 
 int				handle_cmd(t_cmd *cmd, t_env *env)
@@ -81,6 +98,7 @@ int				handle_cmd(t_cmd *cmd, t_env *env)
 	{
 		ft_error(cmd->name, NULL, "command not found");
 		status = 127;
+		create_empty_pipe(cmd);
 	}
 	return (status);
 }
