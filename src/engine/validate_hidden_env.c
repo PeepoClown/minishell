@@ -6,7 +6,7 @@
 /*   By: wupdegra <wupdegra@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 18:02:22 by wupdegra          #+#    #+#             */
-/*   Updated: 2020/11/08 14:45:37 by wupdegra         ###   ########.fr       */
+/*   Updated: 2020/11/08 15:36:20 by wupdegra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,53 +27,21 @@ static	bool	validate_hidden_env_name(char *name)
 
 static	void	decrease_cmd_args(t_cmd *cmd)
 {
+	char	**matrix;
 	int		i;
-	int		args_size;
-	char	*tmp;
 
-	args_size = 0;
-	while (cmd->args[args_size] != NULL)
-		args_size++;
-	if (args_size == 1)
-	{
-		free(cmd->args[0]);
-		cmd->args[0] = NULL;
+	i = 1;
+	if (!(matrix = (char**)malloc(sizeof(char*) * array_size(cmd->args))))
 		return ;
-	}
-	i = 0;
-	while (i < args_size - 1)
+	while (cmd->args[i] != NULL)
 	{
-		tmp = cmd->args[i];
-		cmd->args[i] = cmd->args[i + 1];
-		free(tmp);
+		matrix[i - 1] = ft_strdup(cmd->args[i]);
 		i++;
 	}
-	cmd->args[i] = NULL;
+	matrix[i - 1] = NULL;
+	ft_remove_char_matrix(cmd->args);
+	cmd->args = matrix;
 }
-
-// void			validate_hidden_env(t_env *env, t_cmd *cmd)
-// {
-// 	char	*key;
-	
-// 	if (ft_find_first_of(cmd->name, '=') == -1)
-// 		return ;
-// 	if (validate_hidden_env_name(cmd->name) == false)
-// 		return ;
-// 	key = ft_substr(cmd->name, 0, ft_find_first_of(cmd->name, '='));
-// 	if (check_env_key(env, key) == true)
-// 		change_env_value(env, cmd->name);
-// 	else
-// 	{
-// 		add_to_env(env, cmd->name);
-// 		set_env_hidden(env, key, HIDDEN);
-// 	}
-// 	free(key);
-// 	free(cmd->name);
-// 	cmd->name = ft_strdup(cmd->args[0]);
-// 	if (cmd->name == NULL)
-// 		return ;
-// 	decrease_cmd_args(cmd);
-// }
 
 static	void	add_to_env_hidden_null(t_env *env, char *line)
 {
@@ -97,7 +65,7 @@ static	void	add_to_env_hidden_null(t_env *env, char *line)
 void			validate_hidden_env(t_env *env, t_cmd *cmd)
 {
 	char	*key;
-	
+
 	while (ft_find_first_of(cmd->name, '=') != -1)
 	{
 		if (validate_hidden_env_name(cmd->name) == false)
@@ -117,7 +85,7 @@ void			validate_hidden_env(t_env *env, t_cmd *cmd)
 		free(cmd->name);
 		cmd->name = ft_strdup(cmd->args[0]);
 		if (cmd->name == NULL)
-			return ;
+			break ;
 		decrease_cmd_args(cmd);
 	}
 }

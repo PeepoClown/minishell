@@ -6,7 +6,7 @@
 /*   By: wupdegra <wupdegra@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 18:01:56 by wupdegra          #+#    #+#             */
-/*   Updated: 2020/11/08 13:54:36 by wupdegra         ###   ########.fr       */
+/*   Updated: 2020/11/08 14:53:47 by wupdegra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ char			*user_input(void)
 		input_loop(buff[0], read_res, &input);
 	}
 	if (read_res == -1)
-		exit (g_status);
+		exit(g_status);
 	g_input_start = false;
 	return (input);
 }

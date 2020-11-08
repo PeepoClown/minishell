@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   ft_atoll.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wupdegra <wupdegra@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/11/07 18:30:38 by qcraghas          #+#    #+#             */
-/*   Updated: 2020/11/08 15:43:28 by wupdegra         ###   ########.fr       */
+/*   Created: 2020/11/08 16:48:34 by wupdegra          #+#    #+#             */
+/*   Updated: 2020/11/08 17:15:31 by wupdegra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <lib.h>
 
-int		ft_atoi(const char *str)
+unsigned long long	ft_atoll(const char *str)
 {
 	int					sign;
 	unsigned long long	result;
@@ -29,9 +29,5 @@ int		ft_atoi(const char *str)
 	result = 0;
 	while (*str && *str >= 48 && *str <= 57)
 		result = result * 10 + (*str++ - 48);
-	if (result > 9223372036854775807 && sign == -1)
-		return (0);
-	if (result > 9223372036854775807 && sign == 1)
-		return (-1);
-	return ((int)result * sign);
+	return (result * sign);
 }

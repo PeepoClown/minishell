@@ -6,7 +6,7 @@
 /*   By: wupdegra <wupdegra@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 18:04:29 by wupdegra          #+#    #+#             */
-/*   Updated: 2020/11/07 22:55:31 by wupdegra         ###   ########.fr       */
+/*   Updated: 2020/11/08 16:41:46 by wupdegra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int				main(int argc, char **argv, char **env)
 	}
 	alloc_check(env_list = create_env(env));
 	set_oldpwd_null(env_list);
-//	signal(SIGTERM, SIG_IGN);
+	signal(SIGTERM, SIG_IGN);
 	signal(SIGQUIT, signals_handler);
 	signal(SIGINT, signals_handler);
 	init_prompt_vars(env_list);

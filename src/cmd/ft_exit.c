@@ -6,13 +6,13 @@
 /*   By: wupdegra <wupdegra@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 18:01:07 by wupdegra          #+#    #+#             */
-/*   Updated: 2020/11/07 18:01:08 by wupdegra         ###   ########.fr       */
+/*   Updated: 2020/11/08 17:43:48 by wupdegra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static	bool	is_digital_arg(char *arg)
+static	bool		is_digital_arg(char *arg)
 {
 	bool	is_sign;
 
@@ -38,7 +38,35 @@ static	bool	is_digital_arg(char *arg)
 	return (!is_sign);
 }
 
-int				ft_exit(t_cmd *cmd, t_env *env)
+static	long long	validate_exit_code(char *code)
+{
+	bool	minus;
+	char	*num;
+	char	*orig;
+
+
+	minus = false;
+	orig = code;
+	while (*code == ' ')
+		code++;
+	if (*code == '-')
+	{
+		code++;
+		minus = true;
+	}
+	num = ft_strtrim(code, " ");
+	if (ft_strlen(num) < 20 && (ft_atoll(num) <= LLONG_MAX ||
+		((ft_atoll(num) <= (unsigned long long)(LLONG_MAX) + 1) && minus)))
+	{
+		free(num);
+		return (minus ? ft_atoll(code) * (-1) : ft_atoll(code));
+	}
+	free(num);
+	ft_error("exit", orig, "numeric argument required");
+	return (255);
+}
+
+int					ft_exit(t_cmd *cmd, t_env *env)
 {
 	int		ret;
 	int		args_count;
@@ -61,7 +89,7 @@ int				ft_exit(t_cmd *cmd, t_env *env)
 			return (1);
 		}
 		else
-			ret = (unsigned char)ft_atoi(*(cmd->args));
+			ret = (unsigned char)validate_exit_code(*(cmd->args));
 	}
 	exit(ret);
 }
