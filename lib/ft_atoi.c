@@ -6,7 +6,7 @@
 /*   By: wupdegra <wupdegra@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 18:30:38 by qcraghas          #+#    #+#             */
-/*   Updated: 2020/11/08 15:43:28 by wupdegra         ###   ########.fr       */
+/*   Updated: 2020/11/09 17:03:02 by wupdegra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int		ft_atoi(const char *str)
 		if (*str == '-')
 			sign = -1;
 		str++;
-	}
+	} 
 	result = 0;
 	while (*str && *str >= 48 && *str <= 57)
 		result = result * 10 + (*str++ - 48);

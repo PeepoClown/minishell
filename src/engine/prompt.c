@@ -6,7 +6,7 @@
 /*   By: wupdegra <wupdegra@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 18:02:10 by wupdegra          #+#    #+#             */
-/*   Updated: 2020/11/07 21:20:43 by wupdegra         ###   ########.fr       */
+/*   Updated: 2020/11/09 16:31:51 by wupdegra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,9 +81,7 @@ void			display_prompt(void)
 		ft_putstr_fd(path, 1);
 	}
 	ft_putstr_fd("\e[1;34m ]\n\e[0m", 1);
-	ft_putstr_fd("(current status : \e[4;33m", 1);
-	ft_putnbr_fd(g_status, 1);
-	ft_putstr_fd("\e[0m ) $> ", 1);
+	ft_putstr_fd("$> ", 1);
 	if (path != NULL)
 		free(path);
 }

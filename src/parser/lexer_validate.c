@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_validate.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qcraghas <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: wupdegra <wupdegra@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 16:53:03 by qcraghas          #+#    #+#             */
-/*   Updated: 2020/11/07 16:53:05 by qcraghas         ###   ########.fr       */
+/*   Updated: 2020/11/08 20:15:04 by wupdegra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int		token_quotes(t_lexer *lexer, char *s, char **current_token)
 		if (lexer->error)
 			return (unexpected_eof(lexer->match_quote));
 		quote_token = ft_substr(s, lexer->i, lexer->token_len);
-		if (lexer->token_len > 1)
+		if (lexer->token_len > 2)
 		{
 			tmp = *current_token;
 			*current_token = ft_strjoin(*current_token, quote_token);

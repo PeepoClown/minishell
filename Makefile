@@ -44,10 +44,10 @@ libft :
 
 $(NAME) : $(OBJ)
 	@cp $(LIB_DIR)libft.a ./
-	@gcc $(CFLAGS) $(OBJ) $(LINK) -o $(NAME)
+	@clang $(CFLAGS) $(OBJ) $(LINK) -o $(NAME)
 
 %.o : %.c $(HEADER)
-	gcc $(CFLAGS) $(INCLUDE) -c $< -o $@
+	clang $(CFLAGS) $(INCLUDE) -c $< -o $@
 
 .PHONY : clean
 clean :

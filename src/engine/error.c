@@ -6,7 +6,7 @@
 /*   By: wupdegra <wupdegra@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 18:01:52 by wupdegra          #+#    #+#             */
-/*   Updated: 2020/11/07 21:52:44 by wupdegra         ###   ########.fr       */
+/*   Updated: 2020/11/08 20:21:28 by wupdegra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,14 @@ void	alloc_check(void *ptr)
 {
 	if (ptr != NULL)
 		return ;
-	ft_putstr_fd("bash : allocation error", 2);
+	ft_putstr_fd("minishell: allocation error", 2);
 	ft_putendl_fd(2);
 	exit(ENOMEM);
 }
 
 void	ft_error(const char *cmd, const char *error, const char *desc)
 {
-	ft_putstr_fd("bash: ", 2);
+	ft_putstr_fd("minishell: ", 2);
 	if (cmd)
 	{
 		ft_putstr_fd(cmd, 2);

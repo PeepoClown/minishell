@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quoting_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qcraghas <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: wupdegra <wupdegra@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 18:25:51 by qcraghas          #+#    #+#             */
-/*   Updated: 2020/11/07 18:25:53 by qcraghas         ###   ########.fr       */
+/*   Updated: 2020/11/08 19:56:20 by wupdegra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ int		replace_env(char *s, t_env *env, char **token, int flag)
 	int		i;
 	char	*path;
 	char	*tmp;
-	char	*p;
 
 	i = 1;
 	tmp = *token;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qcraghas <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: wupdegra <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 16:46:24 by qcraghas          #+#    #+#             */
-/*   Updated: 2020/11/07 16:46:26 by qcraghas         ###   ########.fr       */
+/*   Updated: 2020/11/09 11:59:07 by wupdegra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,8 @@ void		split_env(t_cmd **tmp, char *name)
 	free(name);
 	free((*tmp)->name);
 	(*tmp)->name = ft_strdup(split_env[i]);
-	(*tmp)->name = str_to_lower((*tmp)->name);
+	if (!ft_strchr((*tmp)->name, '='))
+		(*tmp)->name = str_to_lower((*tmp)->name);
 	free(split_env[i++]);
 	while (i < size)
 	{
@@ -92,7 +93,7 @@ void		fill_structure(t_cmd **tmp, char **input, t_env *env, int *j)
 		if (*input[*j] == '$')
 			split_env(tmp, name);
 		else
-			(*tmp)->name = str_to_lower(name);
+			(*tmp)->name = ft_strchr(name, '=') ? name : str_to_lower(name);
 	}
 	else if (!(ft_strcmp(input[*j], ">")) || !(ft_strcmp(input[*j], ">>")) ||
 			!(ft_strcmp(input[*j], "<")))

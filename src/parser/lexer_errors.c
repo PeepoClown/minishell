@@ -6,7 +6,7 @@
 /*   By: wupdegra <wupdegra@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 16:43:53 by qcraghas          #+#    #+#             */
-/*   Updated: 2020/11/08 15:48:28 by wupdegra         ###   ########.fr       */
+/*   Updated: 2020/11/08 20:22:04 by wupdegra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	quote_pair(char *s, char quote, int *error)
 
 int	unexpected_token(char unexpected)
 {
-	write(2, "bash: syntax error near unexpected token `", 42);
+	write(2, "minishell: syntax error near unexpected token `", 47);
 	write(2, &unexpected, 1);
 	write(2, "'\n", 2);
 	g_status = 258;
@@ -48,14 +48,14 @@ int	unexpected_token(char unexpected)
 
 int	unexpected_redirects(void)
 {
-	write(2, "bash: syntax error near unexpected token `newline'\n", 51);
+	write(2, "minishell: syntax error near unexpected token `newline'\n", 56);
 	g_status = 258;
 	return (0);
 }
 
 int	unexpected_eof(char match_quote)
 {
-	write(2, "bash: unexpected EOF while looking for matching `", 49);
+	write(2, "minishell: unexpected EOF while looking for matching `", 54);
 	write(2, &match_quote, 1);
 	write(2, "\"\n", 2);
 	g_status = 258;
